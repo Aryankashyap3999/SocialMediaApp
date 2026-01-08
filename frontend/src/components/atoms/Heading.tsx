@@ -33,9 +33,9 @@ export const Heading: React.FC<HeadingProps> = ({
   };
 
   const colorStyles = {
-    primary: 'text-text',
-    secondary: 'text-text-secondary',
-    muted: 'text-text-tertiary',
+    primary: 'text-gray-900',
+    secondary: 'text-gray-700',
+    muted: 'text-gray-500',
   };
 
   const Tag = `h${level}` as const;

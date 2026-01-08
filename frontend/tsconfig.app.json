@@ -24,9 +24,12 @@
       "@components/*": ["./src/components/*"],
       "@features/*": ["./src/features/*"],
       "@hooks/*": ["./src/hooks/*"],
+      "@pages": ["./src/pages"],
+      "@pages/*": ["./src/pages/*"],
       "@services/*": ["./src/services/*"],
       "@store/*": ["./src/store/*"],
       "@types/*": ["./src/types/*"],
+      "@utils": ["./src/utils"],
       "@utils/*": ["./src/utils/*"]
     },
 

@@ -32,13 +32,13 @@ export const Text: React.FC<TextProps> = ({
   };
 
   const colorStyles = {
-    primary: 'text-text',
-    secondary: 'text-text-secondary',
-    success: 'text-success',
-    error: 'text-error',
-    warning: 'text-warning',
-    info: 'text-info',
-    muted: 'text-text-tertiary',
+    primary: 'text-gray-900',
+    secondary: 'text-gray-700',
+    success: 'text-green-600',
+    error: 'text-red-600',
+    warning: 'text-yellow-600',
+    info: 'text-blue-600',
+    muted: 'text-gray-500',
   };
 
   const weightStyles = {
