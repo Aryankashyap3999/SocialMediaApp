@@ -322,6 +322,43 @@ export const Icon: React.FC<IconProps> = ({ name, size = 24, className = '', fil
         <line x1="8" y1="23" x2="16" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
       </>
     ),
+    // Close / X icon
+    close: (
+      <>
+        <line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        <line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      </>
+    ),
+    // Volume / speaker icon
+    volume: (
+      <>
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M15.54 8.46a5 5 0 010 7.07" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        <path d="M19.07 4.93a10 10 0 010 14.14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      </>
+    ),
+    // Location / map pin icon
+    location: (
+      <>
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx="12" cy="10" r="3" fill="none" stroke="currentColor" strokeWidth="2" />
+      </>
+    ),
+    // Music note icon
+    music: (
+      <>
+        <path d="M9 18V5l12-2v13" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx="6" cy="18" r="3" fill="none" stroke="currentColor" strokeWidth="2" />
+        <circle cx="18" cy="16" r="3" fill="none" stroke="currentColor" strokeWidth="2" />
+      </>
+    ),
+    // Plus icon
+    plus: (
+      <>
+        <line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        <line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      </>
+    ),
   };
 
   return (

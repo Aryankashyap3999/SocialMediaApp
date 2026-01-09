@@ -7,6 +7,7 @@ import { MessagesPage } from '@pages/messages';
 import { NotificationsPage } from '@pages/notifications';
 import { ProfilePage } from '@pages/profile';
 import { SettingsPage } from '@pages/settings';
+import { StoriesPage } from '@pages/stories';
 
 /**
  * Application Router Configuration
@@ -36,7 +37,7 @@ export const Router = () => {
             {/* Main App Routes */}
             <Route path="/home" element={<MainLayout><HomePage /></MainLayout>} />
             <Route path="/discover" element={<MainLayout><DiscoverPage /></MainLayout>} />
-            <Route path="/stories" element={<MainLayout><div className="p-8"><h1 className="text-2xl font-bold">Stories</h1><p className="text-gray-500 mt-2">Watch stories from people you follow</p></div></MainLayout>} />
+            <Route path="/stories" element={<MainLayout><StoriesPage /></MainLayout>} />
             <Route path="/messages" element={<MainLayout><MessagesPage /></MainLayout>} />
             <Route path="/notifications" element={<MainLayout><NotificationsPage /></MainLayout>} />
             <Route path="/profile" element={<MainLayout><ProfilePage /></MainLayout>} />
