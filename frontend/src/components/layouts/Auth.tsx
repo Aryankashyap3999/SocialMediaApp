@@ -6,7 +6,7 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
   return (
     <div className="min-h-screen flex">
       {/* Left Panel - Branded gradient */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-800 relative overflow-hidden">
+      <div className="hidden lg:flex lg:w-1/2 bg-linear-to-br from-indigo-600 via-purple-600 to-indigo-800 relative overflow-hidden">
         {/* Brand Logo */}
         <div className="absolute top-8 left-8">
           <h1 className="text-2xl font-bold text-white">Aptoodate</h1>

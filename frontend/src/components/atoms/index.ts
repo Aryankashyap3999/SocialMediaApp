@@ -19,20 +19,5 @@ export type { TextProps } from './Text';
 export { Heading } from './Heading';
 export type { HeadingProps } from './Heading';
 
-export {
-  HeartIcon,
-  CommentIcon,
-  ShareIcon,
-  SearchIcon,
-  BellIcon,
-  MessageIcon,
-  UserIcon,
-  HomeIcon,
-  CompassIcon,
-  PlusIcon,
-  MoreIcon,
-  CheckIcon,
-  XIcon,
-  ChevronDownIcon,
-} from './icons';
-export type { IconProps } from './icons';
+export { Icon } from './Icon';
+export type { IconProps } from './Icon';

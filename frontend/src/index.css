@@ -108,7 +108,15 @@
    Reset & Base Styles
    ================================ */
 
+/* Hide scrollbar for stories and other horizontal scrollable areas */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
 
 html {
   scroll-behavior: smooth;

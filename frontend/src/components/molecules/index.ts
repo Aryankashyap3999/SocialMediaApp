@@ -10,8 +10,13 @@ export type { CardProps } from './Card';
 export { UserHeader } from './UserHeader';
 export type { UserHeaderProps } from './UserHeader';
 
-// export { PostActions } from './PostActions';
-// export type { PostActionsProps } from './PostActions';
+export { PostActions } from './PostActions';
+export type { PostActionsProps } from './PostActions';
 
 export { LanguageTag } from './LanguageTag';
 export type { LanguageTagProps } from './LanguageTag';
+
+export { NavItem } from './NavItem';
+export type { NavItemProps } from './NavItem';
+
+export { SocialButton } from './SocialButton';

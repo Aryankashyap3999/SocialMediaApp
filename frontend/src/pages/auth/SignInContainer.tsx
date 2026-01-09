@@ -13,20 +13,7 @@ export interface SignInErrors {
   general?: string;
 }
 
-/**
- * SignInContainer
- * 
- * Single responsibility: Manage sign-in business logic
- * - Form state management
- * - Form validation
- * - API integration (placeholder)
- * - Navigation on success
- * - Error handling
- * 
- * Uses Container/Presentational pattern:
- * - Container: All logic and state
- * - Presentational (SignInCard): Only UI rendering
- */
+
 export const SignInContainer: React.FC = () => {
   const navigate = useNavigate();
 
