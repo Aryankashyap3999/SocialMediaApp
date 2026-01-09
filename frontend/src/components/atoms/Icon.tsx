@@ -239,6 +239,32 @@ export const Icon: React.FC<IconProps> = ({ name, size = 24, className = '', fil
         <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
       </>
     ),
+    // Lock icon
+    lock: (
+      <>
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" fill="none" stroke="currentColor" strokeWidth="2" />
+        <path d="M7 11V7a5 5 0 0110 0v4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      </>
+    ),
+    // Camera icon
+    camera: (
+      <>
+        <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx="12" cy="13" r="4" fill="none" stroke="currentColor" strokeWidth="2" />
+      </>
+    ),
+    // Help icon
+    help: (
+      <>
+        <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2" />
+        <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        <line x1="12" y1="17" x2="12.01" y2="17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      </>
+    ),
+    // Chevron Right icon
+    chevronRight: (
+      <path d="M9 18l6-6-6-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    ),
   };
 
   return (

@@ -5,6 +5,7 @@ import { DiscoverPage } from '@pages/discover';
 import { HomePage } from '@pages/home';
 import { NotificationsPage } from '@pages/notifications';
 import { ProfilePage } from '@pages/profile';
+import { SettingsPage } from '@pages/settings';
 
 /**
  * Application Router Configuration
@@ -39,7 +40,7 @@ export const Router = () => {
             <Route path="/notifications" element={<MainLayout><NotificationsPage /></MainLayout>} />
             <Route path="/profile" element={<MainLayout><ProfilePage /></MainLayout>} />
             <Route path="/profile/:userId" element={<MainLayout><ProfilePage /></MainLayout>} />
-            <Route path="/settings" element={<MainLayout><div className="p-8"><h1 className="text-2xl font-bold">Settings</h1><p className="text-gray-500 mt-2">Manage your preferences</p></div></MainLayout>} />
+            <Route path="/settings" element={<MainLayout><SettingsPage /></MainLayout>} />
             
             {/* Auth Routes */}
             <Route path="/auth/signin" element={<AuthLayout><SignInContainer /></AuthLayout>} />
