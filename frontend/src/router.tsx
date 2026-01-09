@@ -3,6 +3,7 @@ import { AuthLayout, MainLayout } from '@components/layouts';
 import { SignInContainer, SignUpContainer } from '@pages/auth';
 import { DiscoverPage } from '@pages/discover';
 import { HomePage } from '@pages/home';
+import { MessagesPage } from '@pages/messages';
 import { NotificationsPage } from '@pages/notifications';
 import { ProfilePage } from '@pages/profile';
 import { SettingsPage } from '@pages/settings';
@@ -36,7 +37,7 @@ export const Router = () => {
             <Route path="/home" element={<MainLayout><HomePage /></MainLayout>} />
             <Route path="/discover" element={<MainLayout><DiscoverPage /></MainLayout>} />
             <Route path="/stories" element={<MainLayout><div className="p-8"><h1 className="text-2xl font-bold">Stories</h1><p className="text-gray-500 mt-2">Watch stories from people you follow</p></div></MainLayout>} />
-            <Route path="/messages" element={<MainLayout><div className="p-8"><h1 className="text-2xl font-bold">Messages</h1><p className="text-gray-500 mt-2">Your direct messages</p></div></MainLayout>} />
+            <Route path="/messages" element={<MainLayout><MessagesPage /></MainLayout>} />
             <Route path="/notifications" element={<MainLayout><NotificationsPage /></MainLayout>} />
             <Route path="/profile" element={<MainLayout><ProfilePage /></MainLayout>} />
             <Route path="/profile/:userId" element={<MainLayout><ProfilePage /></MainLayout>} />

@@ -7,6 +7,7 @@
 export * from './auth';
 export * from './discover';
 export * from './home';
+export * from './messages';
 export * from './notifications';
 export * from './profile';
 export * from './settings';
