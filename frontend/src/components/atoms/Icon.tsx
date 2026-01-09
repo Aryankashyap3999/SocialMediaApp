@@ -217,6 +217,28 @@ export const Icon: React.FC<IconProps> = ({ name, size = 24, className = '', fil
         <line x1="6" y1="20" x2="6" y2="14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
       </>
     ),
+    // At sign / mention icon
+    atSign: (
+      <>
+        <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="2" />
+        <path d="M16 8v5a3 3 0 006 0v-1a10 10 0 10-3.92 7.94" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      </>
+    ),
+    // Add user / follow icon
+    addUser: (
+      <>
+        <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx="8.5" cy="7" r="4" fill="none" stroke="currentColor" strokeWidth="2" />
+        <line x1="20" y1="8" x2="20" y2="14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        <line x1="23" y1="11" x2="17" y2="11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      </>
+    ),
+    // Filter icon
+    filter: (
+      <>
+        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      </>
+    ),
   };
 
   return (

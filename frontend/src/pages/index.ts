@@ -5,5 +5,7 @@
  */
 
 export * from './auth';
+export * from './discover';
 export * from './home';
+export * from './notifications';
 export * from './profile';
