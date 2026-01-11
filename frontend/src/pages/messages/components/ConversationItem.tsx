@@ -41,8 +41,8 @@ export const ConversationItem: React.FC<ConversationItemProps> = ({
       className={`
         w-full flex items-center gap-3 px-4 py-3 transition-colors text-left
         ${isActive 
-          ? 'bg-slate-900 border border-cyan-400/30 rounded-2xl' 
-          : 'hover:bg-slate-900/70 rounded-2xl'
+          ? 'bg-[#141414] border border-cyan-400/30 rounded-2xl' 
+          : 'hover:bg-[#141414]/70 rounded-2xl'
         }
       `}
     >

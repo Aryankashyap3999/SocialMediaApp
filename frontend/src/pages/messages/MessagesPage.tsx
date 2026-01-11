@@ -70,7 +70,7 @@ export const MessagesPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="h-[calc(100vh-60px)] flex bg-slate-950 text-slate-100">
+    <div className="h-[calc(100vh-60px)] flex bg-[#0a0a0a] text-slate-100">
       {/* Conversation List - Left Panel */}
       <div className={`
         w-full md:w-80 lg:w-96 shrink-0

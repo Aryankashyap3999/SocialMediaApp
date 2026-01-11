@@ -32,7 +32,7 @@ export const ProfileTabs: React.FC<ProfileTabsProps> = ({
   ];
 
   return (
-    <div className="sticky top-0 z-10 bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+    <div className="sticky top-0 z-10 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
       <nav className="flex">
         {tabs.map((tab) => {
           const isActive = activeTab === tab.id;

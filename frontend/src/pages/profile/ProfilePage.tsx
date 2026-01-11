@@ -269,13 +269,15 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ userId }) => {
     switch (activeTab) {
       case 'posts':
         return mockPosts.length > 0 ? (
-          <div className="divide-y divide-slate-200 dark:divide-slate-800">
-            {mockPosts.map((post) => (
-              <FeedCard
-                key={post.id}
-                {...post}
-              />
-            ))}
+          <div className="bg-black rounded-xl overflow-hidden">
+            <div className="divide-y divide-slate-800">
+              {mockPosts.map((post) => (
+                <FeedCard
+                  key={post.id}
+                  {...post}
+                />
+              ))}
+            </div>
           </div>
         ) : renderEmptyState('posts');
 
@@ -292,13 +294,15 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ userId }) => {
 
       case 'likes':
         return mockLikedPosts.length > 0 ? (
-          <div className="divide-y divide-slate-200 dark:divide-slate-800">
-            {mockLikedPosts.map((post) => (
-              <FeedCard
-                key={post.id}
-                {...post}
-              />
-            ))}
+          <div className="bg-black rounded-xl overflow-hidden">
+            <div className="divide-y divide-slate-800">
+              {mockLikedPosts.map((post) => (
+                <FeedCard
+                  key={post.id}
+                  {...post}
+                />
+              ))}
+            </div>
           </div>
         ) : renderEmptyState('likes');
 
@@ -308,9 +312,9 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ userId }) => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
+    <div className="min-h-screen bg-white dark:bg-black">
       {/* Back button for mobile */}
-      <div className="sticky top-0 z-20 flex items-center gap-4 px-4 py-3 bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 lg:hidden">
+      <div className="sticky top-0 z-20 flex items-center gap-4 px-4 py-3 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 lg:hidden">
         <button
           onClick={() => window.history.back()}
           className="p-2 -ml-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors"

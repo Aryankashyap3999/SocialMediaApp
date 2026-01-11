@@ -41,13 +41,13 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
   };
 
   return (
-    <div className="flex items-center justify-between px-4 py-3 border-b border-slate-800 bg-slate-950">
+    <div className="flex items-center justify-between px-4 py-3 border-b border-slate-700 bg-[#0a0a0a]">
       <div className="flex items-center gap-3">
         {/* Back button (mobile) */}
         {onBack && (
           <button
             onClick={onBack}
-            className="p-1.5 -ml-1.5 hover:bg-slate-900 rounded-lg transition-colors lg:hidden"
+            className="p-1.5 -ml-1.5 hover:bg-[#141414] rounded-lg transition-colors lg:hidden"
           >
             <Icon name="chevronLeft" size={24} />
           </button>
@@ -57,10 +57,10 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
         <div className="relative">
           {isGroup && participants.length > 1 ? (
             <div className="relative w-10 h-10">
-              <div className="absolute top-0 left-0 w-7 h-7 rounded-full overflow-hidden border-2 border-slate-950">
+              <div className="absolute top-0 left-0 w-7 h-7 rounded-full overflow-hidden border-2 border-[#0a0a0a]">
                 <img src={participants[0]?.avatarUrl} alt="" className="w-full h-full object-cover" />
               </div>
-              <div className="absolute bottom-0 right-0 w-7 h-7 rounded-full overflow-hidden border-2 border-slate-950">
+              <div className="absolute bottom-0 right-0 w-7 h-7 rounded-full overflow-hidden border-2 border-[#0a0a0a]">
                 <img src={participants[1]?.avatarUrl} alt="" className="w-full h-full object-cover" />
               </div>
             </div>
@@ -69,7 +69,7 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
           )}
           
           {isOnline && (
-            <div className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-400 rounded-full border-2 border-slate-950" />
+            <div className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-400 rounded-full border-2 border-[#0a0a0a]" />
           )}
         </div>
 
@@ -89,19 +89,19 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
       <div className="flex items-center gap-1">
         <button
           onClick={onVoiceCall}
-          className="p-2 hover:bg-slate-900 rounded-lg transition-colors"
+          className="p-2 hover:bg-[#141414] rounded-lg transition-colors"
         >
           <Icon name="phone" size={20} className="text-slate-300" />
         </button>
         <button
           onClick={onVideoCall}
-          className="p-2 hover:bg-slate-900 rounded-lg transition-colors"
+          className="p-2 hover:bg-[#141414] rounded-lg transition-colors"
         >
           <Icon name="video" size={20} className="text-slate-300" />
         </button>
         <button
           onClick={onInfo}
-          className="p-2 hover:bg-slate-900 rounded-lg transition-colors"
+          className="p-2 hover:bg-[#141414] rounded-lg transition-colors"
         >
           <Icon name="info" size={20} className="text-slate-300" />
         </button>

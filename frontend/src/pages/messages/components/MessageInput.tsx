@@ -46,12 +46,12 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   const hasContent = message.trim().length > 0;
 
   return (
-    <div className="px-4 py-3 border-t border-slate-800 bg-slate-950">
+    <div className="px-4 py-3 border-t border-slate-700 bg-[#0a0a0a]">
       <form onSubmit={handleSubmit} className="flex items-center gap-2">
         {/* Emoji button */}
         <button
           type="button"
-          className="p-2 hover:bg-slate-900 rounded-full transition-colors"
+          className="p-2 hover:bg-[#141414] rounded-full transition-colors"
         >
           <Icon name="emoji" size={22} className="text-slate-400" />
         </button>
@@ -66,7 +66,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
             onKeyDown={handleKeyPress}
             placeholder={placeholder}
             disabled={disabled}
-            className="w-full bg-slate-900 rounded-full py-2.5 px-4 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 placeholder:text-slate-500 disabled:opacity-50"
+            className="w-full bg-[#141414] rounded-full py-2.5 px-4 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 placeholder:text-slate-500 disabled:opacity-50"
           />
         </div>
 
@@ -83,13 +83,13 @@ export const MessageInput: React.FC<MessageInputProps> = ({
           <>
             <button
               type="button"
-              className="p-2 hover:bg-slate-900 rounded-full transition-colors"
+              className="p-2 hover:bg-[#141414] rounded-full transition-colors"
             >
               <Icon name="image" size={22} className="text-slate-400" />
             </button>
             <button
               type="button"
-              className="p-2 hover:bg-slate-900 rounded-full transition-colors"
+              className="p-2 hover:bg-[#141414] rounded-full transition-colors"
             >
               <Icon name="microphone" size={22} className="text-slate-400" />
             </button>

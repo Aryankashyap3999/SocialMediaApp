@@ -69,7 +69,7 @@ const LinkItem: React.FC<{
 }> = ({ label, value, onClick, danger }) => (
   <button
     onClick={onClick}
-    className="w-full flex items-center justify-between py-3 hover:bg-slate-100 dark:hover:bg-slate-800/50 -mx-4 px-4 transition-colors"
+    className="w-full flex items-center justify-between py-3 hover:bg-slate-100 dark:hover:bg-[#141414]/70 -mx-4 px-4 transition-colors"
   >
     <span className={`text-sm font-medium ${danger ? 'text-red-500' : 'text-slate-900 dark:text-slate-100'}`}>
       {label}
@@ -93,7 +93,7 @@ const SelectItem: React.FC<{
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="text-sm bg-slate-100 dark:bg-slate-800 border-0 rounded-lg px-3 py-1.5 text-slate-700 dark:text-slate-300 focus:ring-2 focus:ring-cyan-500"
+      className="text-sm bg-slate-100 dark:bg-[#141414] border-0 rounded-lg px-3 py-1.5 text-slate-700 dark:text-slate-300 focus:ring-2 focus:ring-cyan-500"
     >
       {options.map((option) => (
         <option key={option} value={option}>{option}</option>
@@ -142,7 +142,7 @@ export const SettingsPage: React.FC = () => {
             {/* Profile Section */}
             <div>
               <SectionHeader title="Profile" description="Manage your profile information" />
-              <div className="bg-slate-100 dark:bg-slate-900/50 rounded-xl p-4">
+              <div className="bg-slate-100 dark:bg-[#141414] rounded-xl p-4">
                 <div className="flex items-center gap-4">
                   <div className="relative">
                     <Avatar src={currentUser.avatarUrl} alt={currentUser.name} size="xl" />
@@ -368,9 +368,9 @@ export const SettingsPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen max-w-4xl mx-auto bg-slate-50 dark:bg-slate-950">
+    <div className="min-h-screen max-w-4xl mx-auto bg-slate-50 dark:bg-[#0a0a0a]">
       {/* Header */}
-      <div className="sticky top-0 z-20 bg-slate-50/95 dark:bg-slate-950/95 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800">
+      <div className="sticky top-0 z-20 bg-slate-50/95 dark:bg-[#0a0a0a]/95 backdrop-blur-xl border-b border-slate-200 dark:border-slate-700">
         <div className="px-4 py-3">
           <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">Settings</h1>
         </div>
@@ -378,7 +378,7 @@ export const SettingsPage: React.FC = () => {
 
       <div className="flex">
         {/* Sidebar Navigation */}
-        <div className="w-64 shrink-0 border-r border-slate-200 dark:border-slate-800 min-h-[calc(100vh-57px)]">
+        <div className="w-64 shrink-0 border-r border-slate-200 dark:border-slate-700 min-h-[calc(100vh-57px)]">
           <nav className="p-4 space-y-1">
             {settingsMenu.map((item) => (
               <button
@@ -388,7 +388,7 @@ export const SettingsPage: React.FC = () => {
                   w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-colors
                   ${activeSection === item.id
                     ? 'bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300'
-                    : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300'
+                    : 'hover:bg-slate-100 dark:hover:bg-[#141414] text-slate-700 dark:text-slate-300'
                   }
                 `}
               >

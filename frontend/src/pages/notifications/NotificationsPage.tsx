@@ -224,8 +224,8 @@ const getNotificationText = (notif: Notification): string => {
 
 // Section Header Component - defined outside main component
 const SectionHeader: React.FC<{ title: string }> = ({ title }) => (
-  <div className="px-4 py-2 bg-slate-900/70 border-y border-slate-800">
-    <h3 className="text-sm font-semibold text-slate-100">{title}</h3>
+  <div className="px-4 py-2 bg-slate-100 dark:bg-[#141414] border-y border-slate-200 dark:border-slate-800">
+    <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">{title}</h3>
   </div>
 );
 
@@ -238,9 +238,9 @@ interface NotificationItemProps {
 const NotificationItem: React.FC<NotificationItemProps> = ({ notif, onToggleFollow }) => (
   <div
     className={`
-      flex items-center gap-3 px-4 py-3 hover:bg-slate-900/70
+      flex items-center gap-3 px-4 py-3 hover:bg-slate-100 dark:hover:bg-[#141414]
       transition-colors cursor-pointer
-      ${!notif.isRead ? 'bg-slate-900/80' : ''}
+      ${!notif.isRead ? 'bg-slate-50 dark:bg-[#0f0f0f]' : ''}
     `}
   >
     {/* Avatar */}
@@ -251,21 +251,21 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ notif, onToggleFoll
         size="md"
       />
       {!notif.isRead && (
-        <div className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-amber-300 rounded-full border-2 border-slate-950" />
+        <div className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-amber-300 rounded-full border-2 border-white dark:border-[#0a0a0a]" />
       )}
     </div>
 
     {/* Content */}
     <div className="flex-1 min-w-0">
       <p className="text-sm leading-snug">
-        <span className="font-semibold text-slate-100">
+        <span className="font-semibold text-slate-900 dark:text-slate-100">
           {notif.user?.name}
         </span>
         {notif.user?.isVerified && (
           <Icon name="verified" size={14} className="inline-block ml-0.5 align-middle" />
         )}
-        <span className="text-slate-400 ml-1">{getNotificationText(notif)}</span>
-        <span className="text-slate-500 ml-1">{notif.timestamp}</span>
+        <span className="text-slate-500 dark:text-slate-400 ml-1">{getNotificationText(notif)}</span>
+        <span className="text-slate-400 dark:text-slate-500 ml-1">{notif.timestamp}</span>
       </p>
     </div>
 
@@ -280,7 +280,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ notif, onToggleFoll
           className={`
             px-4 py-1.5 text-sm font-semibold rounded-lg transition-all border
             ${notif.isFollowing
-              ? 'bg-slate-900 border-slate-800 text-slate-300 hover:border-cyan-400/40'
+              ? 'bg-slate-100 dark:bg-[#141414] border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-cyan-400/40'
               : 'bg-linear-to-r from-cyan-400 to-amber-300 text-slate-950 hover:from-cyan-300 hover:to-amber-200 shadow-[0_10px_30px_-16px_rgba(0,0,0,0.8)]'
             }
           `}
@@ -288,7 +288,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ notif, onToggleFoll
           {notif.isFollowing ? 'Following' : 'Follow'}
         </button>
       ) : notif.mediaUrl ? (
-        <div className="w-11 h-11 rounded-lg overflow-hidden bg-slate-900 border border-slate-800">
+        <div className="w-11 h-11 rounded-lg overflow-hidden bg-slate-100 dark:bg-[#141414] border border-slate-200 dark:border-slate-700">
           <img
             src={notif.mediaUrl}
             alt=""
@@ -377,12 +377,12 @@ export const NotificationsPage: React.FC = () => {
   }, [filteredNotifications]);
 
   return (
-    <div className="min-h-screen max-w-2xl mx-auto bg-slate-950 text-slate-100">
+    <div className="min-h-screen max-w-2xl mx-auto bg-white dark:bg-[#0a0a0a] text-slate-900 dark:text-slate-100">
       {/* Header */}
-      <div className="sticky top-0 z-20 bg-slate-950/92 backdrop-blur-xl border-b border-slate-800">
+      <div className="sticky top-0 z-20 bg-white/92 dark:bg-[#0a0a0a]/92 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800">
         <div className="px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold text-slate-50">Notifications</h1>
+            <h1 className="text-xl font-bold text-slate-900 dark:text-slate-50">Notifications</h1>
             {unreadCount > 0 && (
               <span className="px-2 py-0.5 bg-linear-to-r from-cyan-400 to-amber-300 text-slate-950 text-xs font-bold rounded-full">
                 {unreadCount}
@@ -405,8 +405,8 @@ export const NotificationsPage: React.FC = () => {
                 className={`
                   p-2 rounded-lg transition-colors
                   ${showFilterMenu || timeFilter !== 'all' || typeFilter !== 'all'
-                    ? 'bg-slate-900 border border-cyan-400/40 text-cyan-300'
-                    : 'hover:bg-slate-900 text-slate-400'
+                    ? 'bg-slate-200 dark:bg-[#141414] border border-slate-300 dark:border-slate-700 text-cyan-600 dark:text-cyan-300'
+                    : 'hover:bg-slate-100 dark:hover:bg-[#141414] text-slate-500 dark:text-slate-400'
                   }
                 `}
               >
@@ -420,10 +420,10 @@ export const NotificationsPage: React.FC = () => {
                     className="fixed inset-0 z-10" 
                     onClick={() => setShowFilterMenu(false)} 
                   />
-                  <div className="absolute right-0 top-full mt-2 w-64 bg-slate-950 rounded-xl shadow-xl border border-slate-800 z-20 overflow-hidden">
+                  <div className="absolute right-0 top-full mt-2 w-64 bg-white dark:bg-[#0a0a0a] rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-20 overflow-hidden">
                     {/* Time Filters */}
-                    <div className="p-3 border-b border-slate-800">
-                      <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-2">
+                    <div className="p-3 border-b border-slate-200 dark:border-slate-700">
+                      <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-2">
                         Time Period
                       </p>
                       <div className="flex flex-wrap gap-1.5">
@@ -435,7 +435,7 @@ export const NotificationsPage: React.FC = () => {
                               px-3 py-1.5 text-xs font-medium rounded-full transition-colors
                               ${timeFilter === filter.id
                                 ? 'bg-linear-to-r from-cyan-400 to-amber-300 text-slate-950'
-                                : 'bg-slate-900 text-slate-300 hover:border-cyan-400/40 border border-slate-800'
+                                : 'bg-slate-100 dark:bg-[#141414] text-slate-700 dark:text-slate-300 hover:border-cyan-400/40 border border-slate-300 dark:border-slate-700'
                               }
                             `}
                           >
@@ -459,7 +459,7 @@ export const NotificationsPage: React.FC = () => {
                               px-3 py-1.5 text-xs font-medium rounded-full transition-colors
                               ${typeFilter === filter.id
                                 ? 'bg-linear-to-r from-cyan-400 to-amber-300 text-slate-950'
-                                : 'bg-slate-900 text-slate-300 hover:border-cyan-400/40 border border-slate-800'
+                                : 'bg-slate-100 dark:bg-[#141414] text-slate-700 dark:text-slate-300 hover:border-cyan-400/40 border border-slate-300 dark:border-slate-700'
                               }
                             `}
                           >
@@ -494,7 +494,7 @@ export const NotificationsPage: React.FC = () => {
         {(timeFilter !== 'all' || typeFilter !== 'all') && (
           <div className="px-4 pb-3 flex items-center gap-2 text-slate-200">
             {timeFilter !== 'all' && (
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-slate-900 border border-cyan-400/30 text-cyan-200 text-xs font-medium rounded-full">
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-slate-100 dark:bg-[#141414] border border-cyan-400/30 text-cyan-600 dark:text-cyan-200 text-xs font-medium rounded-full">
                 {timeFilters.find(f => f.id === timeFilter)?.label}
                 <button 
                   onClick={() => setTimeFilter('all')}
@@ -507,7 +507,7 @@ export const NotificationsPage: React.FC = () => {
               </span>
             )}
             {typeFilter !== 'all' && (
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-slate-900 border border-amber-300/40 text-amber-200 text-xs font-medium rounded-full">
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-slate-100 dark:bg-[#141414] border border-amber-300/40 text-amber-600 dark:text-amber-200 text-xs font-medium rounded-full">
                 {typeFilters.find(f => f.id === typeFilter)?.label}
                 <button 
                   onClick={() => setTypeFilter('all')}
@@ -527,13 +527,13 @@ export const NotificationsPage: React.FC = () => {
       <div className="pb-20">
         {filteredNotifications.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 px-4">
-            <div className="w-16 h-16 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center mb-3">
-              <Icon name="notifications" size={28} className="text-slate-500" />
+            <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-[#141414] border border-slate-200 dark:border-slate-700 flex items-center justify-center mb-3">
+              <Icon name="notifications" size={28} className="text-slate-400 dark:text-slate-500" />
             </div>
-            <h3 className="text-base font-semibold text-slate-100 mb-1">
+            <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100 mb-1">
               No notifications
             </h3>
-            <p className="text-sm text-slate-400 text-center">
+            <p className="text-sm text-slate-500 dark:text-slate-400 text-center">
               {timeFilter !== 'all' || typeFilter !== 'all' 
                 ? 'Try adjusting your filters'
                 : 'When you get notifications, they\'ll show up here'

@@ -55,15 +55,15 @@ export const StoriesPage: React.FC = () => {
   const liveCount = stories.filter((s) => s.isLive).length;
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    <div className="min-h-screen bg-white dark:bg-[#0a0a0a] text-slate-900 dark:text-slate-100">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-slate-950/90 backdrop-blur border-b border-white/5">
+      <div className="sticky top-0 z-10 bg-white/90 dark:bg-[#0a0a0a]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <p className="text-xs uppercase tracking-[0.24em] text-slate-300">Signal Shelf</p>
-              <h1 className="text-2xl font-semibold text-white">Signals</h1>
-              <p className="text-sm text-slate-400">
+              <p className="text-xs uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">Signal Shelf</p>
+              <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Signals</h1>
+              <p className="text-sm text-slate-500 dark:text-slate-400">
                 {unseenCount > 0 && `${unseenCount} new • `}
                 {liveCount > 0 && `${liveCount} live`}
               </p>
@@ -71,7 +71,7 @@ export const StoriesPage: React.FC = () => {
             
             <button
               onClick={handleAddStory}
-              className="flex items-center gap-2 px-4 py-2 rounded-2xl border border-white/10 bg-linear-to-r from-cyan-500 to-amber-400 text-slate-950 font-semibold shadow-xl shadow-cyan-500/30 hover:-translate-y-0.5 transition-transform"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-linear-to-r from-cyan-500 to-amber-400 text-slate-950 font-semibold shadow-[0_10px_30px_-12px_rgba(6,182,212,0.5)] hover:-translate-y-0.5 hover:shadow-[0_14px_35px_-12px_rgba(6,182,212,0.6)] transition-all"
             >
               <Icon name="create" size={18} className="text-slate-950" />
               <span className="hidden sm:inline">Create Signal</span>
@@ -79,7 +79,7 @@ export const StoriesPage: React.FC = () => {
           </div>
 
           {/* View mode tabs */}
-          <div className="flex gap-1 bg-slate-900/80 rounded-xl p-1 border border-white/5">
+          <div className="flex gap-1 bg-slate-200 dark:bg-[#141414] rounded-full p-1 border border-slate-300 dark:border-slate-700">
             {[
               { id: 'all', label: 'All Signals' },
               { id: 'following', label: 'Following' },
@@ -88,10 +88,10 @@ export const StoriesPage: React.FC = () => {
               <button
                 key={tab.id}
                 onClick={() => setViewMode(tab.id as ViewMode)}
-                className={`flex-1 py-2 px-4 text-sm font-medium rounded-lg transition-all ${
+                className={`flex-1 py-2.5 px-4 text-sm font-medium rounded-full transition-all ${
                   viewMode === tab.id
-                    ? 'bg-white/10 text-white shadow-sm'
-                    : 'text-slate-400 hover:text-white'
+                    ? 'bg-white dark:bg-[#1a1a1a] text-slate-900 dark:text-white shadow-sm'
+                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 {tab.label}
@@ -105,7 +105,7 @@ export const StoriesPage: React.FC = () => {
       <div className="max-w-4xl mx-auto py-6">
         {/* Story rings carousel */}
         <div className="mb-8">
-          <h2 className="px-4 text-sm font-semibold text-slate-200 uppercase tracking-wide mb-4">
+          <h2 className="px-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4">
             Recent Signals
           </h2>
           <StoryGrid
@@ -118,15 +118,15 @@ export const StoriesPage: React.FC = () => {
 
         {/* Story cards grid */}
         <div className="px-4">
-          <h2 className="text-sm font-semibold text-slate-200 uppercase tracking-wide mb-4">
+          <h2 className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4">
             All Signals
           </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {filteredStories.map((story, index) => (
               <button
                 key={story.id}
                 onClick={() => handleStoryClick(index)}
-                className="relative aspect-9/16 rounded-2xl overflow-hidden group border border-white/5 bg-white/5"
+                className="relative aspect-9/16 rounded-2xl overflow-hidden group bg-slate-200 dark:bg-[#141414] border border-slate-300 dark:border-slate-700 hover:border-cyan-400/50 hover:ring-1 hover:ring-cyan-400/30 transition-all"
               >
                 {/* Background image */}
                 <img
@@ -140,26 +140,26 @@ export const StoriesPage: React.FC = () => {
 
                 {/* Live badge */}
                 {story.isLive && (
-                  <div className="absolute top-3 left-3 px-2 py-0.5 rounded-full bg-white/85 text-slate-900 text-xs font-semibold uppercase tracking-wide">
+                  <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-linear-to-r from-red-500 to-orange-500 text-white text-xs font-bold uppercase tracking-wide shadow-lg">
                     Live
                   </div>
                 )}
 
                 {/* Story count badge */}
                 {story.items.length > 1 && (
-                  <div className="absolute top-3 right-3 px-2 py-0.5 bg-white/80 text-slate-900 text-xs font-medium rounded">
+                  <div className="absolute top-3 right-3 px-2 py-0.5 bg-black/60 backdrop-blur-sm text-white text-xs font-medium rounded-full">
                     {story.items.length}
                   </div>
                 )}
 
                 {/* User info */}
-                <div className="absolute bottom-0 left-0 right-0 p-3">
+                <div className="absolute bottom-0 left-0 right-0 p-3 bg-linear-to-t from-black/80 via-black/40 to-transparent">
                   <div className="flex items-center gap-2">
-                    <div className={`p-0.5 rounded-full ${story.hasUnseenItems ? 'bg-white/70' : 'bg-white/30'}`}>
+                    <div className={`p-0.5 rounded-full ${story.hasUnseenItems ? 'bg-linear-to-r from-cyan-400 to-amber-400' : 'bg-white/30'}`}>
                       <img
                         src={story.user.avatarUrl}
                         alt={story.user.name}
-                        className="w-8 h-8 rounded-full object-cover border-2 border-black/20"
+                        className="w-8 h-8 rounded-full object-cover border-2 border-black"
                       />
                     </div>
                     <div className="min-w-0">
@@ -169,7 +169,7 @@ export const StoriesPage: React.FC = () => {
                         </span>
                         {story.user.isVerified && <Icon name="verified" size={12} />}
                       </div>
-                      <span className="text-white/70 text-xs">
+                      <span className="text-white/60 text-xs">
                         {story.items[0].timestamp}
                       </span>
                     </div>
@@ -178,7 +178,7 @@ export const StoriesPage: React.FC = () => {
 
                 {/* Unseen indicator ring */}
                 {story.hasUnseenItems && (
-                  <div className="absolute inset-0 rounded-2xl ring-2 ring-white/70 ring-offset-2 ring-offset-slate-900" />
+                  <div className="absolute inset-0 rounded-2xl ring-2 ring-cyan-400 ring-offset-2 ring-offset-[#0a0a0a]" />
                 )}
               </button>
             ))}
@@ -188,18 +188,18 @@ export const StoriesPage: React.FC = () => {
         {/* Empty state */}
         {filteredStories.length === 0 && (
           <div className="text-center py-16 px-4">
-            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-              <Icon name="stories" size={40} className="text-gray-400" />
+            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-slate-100 dark:bg-[#1a1a1a] flex items-center justify-center">
+              <Icon name="stories" size={40} className="text-cyan-400" />
             </div>
-            <h3 className="text-lg font-semibold text-white mb-2">
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
               No signals yet
             </h3>
-            <p className="text-slate-300 text-sm max-w-sm mx-auto mb-6">
+            <p className="text-slate-500 dark:text-slate-400 text-sm max-w-sm mx-auto mb-6">
               Signals from people you follow will appear here
             </p>
             <button
               onClick={handleAddStory}
-              className="px-6 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white font-semibold hover:border-white/20 hover:bg-white/10 transition"
+              className="px-6 py-2.5 rounded-full bg-linear-to-r from-cyan-500 to-amber-400 text-slate-950 font-semibold shadow-lg hover:-translate-y-0.5 transition-all"
             >
               Create your first signal
             </button>

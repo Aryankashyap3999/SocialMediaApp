@@ -154,9 +154,9 @@ export const DiscoverPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="min-h-screen bg-[#0a0a0a]">
       {/* Sticky Header with Search */}
-      <div className="sticky top-0 z-20 bg-slate-950/90 backdrop-blur-xl border-b border-slate-800">
+      <div className="sticky top-0 z-20 bg-[#0a0a0a]/92 backdrop-blur-xl border-b border-slate-700">
         {/* Search Bar */}
         <div className="px-4 py-3">
           <div className={`relative transition-all duration-300 ${isSearchFocused ? 'scale-[1.01]' : ''}`}>
@@ -175,7 +175,7 @@ export const DiscoverPage: React.FC = () => {
                 onFocus={() => setIsSearchFocused(true)}
                 onBlur={() => setIsSearchFocused(false)}
                 placeholder="Search topics, people, or posts..."
-                className="w-full bg-slate-900 border-2 border-transparent rounded-2xl py-3.5 pl-12 pr-4 text-base text-slate-100 focus:outline-none focus:border-cyan-400/50 focus:bg-slate-900 transition-all placeholder:text-slate-500"
+                className="w-full bg-[#141414] border-2 border-transparent rounded-2xl py-3.5 pl-12 pr-4 text-base text-slate-100 focus:outline-none focus:border-cyan-400/50 focus:bg-[#141414] transition-all placeholder:text-slate-500"
               />
               {searchQuery && (
                 <button 
@@ -202,8 +202,8 @@ export const DiscoverPage: React.FC = () => {
                   flex items-center gap-2 px-4 py-2 rounded-full whitespace-nowrap border
                   text-sm font-medium transition-all duration-200
                   ${activeCategory === category.id
-                    ? 'bg-slate-900 border-cyan-500/60 text-slate-50 shadow-[0_8px_30px_-18px_rgba(0,0,0,0.8)]'
-                    : 'bg-slate-900 border-slate-800 text-slate-300 hover:border-cyan-400/50'
+                    ? 'bg-[#141414] border-cyan-500/60 text-slate-50 shadow-[0_8px_30px_-18px_rgba(0,0,0,0.8)]'
+                    : 'bg-[#141414] border-slate-700 text-slate-300 hover:border-cyan-400/50'
                   }
                 `}
               >
@@ -215,7 +215,7 @@ export const DiscoverPage: React.FC = () => {
         </div>
 
         {/* View Mode Tabs */}
-        <div className="flex border-t border-slate-800">
+        <div className="flex border-t border-slate-700">
           {(['explore', 'trending', 'people'] as ViewMode[]).map((mode) => (
             <button
               key={mode}
@@ -246,7 +246,7 @@ export const DiscoverPage: React.FC = () => {
               <button
                 key={item.id}
                 className={`
-                  relative aspect-square group overflow-hidden bg-slate-900
+                  relative aspect-square group overflow-hidden bg-[#141414]
                   ${index === 0 ? 'col-span-2 row-span-2' : ''}
                 `}
               >
@@ -272,7 +272,7 @@ export const DiscoverPage: React.FC = () => {
                 )}
                 
                 {/* Hover overlay */}
-                <div className="absolute inset-0 bg-slate-950/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <div className="flex items-center gap-1.5 text-white">
                     <Icon name="heart" size={20} filled className="text-amber-300" />
                     <span className="font-semibold">{formatNumber(item.likes)}</span>
@@ -287,7 +287,7 @@ export const DiscoverPage: React.FC = () => {
         {viewMode === 'trending' && (
           <div>
             {/* Trending Topics Section */}
-            <div className="p-4 border-b border-slate-800">
+            <div className="p-4 border-b border-slate-700">
               <h2 className="text-lg font-bold mb-4 flex items-center gap-2 text-slate-50">
                 <div className="w-1.5 h-6 bg-linear-to-b from-cyan-400 to-amber-300 rounded-full" />
                 Trending Topics
@@ -296,7 +296,7 @@ export const DiscoverPage: React.FC = () => {
                 {trendingTopics.map((topic, index) => (
                   <button
                     key={topic.id}
-                    className="w-full flex items-start gap-4 p-3 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-400/30 transition-colors group"
+                    className="w-full flex items-start gap-4 p-3 rounded-xl bg-[#141414] border border-slate-700 hover:border-cyan-400/30 transition-colors group"
                   >
                     <span className="text-2xl font-bold text-slate-700 group-hover:text-cyan-300 transition-colors">
                       {index + 1}
@@ -323,7 +323,7 @@ export const DiscoverPage: React.FC = () => {
                 <div className="w-1.5 h-6 bg-linear-to-b from-cyan-400 to-amber-300 rounded-full" />
                 Signal Posts
               </h2>
-              <div className="divide-y divide-slate-800">
+              <div className="divide-y divide-slate-700">
                 {trendingPosts.map((post) => (
                   <FeedCard key={post.id} {...post} />
                 ))}
@@ -343,12 +343,12 @@ export const DiscoverPage: React.FC = () => {
               {suggestedUsers.map((user) => (
                 <div
                   key={user.id}
-                  className="flex items-center gap-4 p-4 rounded-2xl bg-slate-900 border border-slate-800 hover:border-cyan-400/30 transition-colors group"
+                  className="flex items-center gap-4 p-4 rounded-2xl bg-[#141414] border border-slate-700 hover:border-cyan-400/30 transition-colors group"
                 >
                   {/* Avatar with gradient ring */}
                   <div className="relative shrink-0">
                     <div className="p-0.5 bg-linear-to-br from-cyan-500 to-amber-300 rounded-full">
-                      <div className="p-0.5 bg-slate-950 rounded-full">
+                      <div className="p-0.5 bg-[#0a0a0a] rounded-full">
                         <Avatar
                           src={user.avatarUrl}
                           alt={user.name}
@@ -357,7 +357,7 @@ export const DiscoverPage: React.FC = () => {
                       </div>
                     </div>
                     {user.isVerified && (
-                      <div className="absolute -bottom-0.5 -right-0.5 bg-slate-950 rounded-full p-0.5 border border-slate-800">
+                      <div className="absolute -bottom-0.5 -right-0.5 bg-[#0a0a0a] rounded-full p-0.5 border border-slate-700">
                         <Icon name="verified" size={16} className="text-amber-300" />
                       </div>
                     )}
@@ -393,11 +393,11 @@ export const DiscoverPage: React.FC = () => {
                 {suggestedUsers.slice(0, 4).map((user) => (
                   <div
                     key={`popular-${user.id}`}
-                    className="relative p-4 rounded-2xl bg-slate-900 border border-slate-800 group hover:border-cyan-400/30 transition-all"
+                    className="relative p-4 rounded-2xl bg-[#141414] border border-slate-700 group hover:border-cyan-400/30 transition-all"
                   >
                     <div className="flex flex-col items-center text-center">
                       <div className="p-0.5 bg-linear-to-br from-cyan-500 to-amber-300 rounded-full mb-3">
-                        <div className="p-0.5 bg-slate-950 rounded-full">
+                        <div className="p-0.5 bg-[#0a0a0a] rounded-full">
                           <Avatar
                             src={user.avatarUrl}
                             alt={user.name}

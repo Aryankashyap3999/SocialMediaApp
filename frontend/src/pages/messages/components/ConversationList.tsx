@@ -39,14 +39,14 @@ export const ConversationList: React.FC<ConversationListProps> = ({
   const regularConversations = filteredConversations.filter((c) => !c.isPinned);
 
   return (
-    <div className="h-full flex flex-col bg-slate-950 border-r border-slate-800">
+    <div className="h-full flex flex-col bg-[#0a0a0a] border-r border-slate-700">
       {/* Header */}
-      <div className="px-4 py-3 border-b border-slate-800">
+      <div className="px-4 py-3 border-b border-slate-700">
         <div className="flex items-center justify-between mb-3">
           <h1 className="text-xl font-bold text-slate-50">Messages</h1>
           <button
             onClick={onNewMessage}
-            className="p-2 rounded-lg transition-colors hover:bg-slate-900"
+            className="p-2 rounded-lg transition-colors hover:bg-[#141414]"
           >
             <Icon name="compose" size={22} />
           </button>
@@ -60,13 +60,13 @@ export const ConversationList: React.FC<ConversationListProps> = ({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search messages"
-            className="w-full bg-slate-900 rounded-xl py-2.5 pl-10 pr-4 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 placeholder:text-slate-500"
+            className="w-full bg-[#141414] rounded-xl py-2.5 pl-10 pr-4 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 placeholder:text-slate-500"
           />
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-slate-800">
+      <div className="flex border-b border-slate-700">
         <button
           onClick={() => setActiveTab('messages')}
           className={`flex-1 py-3 text-sm font-medium relative transition-colors ${

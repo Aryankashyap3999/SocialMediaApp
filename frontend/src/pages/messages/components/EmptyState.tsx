@@ -12,9 +12,9 @@ interface EmptyStateProps {
  */
 export const EmptyState: React.FC<EmptyStateProps> = ({ onNewMessage }) => {
   return (
-    <div className="h-full flex flex-col items-center justify-center bg-slate-950 px-4 text-slate-100">
+    <div className="h-full flex flex-col items-center justify-center bg-[#0a0a0a] px-4 text-slate-100">
       {/* Icon */}
-      <div className="w-24 h-24 rounded-full border-2 border-slate-800 flex items-center justify-center mb-4 bg-slate-900">
+      <div className="w-24 h-24 rounded-full border-2 border-slate-700 flex items-center justify-center mb-4 bg-[#141414]">
         <Icon name="send" size={40} className="text-slate-500" />
       </div>
 
