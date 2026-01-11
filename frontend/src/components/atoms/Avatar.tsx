@@ -65,8 +65,8 @@ export const Avatar: React.FC<AvatarProps> = ({
     <div
       className={`
         ${sizeStyles[size]} 
-        rounded-full bg-linear-to-br from-indigo-500 to-purple-600
-        text-white font-semibold flex items-center justify-center
+        rounded-full bg-linear-to-br from-cyan-500 to-amber-400
+        text-slate-950 font-semibold flex items-center justify-center
       `.trim()}
     >
       {initials || alt.charAt(0).toUpperCase()}
@@ -76,7 +76,7 @@ export const Avatar: React.FC<AvatarProps> = ({
   return (
     <div className={`relative inline-block ${className}`.trim()}>
       {hasStory ? (
-        <div className={`rounded-full bg-linear-to-tr from-yellow-400 via-red-500 to-purple-600 ${storyRingSize[size]}`}>
+        <div className={`rounded-full bg-linear-to-tr from-cyan-500 via-amber-400 to-emerald-400 ${storyRingSize[size]}`}>
           <div className="bg-white dark:bg-gray-900 rounded-full p-0.5">
             {avatarImage}
           </div>

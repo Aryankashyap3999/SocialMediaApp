@@ -31,43 +31,43 @@ export const PostActions: React.FC<PostActionsProps> = ({
   showCounts = true,
 }) => {
   return (
-    <div className="flex items-center justify-between max-w-106.25">
+    <div className="flex items-center justify-between max-w-106.25 pt-2 border-t border-white/5">
       {/* Left Actions */}
-      <div className="flex items-center -ml-2">
+      <div className="flex items-center -ml-2 gap-1">
         {/* Reply/Comment */}
         <button
           onClick={onComment}
-          className="flex items-center gap-2 p-2 rounded-full text-gray-500 hover:text-violet-600 hover:bg-violet-50 dark:hover:bg-violet-900/20 transition-colors group"
+          className="flex items-center gap-2 px-3 py-2 rounded-full text-indigo-100 hover:text-white bg-white/5 hover:bg-indigo-500/20 border border-white/10 transition-colors group"
         >
           <Icon name="comment" size={20} />
           {showCounts && commentsCount > 0 && (
-            <span className="text-sm group-hover:text-violet-600">{formatCount(commentsCount)}</span>
+            <span className="text-sm group-hover:text-white">{formatCount(commentsCount)}</span>
           )}
         </button>
 
         {/* Repost */}
         <button
           onClick={onShare}
-          className="flex items-center gap-2 p-2 rounded-full text-gray-500 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors group"
+          className="flex items-center gap-2 px-3 py-2 rounded-full text-indigo-100 hover:text-white bg-white/5 hover:bg-emerald-500/20 border border-white/10 transition-colors group"
         >
           <Icon name="repost" size={20} />
           {showCounts && sharesCount > 0 && (
-            <span className="text-sm group-hover:text-green-600">{formatCount(sharesCount)}</span>
+            <span className="text-sm group-hover:text-white">{formatCount(sharesCount)}</span>
           )}
         </button>
 
         {/* Like */}
         <button
           onClick={onLike}
-          className={`flex items-center gap-2 p-2 rounded-full transition-colors group ${
+          className={`flex items-center gap-2 px-3 py-2 rounded-full border border-white/10 transition-colors group ${
             isLiked 
-              ? 'text-pink-600' 
-              : 'text-gray-500 hover:text-pink-600 hover:bg-pink-50 dark:hover:bg-pink-900/20'
+              ? 'text-amber-200 bg-amber-500/20' 
+              : 'text-indigo-100 bg-white/5 hover:text-white hover:bg-amber-400/20'
           }`}
         >
           <Icon name="heart" size={20} filled={isLiked} className={isLiked ? 'animate-[heartBeat_0.3s_ease-in-out]' : ''} />
           {showCounts && likesCount > 0 && (
-            <span className={`text-sm ${isLiked ? 'text-pink-600' : 'group-hover:text-pink-600'}`}>
+            <span className={`text-sm ${isLiked ? 'text-amber-50' : 'group-hover:text-white'}`}>
               {formatCount(likesCount)}
             </span>
           )}
@@ -75,21 +75,21 @@ export const PostActions: React.FC<PostActionsProps> = ({
 
         {/* Stats */}
         <button
-          className="flex items-center gap-2 p-2 rounded-full text-gray-500 hover:text-violet-600 hover:bg-violet-50 dark:hover:bg-violet-900/20 transition-colors"
+          className="flex items-center gap-2 px-3 py-2 rounded-full text-indigo-100 bg-white/5 border border-white/10 hover:text-white hover:bg-indigo-500/20 transition-colors"
         >
           <Icon name="stats" size={20} />
         </button>
       </div>
 
       {/* Right Actions */}
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-2">
         {/* Bookmark */}
         <button
           onClick={onBookmark}
-          className={`p-2 rounded-full transition-colors ${
+          className={`p-2 rounded-full border border-white/10 transition-colors ${
             isBookmarked 
-              ? 'text-violet-600' 
-              : 'text-gray-500 hover:text-violet-600 hover:bg-violet-50 dark:hover:bg-violet-900/20'
+              ? 'text-indigo-200 bg-indigo-500/15' 
+              : 'text-indigo-100 bg-white/5 hover:text-white hover:bg-indigo-500/20'
           }`}
         >
           <Icon name="bookmark" size={20} filled={isBookmarked} />
@@ -98,7 +98,7 @@ export const PostActions: React.FC<PostActionsProps> = ({
         {/* Share */}
         <button
           onClick={onShare}
-          className="p-2 rounded-full text-gray-500 hover:text-violet-600 hover:bg-violet-50 dark:hover:bg-violet-900/20 transition-colors"
+          className="p-2 rounded-full text-indigo-100 bg-white/5 border border-white/10 hover:text-white hover:bg-indigo-500/20 transition-colors"
         >
           <Icon name="share" size={20} />
         </button>

@@ -28,101 +28,87 @@ export const Sidebar: React.FC<SidebarProps> = ({
   return (
     <aside
       className={`
-        fixed left-0 top-0 h-screen bg-white dark:bg-gray-950
-        border-r border-gray-100 dark:border-gray-800
-        flex flex-col justify-between py-5 px-3
+        fixed left-0 top-0 h-screen bg-[#05060b]
+        border-r border-white/5
+        flex flex-col justify-between py-6 px-4
         transition-all duration-300 z-40
-        ${isCollapsed ? 'w-20' : 'w-64 xl:w-72'}
+        ${isCollapsed ? 'w-20' : 'w-64'}
       `}
     >
-      {/* Logo */}
-      <div className="mb-8 px-3">
-        {isCollapsed ? (
-          <div className="w-10 h-10 bg-linear-to-br from-violet-600 to-indigo-600 rounded-xl flex items-center justify-center">
+      {/* Logo & pulse bar */}
+      <div className="mb-6 px-1 space-y-3">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-2xl bg-linear-to-br from-cyan-500 to-amber-400 flex items-center justify-center shadow-lg shadow-cyan-500/30">
             <span className="text-white font-bold text-lg">A</span>
           </div>
-        ) : (
-          <div className="flex items-center gap-2">
-            <div className="w-9 h-9 bg-linear-to-br from-violet-600 to-indigo-600 rounded-xl flex items-center justify-center">
-              <span className="text-white font-bold">A</span>
+          {!isCollapsed && (
+            <div>
+              <p className="text-xs uppercase tracking-[0.28em] text-indigo-200/80">Aptoodate</p>
+              <p className="text-sm text-indigo-100/80">Signal Desk</p>
             </div>
-            <h1 className="text-xl font-bold bg-linear-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent">
-              Aptoodate
-            </h1>
+          )}
+        </div>
+        {!isCollapsed && (
+          <div className="h-1.5 rounded-full bg-white/5 overflow-hidden">
+            <div className="h-full w-2/3 bg-linear-to-r from-indigo-500 to-emerald-400 animate-pulse" />
           </div>
         )}
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 space-y-1">
-        <NavItem to="/home" icon="home" label="Home" isCollapsed={isCollapsed} />
-        <NavItem to="/discover" icon="discover" label="Discover" isCollapsed={isCollapsed} />
-        <NavItem to="/stories" icon="stories" label="Stories" isCollapsed={isCollapsed} />
-        <NavItem 
-          to="/notifications" 
-          icon="notifications" 
-          label="Notifications" 
-          badge={unreadNotifications} 
-          isCollapsed={isCollapsed} 
-        />
-        <NavItem 
-          to="/messages" 
-          icon="messages" 
-          label="Messages" 
-          badge={unreadMessages} 
-          isCollapsed={isCollapsed} 
-        />
-        <NavItem 
-          to="/profile" 
-          icon="profile" 
-          label="Profile" 
-          isCollapsed={isCollapsed} 
-        />
-        
-        {/* Post Button */}
-        {!isCollapsed && (
-          <div className="pt-4 px-2">
-            <button
-              onClick={onCreateClick}
-              className="w-full bg-linear-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-semibold py-3 rounded-full shadow-lg shadow-violet-500/25 transition-all"
-            >
-              Post
-            </button>
+      <nav className="flex-1 space-y-3">
+        {([
+          { to: '/home', icon: 'home', label: 'Home' },
+          { to: '/discover', icon: 'discover', label: 'Discover' },
+          { to: '/stories', icon: 'stories', label: 'Signals' },
+          { to: '/notifications', icon: 'notifications', label: 'Notifications', badge: unreadNotifications },
+          { to: '/messages', icon: 'messages', label: 'Messages', badge: unreadMessages },
+          { to: '/profile', icon: 'profile', label: 'Profile' },
+        ] as const).map((item) => (
+          <div key={item.to} className="relative rounded-2xl border border-white/5 bg-white/5 hover:bg-white/10 hover:border-indigo-400/40 transition-all">
+            <NavItem
+              to={item.to}
+              icon={item.icon}
+              label={item.label}
+              isCollapsed={isCollapsed}
+            />
+            {!isCollapsed && item.to === '/home' && (
+              <div className="absolute -left-3 top-1/2 -translate-y-1/2 h-12 w-1.5 rounded-full bg-linear-to-b from-indigo-500 to-emerald-400" />
+            )}
           </div>
-        )}
-        {isCollapsed && (
-          <div className="pt-4 flex justify-center">
-            <button
-              onClick={onCreateClick}
-              className="w-12 h-12 bg-linear-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 rounded-full flex items-center justify-center shadow-lg shadow-violet-500/25 transition-all"
-            >
-              <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                <line x1="12" y1="5" x2="12" y2="19" />
-                <line x1="5" y1="12" x2="19" y2="12" />
-              </svg>
-            </button>
-          </div>
-        )}
+        ))}
+
+        {/* Create tile */}
+        <div className="pt-2">
+          <button
+            onClick={onCreateClick}
+            className="w-full rounded-2xl border border-white/10 bg-linear-to-r from-cyan-500 to-amber-400 text-slate-950 font-semibold py-4 shadow-xl shadow-cyan-500/30 hover:-translate-y-0.5 transition-transform"
+          >
+            Launch a Drop
+          </button>
+        </div>
       </nav>
 
       {/* Bottom section */}
-      <div className="space-y-1 pt-4 border-t border-gray-100 dark:border-gray-800">
-        <NavItem to="/settings" icon="more" label="More" isCollapsed={isCollapsed} />
+      <div className="space-y-2 pt-5 border-t border-white/5">
+        <div className="rounded-2xl border border-white/5 bg-white/5 hover:bg-white/10 transition-colors">
+          <NavItem to="/settings" icon="more" label="More" isCollapsed={isCollapsed} />
+        </div>
         
         {currentUser && !isCollapsed && (
-          <div className="flex items-center gap-3 px-3 py-3 mt-2 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors cursor-pointer">
+          <div className="flex items-center gap-3 px-3 py-3 mt-1 rounded-2xl border border-white/5 bg-white/5 hover:bg-white/10 transition-colors cursor-pointer">
             <Avatar
               src={currentUser.avatarUrl}
               alt={currentUser.name}
               size="sm"
             />
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold truncate">{currentUser.name}</p>
+              <p className="text-sm font-semibold truncate text-white">{currentUser.name}</p>
               {currentUser.username && (
-                <p className="text-xs text-gray-500 truncate">@{currentUser.username}</p>
+                <p className="text-xs text-indigo-200 truncate">@{currentUser.username}</p>
               )}
             </div>
-            <svg className="w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="currentColor">
+            <svg className="w-4 h-4 text-indigo-200" viewBox="0 0 24 24" fill="currentColor">
               <circle cx="12" cy="5" r="1.5" />
               <circle cx="12" cy="12" r="1.5" />
               <circle cx="12" cy="19" r="1.5" />

@@ -12,11 +12,20 @@ export interface IconProps {
  */
 export const Icon: React.FC<IconProps> = ({ name, size = 24, className = '', filled = false }) => {
   const icons: Record<string, React.ReactNode> = {
-    // Unique hexagon-inspired home icon
+    // Monolith home icon (no Insta house)
     home: filled ? (
-      <path fill="currentColor" d="M3 10.5L12 3l9 7.5v10a1.5 1.5 0 01-1.5 1.5h-4.5a1 1 0 01-1-1v-4a2 2 0 00-4 0v4a1 1 0 01-1 1H4.5A1.5 1.5 0 013 20.5v-10z" />
+      <>
+        <rect x="6" y="8" width="12" height="13" rx="3" fill="currentColor" />
+        <path d="M9 11h6v6H9z" fill="white" opacity="0.16" />
+        <path d="M12 3l5 4h-10z" fill="currentColor" />
+        <circle cx="12" cy="15" r="1.6" fill="white" opacity="0.8" />
+      </>
     ) : (
-      <path d="M3 10.5L12 3l9 7.5v10a1.5 1.5 0 01-1.5 1.5h-4.5a1 1 0 01-1-1v-4a2 2 0 00-4 0v4a1 1 0 01-1 1H4.5A1.5 1.5 0 013 20.5v-10z" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <>
+        <rect x="6" y="8" width="12" height="13" rx="3" fill="none" stroke="currentColor" strokeWidth="2" />
+        <path d="M12 3l5 4h-10z" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+        <circle cx="12" cy="15" r="1.6" fill="none" stroke="currentColor" strokeWidth="2" />
+      </>
     ),
     // Unique diamond search icon
     search: (
@@ -26,49 +35,66 @@ export const Icon: React.FC<IconProps> = ({ name, size = 24, className = '', fil
         <circle cx="11" cy="11" r="3" fill="none" stroke="currentColor" strokeWidth="1.5" strokeDasharray="2 2" />
       </>
     ),
-    // Globe/discover icon - unique
+    // Compass-gyro discover icon
     discover: filled ? (
       <>
         <circle cx="12" cy="12" r="10" fill="currentColor" />
-        <path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" fill="none" stroke="white" strokeWidth="1.5" />
+        <path d="M7 17l3-7 7-3-3 7z" fill="white" />
+        <circle cx="12" cy="12" r="2" fill="currentColor" stroke="white" strokeWidth="1.5" />
       </>
     ) : (
       <>
         <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2" />
-        <path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" fill="none" stroke="currentColor" strokeWidth="2" />
+        <path d="M7 17l3-7 7-3-3 7z" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+        <circle cx="12" cy="12" r="2" fill="none" stroke="currentColor" strokeWidth="2" />
       </>
     ),
-    // Unique play/stories icon with sparkle
+    // Signal icon (stacked pulses)
     stories: filled ? (
       <>
-        <rect x="3" y="3" width="18" height="18" rx="4" fill="currentColor" />
-        <path d="M10 8.5v7l5.5-3.5-5.5-3.5z" fill="white" />
-        <circle cx="17" cy="5" r="2" fill="#a855f7" />
+        <rect x="4" y="6" width="16" height="12" rx="3" fill="currentColor" />
+        <path d="M7 12h10" stroke="white" strokeWidth="2" strokeLinecap="round" />
+        <path d="M9 9h6" stroke="white" strokeWidth="2" strokeLinecap="round" opacity="0.7" />
+        <path d="M9 15h6" stroke="white" strokeWidth="2" strokeLinecap="round" opacity="0.7" />
       </>
     ) : (
       <>
-        <rect x="3" y="3" width="18" height="18" rx="4" fill="none" stroke="currentColor" strokeWidth="2" />
-        <path d="M10 8.5v7l5.5-3.5-5.5-3.5z" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
-        <circle cx="17" cy="5" r="2" fill="currentColor" />
+        <rect x="4" y="6" width="16" height="12" rx="3" fill="none" stroke="currentColor" strokeWidth="2" />
+        <path d="M7 12h10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        <path d="M9 9h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" opacity="0.7" />
+        <path d="M9 15h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" opacity="0.7" />
       </>
     ),
-    // Unique chat bubble with tail
+    // Message icon (pill chat)
     messages: filled ? (
-      <path fill="currentColor" d="M21 12c0 4.418-4.03 8-9 8a9.86 9.86 0 01-4.255-.96L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+      <>
+        <rect x="3" y="6" width="18" height="12" rx="4" fill="currentColor" />
+        <path d="M8 14l-2.5 2.5V11" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx="11" cy="12" r="1" fill="white" />
+        <circle cx="15" cy="12" r="1" fill="white" />
+      </>
     ) : (
-      <path d="M21 12c0 4.418-4.03 8-9 8a9.86 9.86 0 01-4.255-.96L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <>
+        <rect x="3" y="6" width="18" height="12" rx="4" fill="none" stroke="currentColor" strokeWidth="2" />
+        <path d="M8 14l-2.5 2.5V11" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx="11" cy="12" r="1" fill="currentColor" />
+        <circle cx="15" cy="12" r="1" fill="currentColor" />
+      </>
     ),
-    // Unique bell with waves
+    // Notification sonar icon
     notifications: filled ? (
       <>
-        <path fill="currentColor" d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9" />
-        <path fill="currentColor" d="M13.73 21a2 2 0 01-3.46 0" />
-        <path d="M1 8a3 3 0 013-3M23 8a3 3 0 00-3-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" opacity="0.5" />
+        <circle cx="12" cy="12" r="9" fill="currentColor" />
+        <circle cx="12" cy="12" r="3" fill="white" />
+        <path d="M6 12a6 6 0 0112 0" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" />
+        <path d="M8 12a4 4 0 018 0" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" opacity="0.6" />
       </>
     ) : (
       <>
-        <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M13.73 21a2 2 0 01-3.46 0" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="2" />
+        <circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" strokeWidth="2" />
+        <path d="M6 12a6 6 0 0112 0" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        <path d="M8 12a4 4 0 018 0" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" opacity="0.6" />
       </>
     ),
     // Unique create icon - sparkle plus
@@ -80,16 +106,17 @@ export const Icon: React.FC<IconProps> = ({ name, size = 24, className = '', fil
         <circle cx="20" cy="8" r="1" fill="currentColor" opacity="0.5" />
       </>
     ),
-    // Unique user profile icon with badge
+    // Profile glyph (orbital)
     profile: filled ? (
       <>
-        <circle cx="12" cy="8" r="4" fill="currentColor" />
-        <path fill="currentColor" d="M20 21a8 8 0 10-16 0" />
+        <circle cx="12" cy="9" r="4" fill="currentColor" />
+        <path d="M5 20c1.5-3 4.5-5 7-5s5.5 2 7 5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        <path d="M9 8.5c0-1.2.9-2.5 3-2.5" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.7" />
       </>
     ) : (
       <>
-        <circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" strokeWidth="2" />
-        <path d="M20 21a8 8 0 10-16 0" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        <circle cx="12" cy="9" r="4" fill="none" stroke="currentColor" strokeWidth="2" />
+        <path d="M5 20c1.5-3 4.5-5 7-5s5.5 2 7 5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
       </>
     ),
     // Unique menu icon - dots grid

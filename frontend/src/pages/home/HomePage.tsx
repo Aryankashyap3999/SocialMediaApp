@@ -5,7 +5,7 @@ import { ComposeBox } from '@components/organisms/ComposeBox';
 import { StoriesBar } from '@components/organisms/StoriesBar';
 import type { Story } from '@components/organisms/StoriesBar';
 
-// Mock stories data
+// Mock signal capsules data
 const mockStories = [
   {
     id: '0',
@@ -213,73 +213,79 @@ export const HomePage: React.FC = () => {
   };
 
   const handleStoryClick = (story: Story) => {
-    console.log('View story:', story.username);
+    console.log('View signal:', story.username);
   };
 
   return (
-    <div className="flex max-w-300 mx-auto">
-      {/* Main Feed */}
-      <div className="flex-1 max-w-150 border-r border-gray-100 dark:border-gray-800 min-h-screen">
-        {/* Header with glassmorphism effect */}
-        <div className="sticky top-0 z-10 bg-white/90 dark:bg-gray-950/90 backdrop-blur-lg border-b border-gray-100 dark:border-gray-800">
-          <div className="flex">
-            <button className="flex-1 py-4 text-center font-bold hover:bg-violet-50 dark:hover:bg-violet-900/20 transition-colors relative group">
-              <span className="relative z-10">For you</span>
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-1 bg-linear-to-r from-violet-600 to-indigo-600 rounded-full" />
-            </button>
-            <button className="flex-1 py-4 text-center text-gray-500 hover:bg-violet-50 dark:hover:bg-violet-900/20 transition-colors relative group">
-              <span className="group-hover:text-gray-900 dark:group-hover:text-white transition-colors">Following</span>
-            </button>
+    <div className="relative max-w-7xl mx-auto px-2 sm:px-4 pb-12 space-y-6">
+      {/* Hero banner */}
+      <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 sm:p-8 shadow-2xl shadow-cyan-500/10">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(34,211,238,0.18),transparent_45%),radial-gradient(circle_at_78%_0%,rgba(245,158,11,0.16),transparent_38%)]" />
+        <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="space-y-2">
+            <p className="text-xs uppercase tracking-[0.3em] text-cyan-200/80">Aptoodate / Signal Desk</p>
+            <h1 className="text-3xl sm:text-4xl font-bold text-white leading-tight">Broadcast signals, not stories</h1>
+            <p className="text-cyan-50/80 max-w-2xl">Swap endless scroll for signals, capsules, and editorial drops. Drop a note, pin a moment, broadcast an idea.</p>
           </div>
-        </div>
-
-        {/* Stories Section */}
-        <StoriesBar 
-          stories={mockStories}
-          onStoryClick={handleStoryClick}
-          onAddStory={() => console.log('Add story')}
-        />
-
-        {/* Compose Box */}
-        <ComposeBox
-          currentUser={{
-            name: 'Aryan Kashyap',
-            avatarUrl: undefined,
-          }}
-          onPost={handlePost}
-        />
-
-        {/* Posts Feed */}
-        <div>
-          {mockPosts.map((post) => (
-            <FeedCard
-              key={post.id}
-              id={post.id}
-              author={post.author}
-              content={post.content}
-              language={post.language}
-              media={post.media}
-              likesCount={post.likesCount}
-              commentsCount={post.commentsCount}
-              sharesCount={post.sharesCount}
-              timestamp={post.timestamp}
-              onComment={() => console.log('Comment on post', post.id)}
-              onShare={() => console.log('Share post', post.id)}
-              onAuthorClick={() => console.log('View author profile', post.author.name)}
-            />
-          ))}
+          <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 text-cyan-100">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            Live desk
+          </div>
         </div>
       </div>
 
-      {/* Right Sidebar */}
-      <RightSidebar
-        currentUser={{
-          name: 'Aryan Kashyap',
-          username: 'aryankashyap2939',
-        }}
-        suggestions={mockSuggestions}
-        trending={mockTrending}
-      />
+      <div className="grid grid-cols-12 gap-5">
+        <div className="col-span-12 xl:col-span-8 space-y-5">
+          {/* Signal Capsules */}
+          <StoriesBar 
+            stories={mockStories}
+            onStoryClick={handleStoryClick}
+            onAddStory={() => console.log('Add signal')}
+          />
+
+          {/* Composer */}
+          <ComposeBox
+            currentUser={{
+              name: 'Aryan Kashyap',
+              avatarUrl: undefined,
+            }}
+            onPost={handlePost}
+          />
+
+          {/* Feed stack */}
+          <div className="space-y-4">
+            {mockPosts.map((post) => (
+              <FeedCard
+                key={post.id}
+                id={post.id}
+                author={post.author}
+                content={post.content}
+                language={post.language}
+                media={post.media}
+                likesCount={post.likesCount}
+                commentsCount={post.commentsCount}
+                sharesCount={post.sharesCount}
+                timestamp={post.timestamp}
+                onComment={() => console.log('Comment on post', post.id)}
+                onShare={() => console.log('Share post', post.id)}
+                onAuthorClick={() => console.log('View author profile', post.author.name)}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Right column */}
+        <div className="col-span-12 xl:col-span-4">
+          <RightSidebar
+            currentUser={{
+              name: 'Aryan Kashyap',
+              username: 'aryankashyap2939',
+            }}
+            suggestions={mockSuggestions}
+            trending={mockTrending}
+          />
+        </div>
+      </div>
     </div>
   );
 };

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Avatar } from '@components/atoms/Avatar';
 
 export interface Story {
   id: string;
@@ -17,8 +16,8 @@ export interface StoriesBarProps {
 }
 
 /**
- * StoriesBar Organism
- * Unique horizontal scrollable stories with glowing gradient borders
+ * SignalBar Organism
+ * Capsule-style publishing shelf with glowing gradient borders
  * Design: Hexagonal-inspired corners with animated glow effects
  */
 export const StoriesBar: React.FC<StoriesBarProps> = ({
@@ -27,89 +26,60 @@ export const StoriesBar: React.FC<StoriesBarProps> = ({
   onAddStory,
 }) => {
   return (
-    <div className="py-4 border-b border-gray-100 dark:border-gray-800">
-      <div className="flex gap-4 overflow-x-auto scrollbar-hide px-4 pb-1">
-        {/* Add Story Button */}
-        <button
-          onClick={onAddStory}
-          className="flex flex-col items-center gap-2 shrink-0"
-        >
-          <div className="relative">
-            {/* Outer glow container */}
-            <div className="w-17 h-17 rounded-2xl bg-linear-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800 p-0.75 transition-transform hover:scale-105">
-              <div className="w-full h-full rounded-[13px] bg-white dark:bg-gray-950 flex items-center justify-center">
-                <Avatar
-                  src={stories[0]?.avatarUrl}
-                  alt="Your story"
-                  size="lg"
-                />
-              </div>
-            </div>
-            {/* Add icon badge */}
-            <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-linear-to-br from-violet-600 to-indigo-600 rounded-lg flex items-center justify-center shadow-lg shadow-violet-500/30">
-              <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
-                <line x1="12" y1="5" x2="12" y2="19" />
-                <line x1="5" y1="12" x2="19" y2="12" />
-              </svg>
-            </div>
+    <section className="px-1">
+      <div className="rounded-3xl border border-white/10 bg-white/5 dark:bg-white/5 backdrop-blur-xl p-4 shadow-xl shadow-indigo-500/5">
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            <p className="text-xs uppercase tracking-[0.2em] text-cyan-200">Signal Capsules</p>
+            <h3 className="text-lg font-semibold text-white">People you follow are transmitting now</h3>
           </div>
-          <span className="text-xs font-medium text-gray-600 dark:text-gray-400">Your story</span>
-        </button>
-
-        {/* Stories */}
-        {stories.slice(1).map((story) => (
           <button
-            key={story.id}
-            onClick={() => onStoryClick?.(story)}
-            className="flex flex-col items-center gap-2 shrink-0 group"
+            onClick={onAddStory}
+            className="flex items-center gap-2 px-3 py-2 rounded-full bg-linear-to-r from-cyan-500 to-amber-400 text-slate-900 text-sm font-semibold shadow-lg shadow-cyan-500/25"
           >
-            <div className="relative">
-              {/* Animated gradient border */}
-              <div 
-                className={`
-                  w-17 h-17 rounded-2xl p-0.75 transition-all duration-300 group-hover:scale-105
-                  ${story.hasUnwatched 
-                    ? 'bg-linear-to-br from-violet-500 via-purple-500 to-pink-500 animate-pulse shadow-lg shadow-purple-500/25' 
-                    : 'bg-linear-to-br from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-700'
-                  }
-                  ${story.isLive ? 'ring-2 ring-red-500 ring-offset-2 dark:ring-offset-gray-950' : ''}
-                `}
-              >
-                <div className="w-full h-full rounded-[13px] bg-white dark:bg-gray-950 p-0.5">
-                  <div className="w-full h-full rounded-[11px] overflow-hidden">
-                    {story.avatarUrl ? (
-                      <img 
-                        src={story.avatarUrl} 
-                        alt={story.username}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-linear-to-br from-violet-400 to-indigo-500 flex items-center justify-center text-white font-bold text-lg">
-                        {story.username.charAt(0).toUpperCase()}
-                      </div>
-                    )}
+            <span className="text-lg leading-none">＋</span>
+            Send a signal
+          </button>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          {stories.map((story, idx) => (
+            <button
+              key={story.id}
+              onClick={() => onStoryClick?.(story)}
+              className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/40 p-3 text-left group shadow-lg shadow-black/20"
+            >
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-linear-to-br from-cyan-400/20 via-transparent to-amber-400/20" />
+              <div className="flex items-start gap-3 relative">
+                <div className="w-12 h-12 rounded-xl overflow-hidden ring-2 ring-cyan-400/40 bg-linear-to-br from-cyan-500 to-amber-400">
+                  {story.avatarUrl ? (
+                    <img src={story.avatarUrl} alt={story.username} className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="w-full h-full flex items-center justify-center text-white font-bold text-lg">
+                      {story.username.charAt(0).toUpperCase()}
+                    </span>
+                  )}
+                </div>
+                <div className="flex-1 min-w-0 space-y-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-semibold text-white truncate">{story.username}</span>
+                    {story.isLive && <span className="px-2 py-0.5 text-[10px] font-bold uppercase rounded-full bg-linear-to-r from-cyan-500 to-amber-400 text-slate-950">Live</span>}
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-indigo-200/80">
+                    <span>{story.hasUnwatched ? 'New' : 'Seen'}</span>
+                    <span className="w-1 h-1 rounded-full bg-indigo-300" />
+                    <span>Capsule #{idx + 1}</span>
                   </div>
                 </div>
               </div>
-
-              {/* Live badge */}
-              {story.isLive && (
-                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-red-500 text-white text-[10px] font-bold uppercase rounded-md animate-pulse">
-                  Live
-                </div>
-              )}
-            </div>
-            
-            <span className={`
-              text-xs font-medium max-w-17 truncate
-              ${story.hasUnwatched ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}
-            `}>
-              {story.username}
-            </span>
-          </button>
-        ))}
+              <div className="mt-3 h-2 rounded-full bg-white/10 overflow-hidden">
+                <div className={`h-full rounded-full ${story.hasUnwatched ? 'bg-linear-to-r from-cyan-400 to-amber-300 w-5/6' : 'bg-white/20 w-3/4'}`} />
+              </div>
+            </button>
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 

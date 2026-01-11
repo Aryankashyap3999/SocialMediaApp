@@ -71,106 +71,65 @@ export const FeedCard: React.FC<FeedCardProps> = ({
   };
 
   return (
-    <article className="group relative px-4 py-4 transition-all duration-300 hover:bg-linear-to-r hover:from-violet-500/5 hover:to-transparent">
-      {/* Left accent line on hover */}
-      <div className="absolute left-0 top-0 bottom-0 w-1 bg-linear-to-b from-violet-500 to-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity rounded-r" />
-      
-      {/* Divider line */}
-      <div className="absolute bottom-0 left-16 right-4 h-px bg-linear-to-r from-gray-200 dark:from-gray-800 to-transparent" />
-      
-      <div className="flex gap-3">
-        {/* Avatar with unique border */}
-        <button onClick={onAuthorClick} className="shrink-0 group/avatar">
-          <div className="relative">
-            <div className="w-12 h-12 rounded-xl bg-linear-to-br from-violet-500 to-indigo-500 p-0.5 transition-transform group-hover/avatar:scale-110 group-hover/avatar:rotate-3">
-              <div className="w-full h-full rounded-[10px] overflow-hidden bg-white dark:bg-gray-950">
-                {author.avatarUrl ? (
-                  <img src={author.avatarUrl} alt={author.name} className="w-full h-full object-cover" />
-                ) : (
-                  <div className="w-full h-full bg-linear-to-br from-violet-400 to-indigo-500 flex items-center justify-center text-white font-bold">
-                    {author.name.charAt(0)}
-                  </div>
-                )}
-              </div>
-            </div>
-            {author.isVerified && (
-              <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-white dark:bg-gray-950 rounded-full flex items-center justify-center">
-                <Icon name="verified" size={16} />
+    <article className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-5 shadow-2xl shadow-indigo-500/10 transition-transform duration-300 hover:-translate-y-1">
+      <div className="absolute inset-x-4 top-0 h-px bg-linear-to-r from-cyan-400/70 via-amber-400/50 to-transparent" />
+      <div className="absolute -left-10 top-6 h-20 w-20 rounded-full bg-cyan-500/10 blur-3xl" />
+      <div className="flex gap-4">
+        {/* Avatar block */}
+        <button onClick={onAuthorClick} className="shrink-0 relative">
+          <div className="w-12 h-12 rounded-2xl overflow-hidden ring-2 ring-cyan-400/50 bg-linear-to-br from-cyan-600 to-amber-500 shadow-lg shadow-cyan-500/40">
+            {author.avatarUrl ? (
+              <img src={author.avatarUrl} alt={author.name} className="w-full h-full object-cover" />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-white font-bold text-lg">
+                {author.name.charAt(0)}
               </div>
             )}
           </div>
+          {author.isVerified && (
+            <span className="absolute -bottom-1 -right-1 px-2 py-0.5 text-[10px] font-bold uppercase bg-white text-indigo-600 rounded-full shadow">Verified</span>
+          )}
         </button>
 
         {/* Content */}
-        <div className="flex-1 min-w-0">
-          {/* Header */}
-          <div className="flex items-start justify-between mb-1">
-            <button
-              onClick={onAuthorClick}
-              className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5"
-            >
-              <span className="font-bold text-[15px] hover:underline">{author.name}</span>
-              {author.username && (
-                <span className="text-gray-500 text-sm">@{author.username}</span>
-              )}
-              <span className="text-gray-400 text-sm">·</span>
-              <span className="text-gray-500 text-sm">{timestamp}</span>
-              {language && (
-                <span className="ml-1">
-                  <LanguageTag language={language} size="sm" />
-                </span>
-              )}
-            </button>
-            
+        <div className="flex-1 min-w-0 space-y-3">
+          <div className="flex items-start justify-between gap-3">
+            <div className="space-y-1">
+              <div className="flex flex-wrap items-center gap-2 text-sm text-indigo-200/80">
+                <span className="px-2 py-1 rounded-full bg-white/5 border border-white/10 text-white font-semibold">{author.name}</span>
+                {author.username && <span className="text-indigo-200/70">@{author.username}</span>}
+                <span className="text-indigo-200/50">•</span>
+                <span className="text-indigo-200/80">{timestamp}</span>
+                {language && <LanguageTag language={language} size="sm" />}
+              </div>
+              <h3 className="text-xl font-semibold text-white leading-tight">{content.split('.')[0]}</h3>
+            </div>
             <button
               onClick={onMoreClick}
-              className="p-2 -m-2 hover:bg-violet-100 dark:hover:bg-violet-900/30 rounded-xl transition-colors group/more"
+              className="p-2 rounded-xl bg-white/5 border border-white/10 text-indigo-100 hover:text-white hover:border-indigo-400/60"
             >
-              <Icon name="dotsVertical" size={18} className="text-gray-400 group-hover/more:text-violet-600" />
+              <Icon name="dotsVertical" size={18} />
             </button>
           </div>
 
-          {/* Text Content */}
-          <p className="text-[15px] text-gray-900 dark:text-gray-100 whitespace-pre-wrap mb-3 leading-relaxed">
-            {content}
-          </p>
+          <p className="text-base text-indigo-100/80 leading-relaxed whitespace-pre-wrap">{content}</p>
 
-          {/* Media with unique styling */}
           {media && (
-            <div className="relative rounded-2xl overflow-hidden mb-3 group/media">
-              {/* Gradient border effect */}
-              <div className="absolute inset-0 bg-linear-to-br from-violet-500/20 to-indigo-500/20 opacity-0 group-hover/media:opacity-100 transition-opacity pointer-events-none z-10 rounded-2xl" />
-              
+            <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-xl shadow-black/30">
+              <div className="absolute inset-0 bg-linear-to-br from-cyan-400/15 to-amber-300/15" />
               {media.type === 'image' ? (
-                <img
-                  src={media.url}
-                  alt="Post media"
-                  className="w-full object-cover max-h-125 transition-transform duration-500 group-hover/media:scale-[1.02]"
-                />
+                <img src={media.url} alt="Post media" className="relative w-full object-cover max-h-125" />
               ) : (
                 <div className="relative">
-                  <img
-                    src={media.url}
-                    alt="Video thumbnail"
-                    className="w-full object-cover max-h-125"
-                  />
-                  {/* Gradient overlay */}
-                  <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
-                  
-                  {/* Play button - unique design */}
+                  <img src={media.url} alt="Video thumbnail" className="relative w-full object-cover max-h-125" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent" />
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <button className="relative w-20 h-20 group/play">
-                      {/* Animated rings */}
-                      <div className="absolute inset-0 rounded-2xl bg-white/20 backdrop-blur-sm animate-ping opacity-75" />
-                      <div className="relative w-full h-full rounded-2xl bg-linear-to-br from-violet-600 to-indigo-600 flex items-center justify-center shadow-2xl shadow-violet-500/50 transition-transform group-hover/play:scale-110">
-                        <Icon name="play" size={32} className="text-white ml-1" />
-                      </div>
+                    <button className="px-6 py-3 rounded-full bg-white/80 text-indigo-700 font-semibold shadow-lg shadow-white/30 backdrop-blur">
+                      Play clip
                     </button>
                   </div>
-                  
-                  {/* Duration badge */}
                   {media.duration && (
-                    <span className="absolute bottom-3 left-3 px-3 py-1 bg-black/70 backdrop-blur-sm text-white text-xs font-bold rounded-lg">
+                    <span className="absolute bottom-3 left-3 px-3 py-1 rounded-full bg-black/70 text-white text-xs font-semibold">
                       {media.duration}
                     </span>
                   )}
@@ -179,7 +138,6 @@ export const FeedCard: React.FC<FeedCardProps> = ({
             </div>
           )}
 
-          {/* Actions */}
           <PostActions
             likesCount={likes}
             commentsCount={commentsCount}

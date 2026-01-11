@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Avatar } from '@components/atoms/Avatar';
 import { Icon } from '@components/atoms/Icon';
 import { Button } from '@components/atoms/Button';
 
@@ -36,62 +35,61 @@ export const ComposeBox: React.FC<ComposeBoxProps> = ({
   const isNearLimit = remaining <= 20 && remaining > 0;
 
   return (
-    <div className="bg-white dark:bg-gray-950 border-b border-gray-100 dark:border-gray-800 px-4 py-4">
-      <div className="flex gap-3">
+    <div className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl px-5 py-5 shadow-xl shadow-indigo-500/10">
+      <div className="flex gap-4">
         {/* Avatar */}
-        <Avatar
-          src={currentUser?.avatarUrl}
-          alt={currentUser?.name || 'You'}
-          size="md"
-        />
+        <div className="shrink-0 w-12 h-12 rounded-2xl bg-linear-to-br from-cyan-500 to-amber-400 flex items-center justify-center text-slate-950 font-bold shadow-lg shadow-cyan-500/30">
+          {currentUser?.name ? currentUser.name.charAt(0) : 'U'}
+        </div>
 
         {/* Compose Area */}
-        <div className="flex-1">
+        <div className="flex-1 space-y-3">
+          <div className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-cyan-200/80">
+            <span className="px-2 py-1 rounded-full bg-white/5 border border-white/10">Signal</span>
+            <span className="px-2 py-1 rounded-full bg-white/5 border border-white/10">Image</span>
+            <span className="px-2 py-1 rounded-full bg-white/5 border border-white/10">Link</span>
+          </div>
+
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder={placeholder}
-            rows={2}
-            className="w-full bg-transparent border-none resize-none text-lg placeholder:text-gray-500 focus:outline-none"
+            rows={3}
+            className="w-full bg-transparent border-none resize-none text-lg text-white placeholder:text-indigo-200/60 focus:outline-none"
           />
 
-          {/* Divider */}
-          <div className="border-t border-gray-100 dark:border-gray-800 my-3" />
+          {/* Prompt chips */}
+          <div className="flex flex-wrap gap-2 text-sm">
+            {['What moved you today?', 'Link a track', 'Drop a location', 'Who inspired you?'].map((chip) => (
+              <button
+                key={chip}
+                type="button"
+                className="px-3 py-1.5 rounded-full border border-white/10 text-indigo-100 hover:border-indigo-400/60 hover:text-white transition-colors"
+                onClick={() => setContent((prev) => prev ? `${prev} ${chip}` : chip)}
+              >
+                {chip}
+              </button>
+            ))}
+          </div>
 
           {/* Actions Row */}
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between pt-1">
             {/* Media Actions */}
-            <div className="flex items-center gap-1">
-              <button className="p-2 hover:bg-violet-100 dark:hover:bg-violet-900/30 rounded-full transition-colors group">
-                <Icon name="image" size={20} className="text-violet-600" />
-              </button>
-              <button className="p-2 hover:bg-violet-100 dark:hover:bg-violet-900/30 rounded-full transition-colors group">
-                <Icon name="gif" size={20} className="text-violet-600" />
-              </button>
-              <button className="p-2 hover:bg-violet-100 dark:hover:bg-violet-900/30 rounded-full transition-colors group">
-                <Icon name="emoji" size={20} className="text-violet-600" />
-              </button>
-              <button className="p-2 hover:bg-violet-100 dark:hover:bg-violet-900/30 rounded-full transition-colors group">
-                <Icon name="calendar" size={20} className="text-violet-600" />
-              </button>
+            <div className="flex items-center gap-2">
+              {(['image','gif','emoji','calendar','location'] as const).map((icon) => (
+                <button key={icon} className="p-2 rounded-xl bg-white/5 border border-white/10 text-indigo-200 hover:text-white hover:border-indigo-400/60 transition-colors">
+                  <Icon name={icon} size={18} />
+                </button>
+              ))}
             </div>
 
             {/* Post Button & Character Count */}
             <div className="flex items-center gap-3">
               {content.length > 0 && (
                 <div className="flex items-center gap-2">
-                  {/* Circular progress */}
-                  <div className="relative w-6 h-6">
-                    <svg className="w-6 h-6 -rotate-90" viewBox="0 0 24 24">
-                      <circle
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        className="text-gray-200 dark:text-gray-700"
-                      />
+                  <div className="relative w-7 h-7">
+                    <svg className="w-7 h-7 -rotate-90" viewBox="0 0 24 24">
+                      <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2" className="text-white/10" />
                       <circle
                         cx="12"
                         cy="12"
@@ -101,31 +99,27 @@ export const ComposeBox: React.FC<ComposeBoxProps> = ({
                         strokeWidth="2"
                         strokeDasharray={`${Math.min(content.length / maxLength, 1) * 62.83} 62.83`}
                         className={
-                          isOverLimit ? 'text-red-500' : 
-                          isNearLimit ? 'text-yellow-500' : 
-                          'text-violet-600'
+                          isOverLimit ? 'text-red-400' :
+                          isNearLimit ? 'text-amber-400' :
+                          'text-indigo-400'
                         }
                       />
                     </svg>
-                    {remaining <= 20 && (
-                      <span 
-                        className={`absolute inset-0 flex items-center justify-center text-[10px] font-medium ${
-                          isOverLimit ? 'text-red-500' : 'text-gray-500'
-                        }`}
-                      >
+                    {remaining <= 30 && (
+                      <span className={`absolute inset-0 flex items-center justify-center text-[10px] font-semibold ${isOverLimit ? 'text-red-400' : 'text-indigo-100'}`}>
                         {remaining}
                       </span>
                     )}
                   </div>
-                  <div className="w-px h-6 bg-gray-200 dark:bg-gray-700" />
+                  <div className="w-px h-6 bg-white/10" />
                 </div>
               )}
               <Button
                 onClick={handlePost}
                 disabled={!content.trim() || isOverLimit}
-                className="bg-linear-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 disabled:from-violet-400 disabled:to-indigo-400 disabled:cursor-not-allowed text-white font-bold px-5 py-2 rounded-full"
+                className="bg-linear-to-r from-cyan-500 to-amber-400 hover:from-cyan-400 hover:to-amber-300 disabled:from-white/10 disabled:to-white/10 disabled:text-white/40 text-slate-950 font-bold px-5 py-2.5 rounded-full shadow-lg shadow-cyan-500/25"
               >
-                Post
+                Broadcast
               </Button>
             </div>
           </div>
