@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Icon } from '@components/atoms/Icon';
 import { Avatar } from '@components/atoms/Avatar';
+import { SectionHeader } from '@components/atoms/SectionHeader';
+import { TabIndicator } from '@components/atoms/TabIndicator';
 import { FeedCard } from '@components/organisms/FeedCard';
 
 // Mock categories
@@ -233,9 +235,7 @@ export const DiscoverPage: React.FC = () => {
               `}
             >
               {tab.label}
-              {viewMode === tab.id && (
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-1 bg-linear-to-r from-cyan-400 to-amber-300 rounded-full" />
-              )}
+              {viewMode === tab.id && <TabIndicator thick />}
             </button>
           ))}
         </div>
@@ -292,10 +292,7 @@ export const DiscoverPage: React.FC = () => {
           <div>
             {/* Pulse Topics Section */}
             <div className="p-4 border-b border-slate-700">
-              <h2 className="text-lg font-bold mb-4 flex items-center gap-2 text-slate-50">
-                <div className="w-1.5 h-6 bg-linear-to-b from-cyan-400 to-amber-300 rounded-full" />
-                Pulse Topics
-              </h2>
+              <SectionHeader title="Pulse Topics" className="mb-4" />
               <div className="space-y-3">
                 {trendingTopics.map((topic, index) => (
                   <button
@@ -323,10 +320,7 @@ export const DiscoverPage: React.FC = () => {
 
             {/* Hot Drops */}
             <div>
-              <h2 className="text-lg font-bold p-4 flex items-center gap-2 text-slate-50">
-                <div className="w-1.5 h-6 bg-linear-to-b from-cyan-400 to-amber-300 rounded-full" />
-                Hot Drops
-              </h2>
+              <SectionHeader title="Hot Drops" className="p-4" />
               <div className="divide-y divide-slate-700">
                 {trendingPosts.map((post) => (
                   <FeedCard key={post.id} {...post} />
@@ -339,10 +333,7 @@ export const DiscoverPage: React.FC = () => {
         {/* People View */}
         {viewMode === 'people' && (
           <div className="p-4">
-            <h2 className="text-lg font-bold mb-4 flex items-center gap-2 text-slate-50">
-              <div className="w-1.5 h-6 bg-linear-to-b from-cyan-400 to-amber-300 rounded-full" />
-              Suggested for You
-            </h2>
+            <SectionHeader title="Suggested for You" className="mb-4" />
             <div className="space-y-3">
               {suggestedUsers.map((user) => (
                 <div
@@ -389,10 +380,7 @@ export const DiscoverPage: React.FC = () => {
 
             {/* More Suggestions */}
             <div className="mt-8">
-              <h2 className="text-lg font-bold mb-4 flex items-center gap-2 text-slate-50">
-                <div className="w-1.5 h-6 bg-linear-to-b from-cyan-400 to-amber-300 rounded-full" />
-                Popular Creators
-              </h2>
+              <SectionHeader title="Popular Creators" className="mb-4" />
               <div className="grid grid-cols-2 gap-3">
                 {suggestedUsers.slice(0, 4).map((user) => (
                   <div

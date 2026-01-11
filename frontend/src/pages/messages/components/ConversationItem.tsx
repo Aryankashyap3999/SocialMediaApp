@@ -1,6 +1,7 @@
 import React from 'react';
 import { Avatar } from '@components/atoms/Avatar';
 import { Icon } from '@components/atoms/Icon';
+import { GradientBadge } from '@components/atoms/GradientBadge';
 import type { Conversation } from '../types';
 
 interface ConversationItemProps {
@@ -95,9 +96,9 @@ export const ConversationItem: React.FC<ConversationItemProps> = ({
         <div className="flex items-center gap-1.5">
           {isMuted && <Icon name="mute" size={14} className="text-gray-400" />}
           {unreadCount > 0 && (
-            <span className="min-w-4.5 h-4.5 px-1 bg-linear-to-r from-cyan-400 to-amber-300 text-slate-950 text-xs font-bold rounded-full flex items-center justify-center">
+            <GradientBadge className="min-w-4.5 h-4.5 flex items-center justify-center">
               {unreadCount > 9 ? '9+' : unreadCount}
-            </span>
+            </GradientBadge>
           )}
         </div>
       </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Avatar } from '@components/atoms/Avatar';
 import { Icon } from '@components/atoms/Icon';
+import { SectionHeader } from '@components/atoms/SectionHeader';
 
 export interface TrendingTopic {
   id: string;
@@ -79,14 +80,17 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
           <div className="absolute bottom-0 left-0 w-24 h-24 bg-linear-to-tr from-amber-400/12 to-transparent rounded-full blur-2xl" />
           
           <div className="relative p-5">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-1.5 h-6 bg-linear-to-b from-cyan-500 to-amber-400 rounded-full" />
-              <h3 className="text-lg font-bold text-white">Signal Heatmap</h3>
-              <div className="ml-auto flex items-center gap-1 text-xs text-cyan-300 font-medium">
-                <span className="w-2 h-2 bg-amber-300 rounded-full animate-pulse" />
-                Live
-              </div>
-            </div>
+            <SectionHeader 
+              title="Signal Heatmap" 
+              bright 
+              className="mb-4"
+              action={
+                <div className="flex items-center gap-1 text-xs text-cyan-300 font-medium">
+                  <span className="w-2 h-2 bg-amber-300 rounded-full animate-pulse" />
+                  Live
+                </div>
+              }
+            />
 
             <div className="grid grid-cols-1 gap-3">
               {trending.map((topic, index) => {
@@ -156,10 +160,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
           <div className="absolute inset-0 bg-linear-to-br from-slate-900 via-slate-900 to-slate-900" />
           
           <div className="relative p-5">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-1.5 h-6 bg-linear-to-b from-cyan-500 to-amber-400 rounded-full" />
-              <h3 className="text-lg font-bold text-white">Suggested for you</h3>
-            </div>
+            <SectionHeader title="Suggested for you" bright className="mb-4" />
             
             <div className="space-y-3">
               {suggestions.map((user) => (

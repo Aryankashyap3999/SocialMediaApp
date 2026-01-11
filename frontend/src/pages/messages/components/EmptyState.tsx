@@ -1,5 +1,6 @@
 import React from 'react';
 import { Icon } from '@components/atoms/Icon';
+import { GradientButton } from '@components/atoms/GradientButton';
 
 interface EmptyStateProps {
   onNewMessage: () => void;
@@ -29,12 +30,9 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ onNewMessage }) => {
       </p>
 
       {/* Action button */}
-      <button
-        onClick={onNewMessage}
-        className="px-6 py-2.5 bg-linear-to-r from-cyan-400 to-amber-300 hover:from-cyan-300 hover:to-amber-200 text-slate-950 font-semibold rounded-xl transition-colors shadow-[0_12px_30px_-18px_rgba(0,0,0,0.9)]"
-      >
+      <GradientButton onClick={onNewMessage}>
         Send message
-      </button>
+      </GradientButton>
     </div>
   );
 };

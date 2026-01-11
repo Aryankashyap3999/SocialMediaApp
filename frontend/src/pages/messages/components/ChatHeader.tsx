@@ -1,6 +1,7 @@
 import React from 'react';
 import { Avatar } from '@components/atoms/Avatar';
 import { Icon } from '@components/atoms/Icon';
+import { IconButton } from '@components/atoms/IconButton';
 import type { Conversation } from '../types';
 
 interface ChatHeaderProps {
@@ -45,12 +46,14 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
       <div className="flex items-center gap-3">
         {/* Back button (mobile) */}
         {onBack && (
-          <button
+          <IconButton
             onClick={onBack}
-            className="p-1.5 -ml-1.5 hover:bg-[#141414] rounded-lg transition-colors lg:hidden"
+            size="sm"
+            label="Go back"
+            className="-ml-1.5 lg:hidden"
           >
             <Icon name="chevronLeft" size={24} />
-          </button>
+          </IconButton>
         )}
 
         {/* Avatar */}
@@ -87,24 +90,15 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
 
       {/* Actions */}
       <div className="flex items-center gap-1">
-        <button
-          onClick={onVoiceCall}
-          className="p-2 hover:bg-[#141414] rounded-lg transition-colors"
-        >
+        <IconButton onClick={onVoiceCall} label="Voice call">
           <Icon name="phone" size={20} className="text-slate-300" />
-        </button>
-        <button
-          onClick={onVideoCall}
-          className="p-2 hover:bg-[#141414] rounded-lg transition-colors"
-        >
+        </IconButton>
+        <IconButton onClick={onVideoCall} label="Video call">
           <Icon name="video" size={20} className="text-slate-300" />
-        </button>
-        <button
-          onClick={onInfo}
-          className="p-2 hover:bg-[#141414] rounded-lg transition-colors"
-        >
+        </IconButton>
+        <IconButton onClick={onInfo} label="Chat info">
           <Icon name="info" size={20} className="text-slate-300" />
-        </button>
+        </IconButton>
       </div>
     </div>
   );

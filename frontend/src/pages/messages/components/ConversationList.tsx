@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Icon } from '@components/atoms/Icon';
+import { TabIndicator } from '@components/atoms/TabIndicator';
 import { ConversationItem } from './ConversationItem';
 import type { Conversation } from '../types';
 
@@ -76,9 +77,7 @@ export const ConversationList: React.FC<ConversationListProps> = ({
           }`}
         >
           Messages
-          {activeTab === 'messages' && (
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-0.5 bg-linear-to-r from-cyan-400 to-amber-300 rounded-full" />
-          )}
+          {activeTab === 'messages' && <TabIndicator />}
         </button>
         <button
           onClick={() => setActiveTab('requests')}
@@ -89,9 +88,7 @@ export const ConversationList: React.FC<ConversationListProps> = ({
           }`}
         >
           Requests
-          {activeTab === 'requests' && (
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-0.5 bg-linear-to-r from-cyan-400 to-amber-300 rounded-full" />
-          )}
+          {activeTab === 'requests' && <TabIndicator />}
         </button>
       </div>
 

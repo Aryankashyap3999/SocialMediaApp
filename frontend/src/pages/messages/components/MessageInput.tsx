@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Icon } from '@components/atoms/Icon';
+import { IconButton } from '@components/atoms/IconButton';
 
 interface MessageInputProps {
   onSendMessage: (content: string) => void;
@@ -49,12 +50,9 @@ export const MessageInput: React.FC<MessageInputProps> = ({
     <div className="px-4 py-3 border-t border-slate-700 bg-[#0a0a0a]">
       <form onSubmit={handleSubmit} className="flex items-center gap-2">
         {/* Emoji button */}
-        <button
-          type="button"
-          className="p-2 hover:bg-[#141414] rounded-full transition-colors"
-        >
+        <IconButton type="button" rounded="full" label="Add emoji">
           <Icon name="emoji" size={22} className="text-slate-400" />
-        </button>
+        </IconButton>
 
         {/* Input */}
         <div className="flex-1 relative">
@@ -81,18 +79,12 @@ export const MessageInput: React.FC<MessageInputProps> = ({
           </button>
         ) : (
           <>
-            <button
-              type="button"
-              className="p-2 hover:bg-[#141414] rounded-full transition-colors"
-            >
+            <IconButton type="button" rounded="full" label="Add image">
               <Icon name="image" size={22} className="text-slate-400" />
-            </button>
-            <button
-              type="button"
-              className="p-2 hover:bg-[#141414] rounded-full transition-colors"
-            >
+            </IconButton>
+            <IconButton type="button" rounded="full" label="Voice message">
               <Icon name="microphone" size={22} className="text-slate-400" />
-            </button>
+            </IconButton>
           </>
         )}
       </form>

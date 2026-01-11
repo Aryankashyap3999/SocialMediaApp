@@ -21,3 +21,19 @@ export type { HeadingProps } from './Heading';
 
 export { Icon } from './Icon';
 export type { IconProps } from './Icon';
+
+// Theme-specific atoms
+export { SectionHeader } from './SectionHeader';
+export type { SectionHeaderProps } from './SectionHeader';
+
+export { TabIndicator } from './TabIndicator';
+export type { TabIndicatorProps } from './TabIndicator';
+
+export { GradientButton } from './GradientButton';
+export type { GradientButtonProps } from './GradientButton';
+
+export { GradientBadge } from './GradientBadge';
+export type { GradientBadgeProps } from './GradientBadge';
+
+export { IconButton } from './IconButton';
+export type { IconButtonProps } from './IconButton';

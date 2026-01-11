@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Icon } from '@components/atoms/Icon';
 import { Avatar } from '@components/atoms/Avatar';
+import { GradientBadge } from '@components/atoms/GradientBadge';
 
 // Notification types
 type NotificationType = 'like' | 'comment' | 'follow' | 'mention' | 'repost' | 'reply' | 'system';
@@ -384,9 +385,7 @@ export const NotificationsPage: React.FC = () => {
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-bold text-slate-900 dark:text-slate-50">Notifications</h1>
             {unreadCount > 0 && (
-              <span className="px-2 py-0.5 bg-linear-to-r from-cyan-400 to-amber-300 text-slate-950 text-xs font-bold rounded-full">
-                {unreadCount}
-              </span>
+              <GradientBadge>{unreadCount}</GradientBadge>
             )}
           </div>
           <div className="flex items-center gap-2">
