@@ -1,7 +1,7 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { NavItem } from '@components/molecules/NavItem';
 import { Avatar } from '@components/atoms/Avatar';
-import { useLocation } from 'react-router-dom';
 
 export interface SidebarProps {
   isCollapsed?: boolean;
@@ -27,7 +27,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onCreateClick,
 }) => {
   const location = useLocation();
-  
+
   return (
     <aside
       className={`

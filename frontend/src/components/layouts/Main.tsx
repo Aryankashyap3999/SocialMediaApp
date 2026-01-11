@@ -19,7 +19,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-gray-100 flex">
+    <div className="h-screen bg-black text-gray-100 flex overflow-hidden">
       {/* Sidebar */}
       <Sidebar
         isCollapsed={isCollapsed}
@@ -28,9 +28,9 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         unreadNotifications={3}
       />
 
-      {/* Main Content */}
-      <main className="flex-1 min-h-screen px-6 pt-8 pb-16 overflow-auto">
-        <div className="max-w-7xl mx-auto">{children}</div>
+      {/* Main Content - this is the scroll container */}
+      <main className="flex-1 h-screen overflow-y-auto">
+        {children}
       </main>
     </div>
   );

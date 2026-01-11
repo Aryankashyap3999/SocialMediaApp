@@ -216,20 +216,24 @@ export const DiscoverPage: React.FC = () => {
 
         {/* View Mode Tabs */}
         <div className="flex border-t border-slate-700">
-          {(['explore', 'trending', 'people'] as ViewMode[]).map((mode) => (
+          {([
+            { id: 'explore', label: 'Explore' },
+            { id: 'trending', label: 'Pulse' },
+            { id: 'people', label: 'People' },
+          ] as const).map((tab) => (
             <button
-              key={mode}
-              onClick={() => setViewMode(mode)}
+              key={tab.id}
+              onClick={() => setViewMode(tab.id)}
               className={`
-                flex-1 py-3.5 text-sm font-medium capitalize relative transition-colors
-                ${viewMode === mode 
+                flex-1 py-3.5 text-sm font-medium relative transition-colors
+                ${viewMode === tab.id 
                   ? 'text-cyan-300' 
                   : 'text-slate-500 hover:text-slate-200'
                 }
               `}
             >
-              {mode}
-              {viewMode === mode && (
+              {tab.label}
+              {viewMode === tab.id && (
                 <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-1 bg-linear-to-r from-cyan-400 to-amber-300 rounded-full" />
               )}
             </button>
@@ -286,11 +290,11 @@ export const DiscoverPage: React.FC = () => {
         {/* Trending View */}
         {viewMode === 'trending' && (
           <div>
-            {/* Trending Topics Section */}
+            {/* Pulse Topics Section */}
             <div className="p-4 border-b border-slate-700">
               <h2 className="text-lg font-bold mb-4 flex items-center gap-2 text-slate-50">
                 <div className="w-1.5 h-6 bg-linear-to-b from-cyan-400 to-amber-300 rounded-full" />
-                Trending Topics
+                Pulse Topics
               </h2>
               <div className="space-y-3">
                 {trendingTopics.map((topic, index) => (
@@ -308,7 +312,7 @@ export const DiscoverPage: React.FC = () => {
                       </p>
                       <p className="text-xs text-slate-500 flex items-center gap-1 mt-0.5">
                         <Icon name="trending" size={12} className="text-amber-300" />
-                        {topic.posts} posts
+                        {topic.posts} drops
                       </p>
                     </div>
                     <Icon name="dotsVertical" size={18} className="text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -317,11 +321,11 @@ export const DiscoverPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Trending Posts */}
+            {/* Hot Drops */}
             <div>
               <h2 className="text-lg font-bold p-4 flex items-center gap-2 text-slate-50">
                 <div className="w-1.5 h-6 bg-linear-to-b from-cyan-400 to-amber-300 rounded-full" />
-                Signal Posts
+                Hot Drops
               </h2>
               <div className="divide-y divide-slate-700">
                 {trendingPosts.map((post) => (
