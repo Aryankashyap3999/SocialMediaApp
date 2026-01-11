@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavItem } from '@components/molecules/NavItem';
 import { Avatar } from '@components/atoms/Avatar';
+import { useLocation } from 'react-router-dom';
 
 export interface SidebarProps {
   isCollapsed?: boolean;
@@ -25,13 +26,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
   unreadNotifications = 0,
   onCreateClick,
 }) => {
+  const location = useLocation();
+  
   return (
     <aside
       className={`
-        fixed left-0 top-0 h-screen bg-[#05060b]
+        sticky left-0 top-0 h-screen bg-[#05060b]
         border-r border-white/5
         flex flex-col justify-between py-6 px-4
-        transition-all duration-300 z-40
+        transition-all duration-300 z-40 shrink-0
         ${isCollapsed ? 'w-20' : 'w-64'}
       `}
     >
@@ -64,19 +67,22 @@ export const Sidebar: React.FC<SidebarProps> = ({
           { to: '/notifications', icon: 'notifications', label: 'Notifications', badge: unreadNotifications },
           { to: '/messages', icon: 'messages', label: 'Messages', badge: unreadMessages },
           { to: '/profile', icon: 'profile', label: 'Profile' },
-        ] as const).map((item) => (
-          <div key={item.to} className="relative rounded-2xl border border-white/5 bg-white/5 hover:bg-white/10 hover:border-indigo-400/40 transition-all">
-            <NavItem
-              to={item.to}
-              icon={item.icon}
-              label={item.label}
-              isCollapsed={isCollapsed}
-            />
-            {!isCollapsed && item.to === '/home' && (
-              <div className="absolute -left-3 top-1/2 -translate-y-1/2 h-12 w-1.5 rounded-full bg-linear-to-b from-indigo-500 to-emerald-400" />
-            )}
-          </div>
-        ))}
+        ] as const).map((item) => {
+          const isActive = location.pathname === item.to || location.pathname.startsWith(item.to + '/');
+          return (
+            <div key={item.to} className={`relative rounded-2xl border transition-all ${isActive ? 'border-cyan-400/40 bg-white/10' : 'border-white/5 bg-white/5 hover:bg-white/10 hover:border-indigo-400/40'}`}>
+              <NavItem
+                to={item.to}
+                icon={item.icon}
+                label={item.label}
+                isCollapsed={isCollapsed}
+              />
+              {!isCollapsed && isActive && (
+                <div className="absolute -left-3 top-1/2 -translate-y-1/2 h-12 w-1.5 rounded-full bg-linear-to-b from-cyan-400 to-amber-400" />
+              )}
+            </div>
+          );
+        })}
 
         {/* Create tile */}
         <div className="pt-2">
