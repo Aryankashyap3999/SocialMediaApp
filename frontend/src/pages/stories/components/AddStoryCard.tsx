@@ -18,7 +18,7 @@ export const AddStoryCard: React.FC<AddStoryCardProps> = ({
   return (
     <button
       onClick={onClick}
-      className="flex flex-col items-center gap-1.5 max-w-[72px]"
+      className="flex flex-col items-center gap-1.5 max-w-18"
     >
       <div className="relative">
         {/* Avatar or placeholder */}
@@ -37,13 +37,13 @@ export const AddStoryCard: React.FC<AddStoryCardProps> = ({
         </div>
 
         {/* Plus badge */}
-        <div className="absolute -bottom-0.5 -right-0.5 w-6 h-6 bg-violet-600 rounded-full border-2 border-white dark:border-gray-950 flex items-center justify-center">
-          <Icon name="plus" size={14} className="text-white" />
+        <div className="absolute -bottom-0.5 -right-0.5 w-6 h-6 rounded-full border-2 border-white dark:border-slate-950 bg-linear-to-br from-cyan-500 to-amber-300 flex items-center justify-center shadow-[0_6px_18px_-10px_rgba(0,0,0,0.8)]">
+          <Icon name="plus" size={14} className="text-slate-950" />
         </div>
       </div>
 
-      <span className="text-xs text-gray-700 dark:text-gray-300 truncate w-full text-center">
-        Your story
+      <span className="text-xs text-gray-700 dark:text-gray-200 truncate w-full text-center">
+        Your signal
       </span>
     </button>
   );

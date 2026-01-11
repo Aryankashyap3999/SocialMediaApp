@@ -26,13 +26,13 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
           className={`
             px-4 py-2.5 rounded-2xl
             ${isOwn
-              ? 'bg-violet-600 text-white rounded-br-md'
-              : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white rounded-bl-md'
+              ? 'bg-linear-to-r from-amber-300 to-cyan-400 text-slate-950 rounded-br-md shadow-[0_10px_30px_-18px_rgba(0,0,0,0.8)]'
+              : 'bg-slate-900 text-slate-100 rounded-bl-md border border-slate-800'
             }
           `}
         >
           {message.type === 'text' && (
-            <p className="text-sm whitespace-pre-wrap break-words">{message.content}</p>
+            <p className="text-sm whitespace-pre-wrap wrap-break-word">{message.content}</p>
           )}
           
           {message.type === 'image' && message.mediaUrl && (
@@ -46,10 +46,10 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
 
         {/* Timestamp */}
         {showTimestamp && (
-          <p className={`text-xs text-gray-400 mt-1 ${isOwn ? 'text-right' : 'text-left'}`}>
+          <p className={`text-xs text-slate-500 mt-1 ${isOwn ? 'text-right' : 'text-left'}`}>
             {message.timestamp}
             {isOwn && message.isRead && (
-              <span className="ml-1">• Seen</span>
+              <span className="ml-1 text-slate-600">• Seen</span>
             )}
           </p>
         )}

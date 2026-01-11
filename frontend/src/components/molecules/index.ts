@@ -20,3 +20,7 @@ export { NavItem } from './NavItem';
 export type { NavItemProps } from './NavItem';
 
 export { SocialButton } from './SocialButton';
+
+// Modal Components
+export { BaseModal, ConfirmModal } from './Modal';
+export type { BaseModalProps, ConfirmModalProps } from './Modal';

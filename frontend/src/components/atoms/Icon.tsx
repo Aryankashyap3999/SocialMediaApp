@@ -163,7 +163,7 @@ export const Icon: React.FC<IconProps> = ({ name, size = 24, className = '', fil
     // Verified badge with shield
     verified: (
       <>
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="#8b5cf6" />
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="#22d3ee" />
         <path d="M9 12l2 2 4-4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
       </>
     ),

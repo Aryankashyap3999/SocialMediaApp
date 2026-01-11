@@ -12,7 +12,7 @@ const mockUser = {
   name: 'Sarah Johnson',
   username: 'sarahjohnson',
   avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop',
-  coverUrl: 'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=1200&h=400&fit=crop',
+  coverUrl: 'https://images.unsplash.com/photo-1488330890490-c291ecf62571?w=1200&h=400&fit=crop',
   bio: '✨ Travel enthusiast | 📸 Photography lover | 🌍 Exploring the world one city at a time. Always seeking new adventures and authentic experiences.',
   location: 'San Francisco, CA',
   website: 'https://sarahtravels.com',
@@ -236,19 +236,19 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ userId }) => {
 
   const renderEmptyState = (type: string) => (
     <div className="flex flex-col items-center justify-center py-16 px-4">
-      <div className="w-20 h-20 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-4">
+      <div className="w-20 h-20 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-4">
         <Icon 
           name={type === 'posts' ? 'home' : type === 'replies' ? 'comment' : 'heart'} 
           size={32} 
-          className="text-gray-400 dark:text-gray-600" 
+          className="text-cyan-400 dark:text-cyan-500" 
         />
       </div>
-      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+      <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2">
         {type === 'posts' && 'No posts yet'}
         {type === 'replies' && 'No replies yet'}
         {type === 'likes' && 'No likes yet'}
       </h3>
-      <p className="text-gray-500 dark:text-gray-400 text-center max-w-sm">
+      <p className="text-slate-500 dark:text-slate-400 text-center max-w-sm">
         {type === 'posts' && (isOwnProfile 
           ? "When you post something, it will show up here." 
           : "This user hasn't posted anything yet."
@@ -269,7 +269,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ userId }) => {
     switch (activeTab) {
       case 'posts':
         return mockPosts.length > 0 ? (
-          <div className="divide-y divide-gray-100 dark:divide-gray-800">
+          <div className="divide-y divide-slate-200 dark:divide-slate-800">
             {mockPosts.map((post) => (
               <FeedCard
                 key={post.id}
@@ -292,7 +292,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ userId }) => {
 
       case 'likes':
         return mockLikedPosts.length > 0 ? (
-          <div className="divide-y divide-gray-100 dark:divide-gray-800">
+          <div className="divide-y divide-slate-200 dark:divide-slate-800">
             {mockLikedPosts.map((post) => (
               <FeedCard
                 key={post.id}
@@ -308,20 +308,20 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ userId }) => {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
       {/* Back button for mobile */}
-      <div className="sticky top-0 z-20 flex items-center gap-4 px-4 py-3 bg-white/80 dark:bg-gray-950/80 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 lg:hidden">
+      <div className="sticky top-0 z-20 flex items-center gap-4 px-4 py-3 bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 lg:hidden">
         <button
           onClick={() => window.history.back()}
-          className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
+          className="p-2 -ml-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors"
         >
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <svg className="w-5 h-5 text-slate-700 dark:text-slate-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
         </button>
         <div>
-          <h1 className="font-bold text-lg">{mockUser.name}</h1>
-          <p className="text-xs text-gray-500">{mockUser.postsCount} posts</p>
+          <h1 className="font-bold text-lg text-slate-900 dark:text-slate-100">{mockUser.name}</h1>
+          <p className="text-xs text-slate-500">{mockUser.postsCount} posts</p>
         </div>
       </div>
 

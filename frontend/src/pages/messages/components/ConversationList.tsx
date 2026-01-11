@@ -39,14 +39,14 @@ export const ConversationList: React.FC<ConversationListProps> = ({
   const regularConversations = filteredConversations.filter((c) => !c.isPinned);
 
   return (
-    <div className="h-full flex flex-col bg-white dark:bg-gray-950 border-r border-gray-100 dark:border-gray-800">
+    <div className="h-full flex flex-col bg-slate-950 border-r border-slate-800">
       {/* Header */}
-      <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-800">
+      <div className="px-4 py-3 border-b border-slate-800">
         <div className="flex items-center justify-between mb-3">
-          <h1 className="text-xl font-bold">Messages</h1>
+          <h1 className="text-xl font-bold text-slate-50">Messages</h1>
           <button
             onClick={onNewMessage}
-            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+            className="p-2 rounded-lg transition-colors hover:bg-slate-900"
           >
             <Icon name="compose" size={22} />
           </button>
@@ -54,43 +54,43 @@ export const ConversationList: React.FC<ConversationListProps> = ({
 
         {/* Search */}
         <div className="relative">
-          <Icon name="search" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+          <Icon name="search" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search messages"
-            className="w-full bg-gray-100 dark:bg-gray-900 rounded-xl py-2.5 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/50 placeholder:text-gray-400"
+            className="w-full bg-slate-900 rounded-xl py-2.5 pl-10 pr-4 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 placeholder:text-slate-500"
           />
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-gray-100 dark:border-gray-800">
+      <div className="flex border-b border-slate-800">
         <button
           onClick={() => setActiveTab('messages')}
           className={`flex-1 py-3 text-sm font-medium relative transition-colors ${
             activeTab === 'messages' 
-              ? 'text-violet-600 dark:text-violet-400' 
-              : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+              ? 'text-cyan-300' 
+              : 'text-slate-500 hover:text-slate-200'
           }`}
         >
           Messages
           {activeTab === 'messages' && (
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-0.5 bg-violet-600 rounded-full" />
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-0.5 bg-linear-to-r from-cyan-400 to-amber-300 rounded-full" />
           )}
         </button>
         <button
           onClick={() => setActiveTab('requests')}
           className={`flex-1 py-3 text-sm font-medium relative transition-colors ${
             activeTab === 'requests' 
-              ? 'text-violet-600 dark:text-violet-400' 
-              : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+              ? 'text-cyan-300' 
+              : 'text-slate-500 hover:text-slate-200'
           }`}
         >
           Requests
           {activeTab === 'requests' && (
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-0.5 bg-violet-600 rounded-full" />
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-0.5 bg-linear-to-r from-cyan-400 to-amber-300 rounded-full" />
           )}
         </button>
       </div>
@@ -100,9 +100,9 @@ export const ConversationList: React.FC<ConversationListProps> = ({
         {activeTab === 'messages' ? (
           <>
             {filteredConversations.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-12 px-4">
-                <Icon name="messages" size={48} className="text-gray-300 dark:text-gray-600 mb-3" />
-                <p className="text-gray-500 text-sm text-center">
+              <div className="flex flex-col items-center justify-center py-12 px-4 text-slate-300">
+                <Icon name="messages" size={48} className="text-slate-600 mb-3" />
+                <p className="text-slate-400 text-sm text-center">
                   {searchQuery ? 'No conversations found' : 'No messages yet'}
                 </p>
               </div>
@@ -111,7 +111,7 @@ export const ConversationList: React.FC<ConversationListProps> = ({
                 {/* Pinned conversations */}
                 {pinnedConversations.length > 0 && (
                   <div>
-                    <p className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                    <p className="px-4 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wide">
                       Pinned
                     </p>
                     {pinnedConversations.map((conv) => (
@@ -129,7 +129,7 @@ export const ConversationList: React.FC<ConversationListProps> = ({
                 {regularConversations.length > 0 && (
                   <div>
                     {pinnedConversations.length > 0 && (
-                      <p className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                      <p className="px-4 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wide">
                         All Messages
                       </p>
                     )}
@@ -147,9 +147,9 @@ export const ConversationList: React.FC<ConversationListProps> = ({
             )}
           </>
         ) : (
-          <div className="flex flex-col items-center justify-center py-12 px-4">
-            <Icon name="messages" size={48} className="text-gray-300 dark:text-gray-600 mb-3" />
-            <p className="text-gray-500 text-sm text-center">No message requests</p>
+          <div className="flex flex-col items-center justify-center py-12 px-4 text-slate-300">
+            <Icon name="messages" size={48} className="text-slate-600 mb-3" />
+            <p className="text-slate-400 text-sm text-center">No message requests</p>
           </div>
         )}
       </div>

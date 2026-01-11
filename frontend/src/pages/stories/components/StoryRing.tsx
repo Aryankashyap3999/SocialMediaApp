@@ -55,15 +55,15 @@ export const StoryRing: React.FC<StoryRingProps> = ({
         {/* Gradient ring */}
         <div
           className={`
-            ${classes.ring} rounded-full p-[3px]
+            ${classes.ring} rounded-full p-0.75
             ${hasUnseenItems
-              ? 'bg-gradient-to-tr from-amber-500 via-pink-500 to-violet-600'
-              : 'bg-gray-300 dark:bg-gray-600'
+              ? 'bg-linear-to-tr from-cyan-500 via-emerald-400 to-amber-300'
+              : 'bg-gray-300 dark:bg-slate-700'
             }
           `}
         >
           {/* White/dark inner border */}
-          <div className="w-full h-full rounded-full bg-white dark:bg-gray-950 p-[2px]">
+          <div className="w-full h-full rounded-full bg-white dark:bg-slate-950 p-0.5">
             {/* Avatar */}
             <img
               src={user.avatarUrl}
@@ -75,7 +75,7 @@ export const StoryRing: React.FC<StoryRingProps> = ({
 
         {/* Live badge */}
         {isLive && (
-          <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 px-1.5 py-0.5 bg-gradient-to-r from-pink-500 to-red-500 text-white text-[10px] font-bold uppercase rounded tracking-wide">
+          <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 px-1.5 py-0.5 bg-linear-to-r from-amber-300 to-cyan-400 text-slate-950 text-[10px] font-bold uppercase rounded tracking-wide border border-slate-900/60 shadow-[0_6px_18px_-12px_rgba(0,0,0,0.8)]">
             Live
           </div>
         )}
@@ -83,7 +83,7 @@ export const StoryRing: React.FC<StoryRingProps> = ({
 
       {/* Username */}
       {showUsername && (
-        <span className={`${classes.text} text-gray-700 dark:text-gray-300 truncate w-full text-center`}>
+        <span className={`${classes.text} text-gray-700 dark:text-gray-200 truncate w-full text-center`}>
           {user.username}
         </span>
       )}

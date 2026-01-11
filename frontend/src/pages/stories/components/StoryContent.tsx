@@ -43,8 +43,8 @@ export const StoryContent: React.FC<StoryContentProps> = ({
       )}
 
       {/* Gradient overlays */}
-      <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/50 to-transparent" />
-      <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black/60 to-transparent" />
+      <div className="absolute inset-x-0 top-0 h-32 bg-linear-to-b from-black/50 to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 h-48 bg-linear-to-t from-black/60 to-transparent" />
 
       {/* Tap zones */}
       <div className="absolute inset-0 flex">

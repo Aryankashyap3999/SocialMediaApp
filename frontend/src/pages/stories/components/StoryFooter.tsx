@@ -65,9 +65,9 @@ export const StoryFooter: React.FC<StoryFooterProps> = ({
         {message.trim() ? (
           <button
             type="submit"
-            className="p-2.5 bg-violet-600 hover:bg-violet-700 rounded-full transition-colors"
+            className="p-2.5 rounded-full transition-colors bg-linear-to-r from-cyan-400 to-amber-300 hover:from-cyan-300 hover:to-amber-200 shadow-[0_8px_24px_-14px_rgba(0,0,0,0.8)]"
           >
-            <Icon name="send" size={20} className="text-white" />
+            <Icon name="send" size={20} className="text-slate-950" />
           </button>
         ) : (
           <>

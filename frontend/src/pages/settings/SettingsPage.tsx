@@ -26,8 +26,8 @@ const settingsMenu: { id: SettingsSection; label: string; icon: string }[] = [
 // Section Header Component
 const SectionHeader: React.FC<{ title: string; description?: string }> = ({ title, description }) => (
   <div className="mb-4">
-    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h3>
-    {description && <p className="text-sm text-gray-500 mt-0.5">{description}</p>}
+    <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">{title}</h3>
+    {description && <p className="text-sm text-slate-500 mt-0.5">{description}</p>}
   </div>
 );
 
@@ -40,14 +40,14 @@ const ToggleItem: React.FC<{
 }> = ({ label, description, enabled, onChange }) => (
   <div className="flex items-center justify-between py-3">
     <div className="flex-1 pr-4">
-      <p className="text-sm font-medium text-gray-900 dark:text-white">{label}</p>
-      {description && <p className="text-xs text-gray-500 mt-0.5">{description}</p>}
+      <p className="text-sm font-medium text-slate-900 dark:text-slate-100">{label}</p>
+      {description && <p className="text-xs text-slate-500 mt-0.5">{description}</p>}
     </div>
     <button
       onClick={() => onChange(!enabled)}
       className={`
         relative w-11 h-6 rounded-full transition-colors
-        ${enabled ? 'bg-violet-600' : 'bg-gray-200 dark:bg-gray-700'}
+        ${enabled ? 'bg-linear-to-r from-cyan-500 to-amber-400' : 'bg-slate-200 dark:bg-slate-700'}
       `}
     >
       <span
@@ -69,14 +69,14 @@ const LinkItem: React.FC<{
 }> = ({ label, value, onClick, danger }) => (
   <button
     onClick={onClick}
-    className="w-full flex items-center justify-between py-3 hover:bg-gray-50 dark:hover:bg-gray-800/50 -mx-4 px-4 transition-colors"
+    className="w-full flex items-center justify-between py-3 hover:bg-slate-100 dark:hover:bg-slate-800/50 -mx-4 px-4 transition-colors"
   >
-    <span className={`text-sm font-medium ${danger ? 'text-red-500' : 'text-gray-900 dark:text-white'}`}>
+    <span className={`text-sm font-medium ${danger ? 'text-red-500' : 'text-slate-900 dark:text-slate-100'}`}>
       {label}
     </span>
     <div className="flex items-center gap-2">
-      {value && <span className="text-sm text-gray-500">{value}</span>}
-      <Icon name="chevronRight" size={16} className="text-gray-400" />
+      {value && <span className="text-sm text-cyan-500 dark:text-cyan-400">{value}</span>}
+      <Icon name="chevronRight" size={16} className="text-slate-400" />
     </div>
   </button>
 );
@@ -89,11 +89,11 @@ const SelectItem: React.FC<{
   onChange: (value: string) => void;
 }> = ({ label, value, options, onChange }) => (
   <div className="flex items-center justify-between py-3">
-    <span className="text-sm font-medium text-gray-900 dark:text-white">{label}</span>
+    <span className="text-sm font-medium text-slate-900 dark:text-slate-100">{label}</span>
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="text-sm bg-gray-100 dark:bg-gray-800 border-0 rounded-lg px-3 py-1.5 text-gray-700 dark:text-gray-300 focus:ring-2 focus:ring-violet-500"
+      className="text-sm bg-slate-100 dark:bg-slate-800 border-0 rounded-lg px-3 py-1.5 text-slate-700 dark:text-slate-300 focus:ring-2 focus:ring-cyan-500"
     >
       {options.map((option) => (
         <option key={option} value={option}>{option}</option>
@@ -142,17 +142,17 @@ export const SettingsPage: React.FC = () => {
             {/* Profile Section */}
             <div>
               <SectionHeader title="Profile" description="Manage your profile information" />
-              <div className="bg-gray-50 dark:bg-gray-900/50 rounded-xl p-4">
+              <div className="bg-slate-100 dark:bg-slate-900/50 rounded-xl p-4">
                 <div className="flex items-center gap-4">
                   <div className="relative">
                     <Avatar src={currentUser.avatarUrl} alt={currentUser.name} size="xl" />
-                    <button className="absolute bottom-0 right-0 w-8 h-8 bg-violet-600 rounded-full flex items-center justify-center text-white shadow-lg hover:bg-violet-700 transition-colors">
+                    <button className="absolute bottom-0 right-0 w-8 h-8 bg-linear-to-r from-cyan-500 to-amber-400 rounded-full flex items-center justify-center text-white shadow-lg hover:from-cyan-600 hover:to-amber-500 transition-colors">
                       <Icon name="camera" size={14} />
                     </button>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-900 dark:text-white">{currentUser.name}</h4>
-                    <p className="text-sm text-gray-500">@{currentUser.username}</p>
+                    <h4 className="font-semibold text-slate-900 dark:text-slate-100">{currentUser.name}</h4>
+                    <p className="text-sm text-slate-500">@{currentUser.username}</p>
                   </div>
                 </div>
               </div>
@@ -161,7 +161,7 @@ export const SettingsPage: React.FC = () => {
             {/* Account Info */}
             <div>
               <SectionHeader title="Account Information" />
-              <div className="divide-y divide-gray-100 dark:divide-gray-800">
+              <div className="divide-y divide-slate-200 dark:divide-slate-800">
                 <LinkItem label="Username" value={`@${currentUser.username}`} />
                 <LinkItem label="Email" value={currentUser.email} />
                 <LinkItem label="Phone" value={currentUser.phone} />
@@ -172,7 +172,7 @@ export const SettingsPage: React.FC = () => {
             {/* Linked Accounts */}
             <div>
               <SectionHeader title="Linked Accounts" />
-              <div className="divide-y divide-gray-100 dark:divide-gray-800">
+              <div className="divide-y divide-slate-200 dark:divide-slate-800">
                 <LinkItem label="Google" value="Connected" />
                 <LinkItem label="Apple" value="Not connected" />
                 <LinkItem label="Facebook" value="Not connected" />
@@ -182,7 +182,7 @@ export const SettingsPage: React.FC = () => {
             {/* Danger Zone */}
             <div>
               <SectionHeader title="Danger Zone" />
-              <div className="divide-y divide-gray-100 dark:divide-gray-800">
+              <div className="divide-y divide-slate-200 dark:divide-slate-800">
                 <LinkItem label="Deactivate Account" danger />
                 <LinkItem label="Delete Account" danger />
               </div>
@@ -195,7 +195,7 @@ export const SettingsPage: React.FC = () => {
           <div className="space-y-6">
             <div>
               <SectionHeader title="Account Privacy" description="Control who can see your content" />
-              <div className="divide-y divide-gray-100 dark:divide-gray-800">
+              <div className="divide-y divide-slate-200 dark:divide-slate-800">
                 <ToggleItem
                   label="Private Account"
                   description="Only approved followers can see your posts"
@@ -213,7 +213,7 @@ export const SettingsPage: React.FC = () => {
 
             <div>
               <SectionHeader title="Interactions" />
-              <div className="divide-y divide-gray-100 dark:divide-gray-800">
+              <div className="divide-y divide-slate-200 dark:divide-slate-800">
                 <ToggleItem
                   label="Allow Tagging"
                   description="Let others tag you in their posts"
@@ -231,7 +231,7 @@ export const SettingsPage: React.FC = () => {
 
             <div>
               <SectionHeader title="Data & Privacy" />
-              <div className="divide-y divide-gray-100 dark:divide-gray-800">
+              <div className="divide-y divide-slate-200 dark:divide-slate-800">
                 <LinkItem label="Download Your Data" />
                 <LinkItem label="Blocked Accounts" />
                 <LinkItem label="Muted Accounts" />
@@ -246,7 +246,7 @@ export const SettingsPage: React.FC = () => {
           <div className="space-y-6">
             <div>
               <SectionHeader title="Push Notifications" description="Manage your notification preferences" />
-              <div className="divide-y divide-gray-100 dark:divide-gray-800">
+              <div className="divide-y divide-slate-200 dark:divide-slate-800">
                 <ToggleItem
                   label="Push Notifications"
                   description="Receive notifications on your device"
@@ -264,7 +264,7 @@ export const SettingsPage: React.FC = () => {
 
             <div>
               <SectionHeader title="Activity Notifications" />
-              <div className="divide-y divide-gray-100 dark:divide-gray-800">
+              <div className="divide-y divide-slate-200 dark:divide-slate-800">
                 <ToggleItem
                   label="Likes"
                   description="When someone likes your post"
@@ -299,7 +299,7 @@ export const SettingsPage: React.FC = () => {
           <div className="space-y-6">
             <div>
               <SectionHeader title="Theme" description="Customize how Aptoodate looks" />
-              <div className="divide-y divide-gray-100 dark:divide-gray-800">
+              <div className="divide-y divide-slate-200 dark:divide-slate-800">
                 <SelectItem
                   label="Theme"
                   value={settings.theme}
@@ -317,7 +317,7 @@ export const SettingsPage: React.FC = () => {
 
             <div>
               <SectionHeader title="Language & Region" />
-              <div className="divide-y divide-gray-100 dark:divide-gray-800">
+              <div className="divide-y divide-slate-200 dark:divide-slate-800">
                 <SelectItem
                   label="Language"
                   value={settings.language}
@@ -335,7 +335,7 @@ export const SettingsPage: React.FC = () => {
           <div className="space-y-6">
             <div>
               <SectionHeader title="Support" description="Get help with Aptoodate" />
-              <div className="divide-y divide-gray-100 dark:divide-gray-800">
+              <div className="divide-y divide-slate-200 dark:divide-slate-800">
                 <LinkItem label="Help Center" />
                 <LinkItem label="Report a Problem" />
                 <LinkItem label="Contact Us" />
@@ -344,7 +344,7 @@ export const SettingsPage: React.FC = () => {
 
             <div>
               <SectionHeader title="About" />
-              <div className="divide-y divide-gray-100 dark:divide-gray-800">
+              <div className="divide-y divide-slate-200 dark:divide-slate-800">
                 <LinkItem label="Terms of Service" />
                 <LinkItem label="Privacy Policy" />
                 <LinkItem label="Community Guidelines" />
@@ -354,7 +354,7 @@ export const SettingsPage: React.FC = () => {
 
             <div>
               <SectionHeader title="Account Actions" />
-              <div className="divide-y divide-gray-100 dark:divide-gray-800">
+              <div className="divide-y divide-slate-200 dark:divide-slate-800">
                 <LinkItem label="Log Out" danger />
                 <LinkItem label="Log Out of All Devices" danger />
               </div>
@@ -368,17 +368,17 @@ export const SettingsPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen max-w-4xl mx-auto">
+    <div className="min-h-screen max-w-4xl mx-auto bg-slate-50 dark:bg-slate-950">
       {/* Header */}
-      <div className="sticky top-0 z-20 bg-white/95 dark:bg-gray-950/95 backdrop-blur-xl border-b border-gray-100 dark:border-gray-800">
+      <div className="sticky top-0 z-20 bg-slate-50/95 dark:bg-slate-950/95 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800">
         <div className="px-4 py-3">
-          <h1 className="text-xl font-bold">Settings</h1>
+          <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">Settings</h1>
         </div>
       </div>
 
       <div className="flex">
         {/* Sidebar Navigation */}
-        <div className="w-64 shrink-0 border-r border-gray-100 dark:border-gray-800 min-h-[calc(100vh-57px)]">
+        <div className="w-64 shrink-0 border-r border-slate-200 dark:border-slate-800 min-h-[calc(100vh-57px)]">
           <nav className="p-4 space-y-1">
             {settingsMenu.map((item) => (
               <button
@@ -387,8 +387,8 @@ export const SettingsPage: React.FC = () => {
                 className={`
                   w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-colors
                   ${activeSection === item.id
-                    ? 'bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300'
-                    : 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300'
+                    ? 'bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300'
+                    : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300'
                   }
                 `}
               >

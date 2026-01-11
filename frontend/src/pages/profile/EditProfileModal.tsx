@@ -68,25 +68,25 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
       />
       
       {/* Modal */}
-      <div className="relative w-full max-w-xl bg-white dark:bg-gray-950 rounded-2xl shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4 duration-300">
+      <div className="relative w-full max-w-xl bg-slate-50 dark:bg-slate-950 rounded-2xl shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4 duration-300">
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-gray-800">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 dark:border-slate-800">
           <div className="flex items-center gap-4">
             <button
               onClick={onClose}
-              className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
+              className="p-2 -ml-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors"
             >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-5 h-5 text-slate-700 dark:text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-            <h2 className="text-xl font-bold">Edit profile</h2>
+            <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">Edit profile</h2>
           </div>
           
           <Button
             onClick={handleSubmit}
             disabled={isLoading || !formData.name.trim()}
-            className="bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-100 px-5 py-2 text-sm font-semibold disabled:opacity-50"
+            className="bg-linear-to-r from-cyan-500 to-amber-400 text-white hover:from-cyan-600 hover:to-amber-500 px-5 py-2 text-sm font-semibold disabled:opacity-50 shadow-[0_10px_30px_-18px_rgba(0,0,0,0.8)]"
           >
             {isLoading ? 'Saving...' : 'Save'}
           </Button>
@@ -95,7 +95,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
         {/* Content */}
         <form onSubmit={handleSubmit} className="max-h-[calc(100vh-200px)] overflow-y-auto">
           {/* Cover Photo */}
-          <div className="relative h-36 bg-linear-to-br from-violet-500 via-purple-500 to-indigo-600">
+          <div className="relative h-36 bg-linear-to-br from-cyan-500 via-cyan-400 to-amber-400">
             {formData.coverUrl && (
               <img
                 src={formData.coverUrl}
@@ -127,8 +127,8 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
           {/* Avatar */}
           <div className="relative px-4 -mt-12 mb-4">
             <div className="relative inline-block">
-              <div className="w-24 h-24 rounded-full bg-linear-to-br from-violet-500 to-indigo-500 p-0.5 shadow-xl">
-                <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-gray-950 ring-4 ring-white dark:ring-gray-950">
+              <div className="w-24 h-24 rounded-full bg-linear-to-br from-cyan-500 to-amber-400 p-0.5 shadow-xl">
+                <div className="w-full h-full rounded-full overflow-hidden bg-slate-50 dark:bg-slate-950 ring-4 ring-slate-50 dark:ring-slate-950">
                   {formData.avatarUrl ? (
                     <img
                       src={formData.avatarUrl}
@@ -136,7 +136,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full bg-linear-to-br from-violet-400 to-indigo-500 flex items-center justify-center text-white text-2xl font-bold">
+                    <div className="w-full h-full bg-linear-to-br from-cyan-400 to-amber-400 flex items-center justify-center text-white text-2xl font-bold">
                       {formData.name.charAt(0) || '?'}
                     </div>
                   )}
@@ -155,7 +155,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
           <div className="px-4 pb-6 space-y-6">
             {/* Name */}
             <div className="relative">
-              <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1.5">
+              <label className="block text-sm font-medium text-slate-500 dark:text-slate-400 mb-1.5">
                 Name
               </label>
               <Input
@@ -163,13 +163,13 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
                 value={formData.name}
                 onChange={(e) => handleChange('name', e.target.value)}
                 maxLength={maxChars.name}
-                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+                className="w-full px-4 py-3 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all text-slate-900 dark:text-slate-100"
                 placeholder="Your name"
               />
               <span className={`absolute right-3 top-9 text-xs ${
                 formData.name.length >= maxChars.name 
                   ? 'text-red-500' 
-                  : 'text-gray-400'
+                  : 'text-slate-400'
               }`}>
                 {formData.name.length}/{maxChars.name}
               </span>
@@ -177,7 +177,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
 
             {/* Bio */}
             <div className="relative">
-              <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1.5">
+              <label className="block text-sm font-medium text-slate-500 dark:text-slate-400 mb-1.5">
                 Bio
               </label>
               <textarea
@@ -185,13 +185,13 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
                 onChange={(e) => handleChange('bio', e.target.value)}
                 maxLength={maxChars.bio}
                 rows={3}
-                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all resize-none"
+                className="w-full px-4 py-3 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all resize-none text-slate-900 dark:text-slate-100"
                 placeholder="Tell us about yourself"
               />
               <span className={`absolute right-3 bottom-3 text-xs ${
                 formData.bio.length >= maxChars.bio 
                   ? 'text-red-500' 
-                  : 'text-gray-400'
+                  : 'text-slate-400'
               }`}>
                 {formData.bio.length}/{maxChars.bio}
               </span>
@@ -199,28 +199,28 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
 
             {/* Location */}
             <div>
-              <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1.5">
+              <label className="block text-sm font-medium text-slate-500 dark:text-slate-400 mb-1.5">
                 Location
               </label>
               <Input
                 type="text"
                 value={formData.location}
                 onChange={(e) => handleChange('location', e.target.value)}
-                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+                className="w-full px-4 py-3 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all text-slate-900 dark:text-slate-100"
                 placeholder="San Francisco, CA"
               />
             </div>
 
             {/* Website */}
             <div>
-              <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1.5">
+              <label className="block text-sm font-medium text-slate-500 dark:text-slate-400 mb-1.5">
                 Website
               </label>
               <Input
                 type="url"
                 value={formData.website}
                 onChange={(e) => handleChange('website', e.target.value)}
-                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+                className="w-full px-4 py-3 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all text-slate-900 dark:text-slate-100"
                 placeholder="https://yourwebsite.com"
               />
             </div>

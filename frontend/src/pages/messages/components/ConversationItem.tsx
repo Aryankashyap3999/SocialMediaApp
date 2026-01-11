@@ -41,8 +41,8 @@ export const ConversationItem: React.FC<ConversationItemProps> = ({
       className={`
         w-full flex items-center gap-3 px-4 py-3 transition-colors text-left
         ${isActive 
-          ? 'bg-violet-50 dark:bg-violet-950/30' 
-          : 'hover:bg-gray-50 dark:hover:bg-gray-900/50'
+          ? 'bg-slate-900 border border-cyan-400/30 rounded-2xl' 
+          : 'hover:bg-slate-900/70 rounded-2xl'
         }
       `}
     >
@@ -71,7 +71,7 @@ export const ConversationItem: React.FC<ConversationItemProps> = ({
       {/* Content */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-1">
-          <span className={`font-semibold truncate ${unreadCount > 0 ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300'}`}>
+          <span className={`font-semibold truncate ${unreadCount > 0 ? 'text-slate-50' : 'text-slate-300'}`}>
             {displayName}
           </span>
           {isVerified && <Icon name="verified" size={14} />}
@@ -79,8 +79,8 @@ export const ConversationItem: React.FC<ConversationItemProps> = ({
         </div>
         
         {lastMessage && (
-          <p className={`text-sm truncate ${unreadCount > 0 ? 'text-gray-900 dark:text-white font-medium' : 'text-gray-500'}`}>
-            {isOwnMessage && <span className="text-gray-400">You: </span>}
+          <p className={`text-sm truncate ${unreadCount > 0 ? 'text-slate-100 font-medium' : 'text-slate-400'}`}>
+            {isOwnMessage && <span className="text-slate-500">You: </span>}
             {lastMessage.content}
           </p>
         )}
@@ -88,14 +88,14 @@ export const ConversationItem: React.FC<ConversationItemProps> = ({
 
       {/* Right side - timestamp and indicators */}
       <div className="shrink-0 flex flex-col items-end gap-1">
-        <span className={`text-xs ${unreadCount > 0 ? 'text-violet-600 dark:text-violet-400' : 'text-gray-400'}`}>
+        <span className={`text-xs ${unreadCount > 0 ? 'text-amber-300' : 'text-slate-500'}`}>
           {lastMessage?.timestamp}
         </span>
         
         <div className="flex items-center gap-1.5">
           {isMuted && <Icon name="mute" size={14} className="text-gray-400" />}
           {unreadCount > 0 && (
-            <span className="min-w-[18px] h-[18px] px-1 bg-violet-600 text-white text-xs font-bold rounded-full flex items-center justify-center">
+            <span className="min-w-4.5 h-4.5 px-1 bg-linear-to-r from-cyan-400 to-amber-300 text-slate-950 text-xs font-bold rounded-full flex items-center justify-center">
               {unreadCount > 9 ? '9+' : unreadCount}
             </span>
           )}

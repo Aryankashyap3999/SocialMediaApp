@@ -34,6 +34,17 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
   suggestions = [],
   trending = [],
 }) => {
+  const parseCount = (value: string) => {
+    const upper = value.toUpperCase();
+    if (upper.endsWith('M')) return parseFloat(upper) * 1_000_000;
+    if (upper.endsWith('K')) return parseFloat(upper) * 1_000;
+    const numeric = parseFloat(upper.replace(/[^0-9.]/g, ''));
+    return Number.isFinite(numeric) ? numeric : 0;
+  };
+
+  const normalizedCounts = trending.map((t) => parseCount(t.postsCount));
+  const maxCount = normalizedCounts.length ? Math.max(...normalizedCounts) : 1;
+
   return (
     <aside className="w-87.5 hidden xl:block pl-6">
       {/* Search Bar with unique floating design */}
@@ -70,45 +81,70 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
           <div className="relative p-5">
             <div className="flex items-center gap-2 mb-4">
               <div className="w-1.5 h-6 bg-linear-to-b from-cyan-500 to-amber-400 rounded-full" />
-              <h3 className="text-lg font-bold text-white">Trending Now</h3>
+              <h3 className="text-lg font-bold text-white">Signal Heatmap</h3>
               <div className="ml-auto flex items-center gap-1 text-xs text-cyan-300 font-medium">
                 <span className="w-2 h-2 bg-amber-300 rounded-full animate-pulse" />
                 Live
               </div>
             </div>
-            
-            <div className="space-y-1">
-              {trending.map((topic, index) => (
-                <div 
-                  key={topic.id} 
-                  className="group relative p-3 rounded-2xl hover:bg-white/5 cursor-pointer transition-all duration-200"
-                >
-                  {/* Rank number */}
-                  <div className="absolute left-3 top-3 text-4xl font-black text-slate-800 group-hover:text-cyan-100 transition-colors">
-                    {index + 1}
-                  </div>
-                  
-                  <div className="flex items-start justify-between pl-10">
-                    <div>
-                      <p className="text-xs text-slate-400">{topic.category}</p>
-                      <p className="font-bold text-white group-hover:text-cyan-200 transition-colors">
-                        {topic.title}
-                      </p>
-                      <p className="text-xs text-slate-400 flex items-center gap-1 mt-0.5">
-                        <Icon name="fire" size={12} className="text-amber-400" />
-                        {topic.postsCount} posts
-                      </p>
+
+            <div className="grid grid-cols-1 gap-3">
+              {trending.map((topic, index) => {
+                const heat = normalizedCounts[index] || 0;
+                const heatPercent = Math.min(100, Math.max(18, Math.round((heat / maxCount) * 100)));
+                const palette = index % 2 === 0
+                  ? 'from-cyan-500/20 via-emerald-400/10 to-amber-300/20'
+                  : 'from-amber-400/25 via-cyan-400/10 to-emerald-300/15';
+
+                return (
+                  <div
+                    key={topic.id}
+                    className="relative overflow-hidden rounded-2xl border border-white/5 bg-white/5 p-4 shadow-lg shadow-black/20 group hover:border-cyan-400/30 transition"
+                  >
+                    <div className={`absolute inset-0 opacity-70 bg-linear-to-br ${palette}`} />
+                    <div className="relative flex items-start justify-between gap-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/10 flex items-center justify-center text-lg font-black text-white/80">
+                          {index + 1}
+                        </div>
+                        <div className="min-w-0 space-y-1">
+                          <div className="flex items-center gap-2 text-xs text-cyan-100/80">
+                            <span className="px-2 py-0.5 rounded-full bg-white/10 border border-white/10 uppercase tracking-wide">{topic.category}</span>
+                            <span className="px-2 py-0.5 rounded-full bg-white/10 border border-white/10 text-amber-200">Heat {heatPercent}%</span>
+                          </div>
+                          <p className="font-bold text-white truncate text-base">{topic.title}</p>
+                          <div className="text-xs text-slate-200/80 flex items-center gap-2">
+                            <span className="w-2 h-2 rounded-full bg-amber-300" />
+                            <span>{topic.postsCount} posts</span>
+                          </div>
+                        </div>
+                      </div>
+                      <button className="p-2 rounded-full bg-white/5 border border-white/10 text-slate-200 hover:bg-white/10 transition">
+                        <Icon name="dotsVertical" size={16} />
+                      </button>
                     </div>
-                    <button className="p-2 hover:bg-white/10 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200">
-                      <Icon name="dotsVertical" size={16} className="text-gray-500" />
-                    </button>
+                    <div className="relative mt-3 h-2 rounded-full bg-white/10 overflow-hidden">
+                      <div
+                        className="h-full bg-linear-to-r from-cyan-400 via-emerald-400 to-amber-300"
+                        style={{ width: `${heatPercent}%` }}
+                      />
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
-            
+
+            <div className="mt-4 space-y-2">
+              <div className="flex items-center justify-between text-xs text-slate-300">
+                <span>Lower signal</span>
+                <span>Hotter signal</span>
+              </div>
+              <div className="h-2 rounded-full bg-linear-to-r from-slate-700 via-cyan-400 to-amber-300 border border-white/10 shadow-inner shadow-black/30" />
+              <p className="text-[11px] text-slate-400">Heat is normalized per panel and recalculates live.</p>
+            </div>
+
             <button className="w-full mt-3 py-2.5 text-sm font-semibold text-slate-950 bg-linear-to-r from-cyan-500 to-amber-400 hover:from-cyan-400 hover:to-amber-300 rounded-xl transition-all duration-200 shadow-lg shadow-cyan-500/20">
-              Show more trends
+              See full heatmap
             </button>
           </div>
         </div>

@@ -19,7 +19,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-black">
+    <div className="min-h-screen bg-black text-gray-100">
       {/* Sidebar */}
       <Sidebar
         isCollapsed={isCollapsed}
@@ -31,11 +31,11 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       {/* Main Content */}
       <main
         className={`
-          min-h-screen transition-all duration-300
+          min-h-screen transition-all duration-300 px-6 pt-8 pb-16
           ${isCollapsed ? 'ml-18' : 'ml-61.25 xl:ml-83.75'}
         `}
       >
-        {children}
+        <div className="max-w-7xl mx-auto">{children}</div>
       </main>
     </div>
   );

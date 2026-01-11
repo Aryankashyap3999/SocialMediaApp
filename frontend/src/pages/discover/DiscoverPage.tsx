@@ -154,20 +154,19 @@ export const DiscoverPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-slate-950">
       {/* Sticky Header with Search */}
-      <div className="sticky top-0 z-20 bg-white/90 dark:bg-gray-950/90 backdrop-blur-xl border-b border-gray-100 dark:border-gray-800">
+      <div className="sticky top-0 z-20 bg-slate-950/90 backdrop-blur-xl border-b border-slate-800">
         {/* Search Bar */}
         <div className="px-4 py-3">
-          <div className={`relative transition-all duration-300 ${isSearchFocused ? 'scale-[1.02]' : ''}`}>
-            {/* Glow effect */}
-            <div className={`absolute inset-0 bg-linear-to-r from-violet-500/20 to-indigo-500/20 rounded-2xl blur-xl transition-opacity duration-300 ${isSearchFocused ? 'opacity-100' : 'opacity-0'}`} />
+          <div className={`relative transition-all duration-300 ${isSearchFocused ? 'scale-[1.01]' : ''}`}>
+            <div className={`absolute inset-0 bg-linear-to-r from-cyan-500/12 via-emerald-400/8 to-amber-300/12 rounded-2xl blur-xl transition-opacity duration-300 ${isSearchFocused ? 'opacity-100' : 'opacity-0'}`} />
             
             <div className="relative flex items-center">
               <Icon 
                 name="search" 
                 size={20} 
-                className={`absolute left-4 transition-colors ${isSearchFocused ? 'text-violet-500' : 'text-gray-400'}`} 
+                className={`absolute left-4 transition-colors ${isSearchFocused ? 'text-cyan-400' : 'text-slate-500'}`} 
               />
               <input
                 type="text"
@@ -176,7 +175,7 @@ export const DiscoverPage: React.FC = () => {
                 onFocus={() => setIsSearchFocused(true)}
                 onBlur={() => setIsSearchFocused(false)}
                 placeholder="Search topics, people, or posts..."
-                className="w-full bg-gray-100 dark:bg-gray-900 border-2 border-transparent rounded-2xl py-3.5 pl-12 pr-4 text-base focus:outline-none focus:border-violet-500/50 focus:bg-white dark:focus:bg-gray-800 transition-all placeholder:text-gray-400"
+                className="w-full bg-slate-900 border-2 border-transparent rounded-2xl py-3.5 pl-12 pr-4 text-base text-slate-100 focus:outline-none focus:border-cyan-400/50 focus:bg-slate-900 transition-all placeholder:text-slate-500"
               />
               {searchQuery && (
                 <button 
@@ -200,11 +199,11 @@ export const DiscoverPage: React.FC = () => {
                 key={category.id}
                 onClick={() => setActiveCategory(category.id)}
                 className={`
-                  flex items-center gap-2 px-4 py-2 rounded-full whitespace-nowrap
+                  flex items-center gap-2 px-4 py-2 rounded-full whitespace-nowrap border
                   text-sm font-medium transition-all duration-200
                   ${activeCategory === category.id
-                    ? 'bg-linear-to-r from-violet-600 to-indigo-600 text-white shadow-lg shadow-violet-500/25'
-                    : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                    ? 'bg-slate-900 border-cyan-500/60 text-slate-50 shadow-[0_8px_30px_-18px_rgba(0,0,0,0.8)]'
+                    : 'bg-slate-900 border-slate-800 text-slate-300 hover:border-cyan-400/50'
                   }
                 `}
               >
@@ -216,7 +215,7 @@ export const DiscoverPage: React.FC = () => {
         </div>
 
         {/* View Mode Tabs */}
-        <div className="flex border-t border-gray-100 dark:border-gray-800">
+        <div className="flex border-t border-slate-800">
           {(['explore', 'trending', 'people'] as ViewMode[]).map((mode) => (
             <button
               key={mode}
@@ -224,14 +223,14 @@ export const DiscoverPage: React.FC = () => {
               className={`
                 flex-1 py-3.5 text-sm font-medium capitalize relative transition-colors
                 ${viewMode === mode 
-                  ? 'text-violet-600 dark:text-violet-400' 
-                  : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+                  ? 'text-cyan-300' 
+                  : 'text-slate-500 hover:text-slate-200'
                 }
               `}
             >
               {mode}
               {viewMode === mode && (
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-1 bg-linear-to-r from-violet-500 to-indigo-500 rounded-full" />
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-1 bg-linear-to-r from-cyan-400 to-amber-300 rounded-full" />
               )}
             </button>
           ))}
@@ -247,7 +246,7 @@ export const DiscoverPage: React.FC = () => {
               <button
                 key={item.id}
                 className={`
-                  relative aspect-square group overflow-hidden bg-gray-100 dark:bg-gray-800
+                  relative aspect-square group overflow-hidden bg-slate-900
                   ${index === 0 ? 'col-span-2 row-span-2' : ''}
                 `}
               >
@@ -273,9 +272,9 @@ export const DiscoverPage: React.FC = () => {
                 )}
                 
                 {/* Hover overlay */}
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <div className="absolute inset-0 bg-slate-950/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <div className="flex items-center gap-1.5 text-white">
-                    <Icon name="heart" size={20} filled />
+                    <Icon name="heart" size={20} filled className="text-amber-300" />
                     <span className="font-semibold">{formatNumber(item.likes)}</span>
                   </div>
                 </div>
@@ -288,31 +287,31 @@ export const DiscoverPage: React.FC = () => {
         {viewMode === 'trending' && (
           <div>
             {/* Trending Topics Section */}
-            <div className="p-4 border-b border-gray-100 dark:border-gray-800">
-              <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
-                <div className="w-1.5 h-6 bg-linear-to-b from-violet-600 to-indigo-600 rounded-full" />
+            <div className="p-4 border-b border-slate-800">
+              <h2 className="text-lg font-bold mb-4 flex items-center gap-2 text-slate-50">
+                <div className="w-1.5 h-6 bg-linear-to-b from-cyan-400 to-amber-300 rounded-full" />
                 Trending Topics
               </h2>
               <div className="space-y-3">
                 {trendingTopics.map((topic, index) => (
                   <button
                     key={topic.id}
-                    className="w-full flex items-start gap-4 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-900/50 transition-colors group"
+                    className="w-full flex items-start gap-4 p-3 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-400/30 transition-colors group"
                   >
-                    <span className="text-2xl font-bold text-gray-200 dark:text-gray-700 group-hover:text-violet-200 dark:group-hover:text-violet-900/50 transition-colors">
+                    <span className="text-2xl font-bold text-slate-700 group-hover:text-cyan-300 transition-colors">
                       {index + 1}
                     </span>
                     <div className="flex-1 text-left">
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{topic.category}</p>
-                      <p className="font-bold text-gray-900 dark:text-white group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
+                      <p className="text-xs text-slate-500">{topic.category}</p>
+                      <p className="font-bold text-slate-50 group-hover:text-cyan-300 transition-colors">
                         {topic.tag}
                       </p>
-                      <p className="text-xs text-gray-500 flex items-center gap-1 mt-0.5">
-                        <Icon name="trending" size={12} className="text-orange-500" />
+                      <p className="text-xs text-slate-500 flex items-center gap-1 mt-0.5">
+                        <Icon name="trending" size={12} className="text-amber-300" />
                         {topic.posts} posts
                       </p>
                     </div>
-                    <Icon name="dotsVertical" size={18} className="text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <Icon name="dotsVertical" size={18} className="text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </button>
                 ))}
               </div>
@@ -320,11 +319,11 @@ export const DiscoverPage: React.FC = () => {
 
             {/* Trending Posts */}
             <div>
-              <h2 className="text-lg font-bold p-4 flex items-center gap-2">
-                <div className="w-1.5 h-6 bg-linear-to-b from-pink-500 to-violet-600 rounded-full" />
-                Trending Posts
+              <h2 className="text-lg font-bold p-4 flex items-center gap-2 text-slate-50">
+                <div className="w-1.5 h-6 bg-linear-to-b from-cyan-400 to-amber-300 rounded-full" />
+                Signal Posts
               </h2>
-              <div className="divide-y divide-gray-100 dark:divide-gray-800">
+              <div className="divide-y divide-slate-800">
                 {trendingPosts.map((post) => (
                   <FeedCard key={post.id} {...post} />
                 ))}
@@ -336,20 +335,20 @@ export const DiscoverPage: React.FC = () => {
         {/* People View */}
         {viewMode === 'people' && (
           <div className="p-4">
-            <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
-              <div className="w-1.5 h-6 bg-linear-to-b from-violet-600 to-indigo-600 rounded-full" />
+            <h2 className="text-lg font-bold mb-4 flex items-center gap-2 text-slate-50">
+              <div className="w-1.5 h-6 bg-linear-to-b from-cyan-400 to-amber-300 rounded-full" />
               Suggested for You
             </h2>
             <div className="space-y-3">
               {suggestedUsers.map((user) => (
                 <div
                   key={user.id}
-                  className="flex items-center gap-4 p-4 rounded-2xl bg-gray-50 dark:bg-gray-900/50 hover:bg-gray-100 dark:hover:bg-gray-900 transition-colors group"
+                  className="flex items-center gap-4 p-4 rounded-2xl bg-slate-900 border border-slate-800 hover:border-cyan-400/30 transition-colors group"
                 >
                   {/* Avatar with gradient ring */}
                   <div className="relative shrink-0">
-                    <div className="p-0.5 bg-linear-to-br from-violet-500 to-pink-500 rounded-full">
-                      <div className="p-0.5 bg-white dark:bg-gray-900 rounded-full">
+                    <div className="p-0.5 bg-linear-to-br from-cyan-500 to-amber-300 rounded-full">
+                      <div className="p-0.5 bg-slate-950 rounded-full">
                         <Avatar
                           src={user.avatarUrl}
                           alt={user.name}
@@ -358,8 +357,8 @@ export const DiscoverPage: React.FC = () => {
                       </div>
                     </div>
                     {user.isVerified && (
-                      <div className="absolute -bottom-0.5 -right-0.5 bg-white dark:bg-gray-900 rounded-full p-0.5">
-                        <Icon name="verified" size={16} />
+                      <div className="absolute -bottom-0.5 -right-0.5 bg-slate-950 rounded-full p-0.5 border border-slate-800">
+                        <Icon name="verified" size={16} className="text-amber-300" />
                       </div>
                     )}
                   </div>
@@ -367,17 +366,17 @@ export const DiscoverPage: React.FC = () => {
                   {/* User Info */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1">
-                      <span className="font-bold text-gray-900 dark:text-white truncate">
+                      <span className="font-bold text-slate-50 truncate">
                         {user.name}
                       </span>
                     </div>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">@{user.username}</p>
-                    <p className="text-sm text-gray-600 dark:text-gray-300 mt-1 line-clamp-1">{user.bio}</p>
-                    <p className="text-xs text-gray-500 mt-1">{user.followers} followers</p>
+                    <p className="text-sm text-slate-500">@{user.username}</p>
+                    <p className="text-sm text-slate-300 mt-1 line-clamp-1">{user.bio}</p>
+                    <p className="text-xs text-slate-500 mt-1">{user.followers} followers</p>
                   </div>
                   
                   {/* Follow Button */}
-                  <button className="px-5 py-2 bg-linear-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white text-sm font-bold rounded-full transition-all hover:shadow-lg hover:shadow-violet-500/25 active:scale-95">
+                  <button className="px-5 py-2 bg-slate-100 text-slate-950 text-sm font-bold rounded-full transition-all hover:bg-cyan-400 hover:text-slate-950 active:scale-95">
                     Follow
                   </button>
                 </div>
@@ -386,19 +385,19 @@ export const DiscoverPage: React.FC = () => {
 
             {/* More Suggestions */}
             <div className="mt-8">
-              <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
-                <div className="w-1.5 h-6 bg-linear-to-b from-pink-500 to-orange-500 rounded-full" />
+              <h2 className="text-lg font-bold mb-4 flex items-center gap-2 text-slate-50">
+                <div className="w-1.5 h-6 bg-linear-to-b from-cyan-400 to-amber-300 rounded-full" />
                 Popular Creators
               </h2>
               <div className="grid grid-cols-2 gap-3">
                 {suggestedUsers.slice(0, 4).map((user) => (
                   <div
                     key={`popular-${user.id}`}
-                    className="relative p-4 rounded-2xl bg-linear-to-br from-violet-50 to-indigo-50 dark:from-violet-950/30 dark:to-indigo-950/30 border border-violet-100 dark:border-violet-900/30 group hover:shadow-lg hover:shadow-violet-500/10 transition-all"
+                    className="relative p-4 rounded-2xl bg-slate-900 border border-slate-800 group hover:border-cyan-400/30 transition-all"
                   >
                     <div className="flex flex-col items-center text-center">
-                      <div className="p-0.5 bg-linear-to-br from-violet-500 to-pink-500 rounded-full mb-3">
-                        <div className="p-0.5 bg-white dark:bg-gray-900 rounded-full">
+                      <div className="p-0.5 bg-linear-to-br from-cyan-500 to-amber-300 rounded-full mb-3">
+                        <div className="p-0.5 bg-slate-950 rounded-full">
                           <Avatar
                             src={user.avatarUrl}
                             alt={user.name}
@@ -406,12 +405,12 @@ export const DiscoverPage: React.FC = () => {
                           />
                         </div>
                       </div>
-                      <div className="flex items-center gap-1 mb-0.5">
+                      <div className="flex items-center gap-1 mb-0.5 text-slate-50">
                         <span className="font-bold text-sm truncate max-w-30">{user.name}</span>
-                        {user.isVerified && <Icon name="verified" size={14} />}
+                        {user.isVerified && <Icon name="verified" size={14} className="text-amber-300" />}
                       </div>
-                      <p className="text-xs text-gray-500 mb-3">@{user.username}</p>
-                      <button className="w-full py-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-semibold rounded-full hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors">
+                      <p className="text-xs text-slate-500 mb-3">@{user.username}</p>
+                      <button className="w-full py-2 bg-slate-100 text-slate-950 text-sm font-semibold rounded-full hover:bg-cyan-400 transition-colors">
                         Follow
                       </button>
                     </div>

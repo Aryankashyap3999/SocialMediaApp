@@ -32,7 +32,7 @@ export const ProfileTabs: React.FC<ProfileTabsProps> = ({
   ];
 
   return (
-    <div className="sticky top-0 z-10 bg-white/80 dark:bg-gray-950/80 backdrop-blur-md border-b border-gray-100 dark:border-gray-800">
+    <div className="sticky top-0 z-10 bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
       <nav className="flex">
         {tabs.map((tab) => {
           const isActive = activeTab === tab.id;
@@ -46,8 +46,8 @@ export const ProfileTabs: React.FC<ProfileTabsProps> = ({
                 flex-1 relative flex items-center justify-center gap-2 px-4 py-4
                 font-medium text-sm transition-colors
                 ${isActive 
-                  ? 'text-violet-600 dark:text-violet-400' 
-                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-900/50'
+                  ? 'text-cyan-500 dark:text-cyan-400' 
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900/50'
                 }
               `}
             >
@@ -55,15 +55,15 @@ export const ProfileTabs: React.FC<ProfileTabsProps> = ({
                 name={tab.icon} 
                 size={18} 
                 filled={isActive}
-                className={isActive ? 'text-violet-600 dark:text-violet-400' : ''}
+                className={isActive ? 'text-cyan-500 dark:text-cyan-400' : ''}
               />
               <span>{tab.label}</span>
               {count !== undefined && count > 0 && (
                 <span className={`
                   text-xs px-1.5 py-0.5 rounded-full
                   ${isActive 
-                    ? 'bg-violet-100 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400' 
-                    : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400'
+                    ? 'bg-cyan-100 dark:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400' 
+                    : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'
                   }
                 `}>
                   {count > 999 ? `${(count / 1000).toFixed(1)}k` : count}
@@ -72,7 +72,7 @@ export const ProfileTabs: React.FC<ProfileTabsProps> = ({
               
               {/* Active indicator */}
               {isActive && (
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-1 bg-linear-to-r from-violet-500 to-indigo-500 rounded-full" />
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-1 bg-linear-to-r from-cyan-500 to-amber-400 rounded-full" />
               )}
             </button>
           );

@@ -33,7 +33,7 @@ export const ChatView: React.FC<ChatViewProps> = ({
   }, [messages]);
 
   return (
-    <div className="h-full flex flex-col bg-white dark:bg-gray-950">
+    <div className="h-full flex flex-col bg-slate-950 text-slate-100">
       {/* Header */}
       <ChatHeader
         conversation={conversation}

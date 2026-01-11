@@ -1,5 +1,6 @@
 import './App.css';
 import { Router } from './router';
+import { Modals } from '@components/providers/Modals';
 
 /**
  * Main App Component
@@ -7,7 +8,12 @@ import { Router } from './router';
  * Root component that provides routing context to the entire application
  */
 function App() {
-  return <Router />;
+  return (
+    <>
+      <Router />
+      <Modals />
+    </>
+  );
 }
 
 export default App;

@@ -23,7 +23,7 @@ export const StoryProgress: React.FC<StoryProgressProps> = ({
       {Array.from({ length: totalItems }).map((_, index) => (
         <div
           key={index}
-          className="flex-1 h-[3px] bg-white/30 rounded-full overflow-hidden"
+          className="flex-1 h-0.75 bg-white/30 rounded-full overflow-hidden"
         >
           <div
             className={`h-full bg-white rounded-full transition-all ${

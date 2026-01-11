@@ -122,6 +122,14 @@ html {
   scroll-behavior: smooth;
 }
 
+body {
+  background:
+    radial-gradient(circle at 18% 18%, rgba(34, 211, 238, 0.06), transparent 34%),
+    radial-gradient(circle at 72% 16%, rgba(255, 214, 94, 0.12), transparent 40%),
+    linear-gradient(135deg, rgba(18, 20, 26, 0.9), rgba(22, 24, 30, 0.9));
+  color: var(--color-text);
+}
+
 
 
 

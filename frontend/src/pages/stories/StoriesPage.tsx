@@ -7,10 +7,10 @@ import type { Story } from './types';
 type ViewMode = 'all' | 'following' | 'favorites';
 
 /**
- * StoriesPage Component
+ * SignalsPage Component
  * 
- * Main orchestrator for the stories feature
- * Displays story grid and manages story viewer
+ * Main orchestrator for the signals feature
+ * Displays signal grid and manages viewer
  */
 export const StoriesPage: React.FC = () => {
   const [stories, setStories] = useState<Story[]>(mockStories);
@@ -18,16 +18,16 @@ export const StoriesPage: React.FC = () => {
   const [selectedStoryIndex, setSelectedStoryIndex] = useState(0);
   const [viewMode, setViewMode] = useState<ViewMode>('all');
 
-  // Handle story click to open viewer
+  // Handle signal click to open viewer
   const handleStoryClick = useCallback((index: number) => {
     setSelectedStoryIndex(index);
     setViewerOpen(true);
   }, []);
 
-  // Handle add story
+  // Handle add signal
   const handleAddStory = useCallback(() => {
-    // TODO: Open story creation flow
-    console.log('Add new story');
+    // TODO: Open signal creation flow
+    console.log('Add new signal');
   }, []);
 
   // Handle story viewed - mark as seen
@@ -55,14 +55,15 @@ export const StoriesPage: React.FC = () => {
   const liveCount = stories.filter((s) => s.isLive).length;
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+    <div className="min-h-screen bg-slate-950 text-slate-100">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-white dark:bg-gray-950 border-b border-gray-100 dark:border-gray-800">
+      <div className="sticky top-0 z-10 bg-slate-950/90 backdrop-blur border-b border-white/5">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h1 className="text-2xl font-bold">Stories</h1>
-              <p className="text-sm text-gray-500">
+              <p className="text-xs uppercase tracking-[0.24em] text-slate-300">Signal Shelf</p>
+              <h1 className="text-2xl font-semibold text-white">Signals</h1>
+              <p className="text-sm text-slate-400">
                 {unseenCount > 0 && `${unseenCount} new • `}
                 {liveCount > 0 && `${liveCount} live`}
               </p>
@@ -70,17 +71,17 @@ export const StoriesPage: React.FC = () => {
             
             <button
               onClick={handleAddStory}
-              className="flex items-center gap-2 px-4 py-2 bg-linear-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-medium rounded-xl transition-all"
+              className="flex items-center gap-2 px-4 py-2 rounded-2xl border border-white/10 bg-linear-to-r from-cyan-500 to-amber-400 text-slate-950 font-semibold shadow-xl shadow-cyan-500/30 hover:-translate-y-0.5 transition-transform"
             >
-              <Icon name="create" size={18} />
-              <span className="hidden sm:inline">Create Story</span>
+              <Icon name="create" size={18} className="text-slate-950" />
+              <span className="hidden sm:inline">Create Signal</span>
             </button>
           </div>
 
           {/* View mode tabs */}
-          <div className="flex gap-1 bg-gray-100 dark:bg-gray-900 rounded-xl p-1">
+          <div className="flex gap-1 bg-slate-900/80 rounded-xl p-1 border border-white/5">
             {[
-              { id: 'all', label: 'All Stories' },
+              { id: 'all', label: 'All Signals' },
               { id: 'following', label: 'Following' },
               { id: 'favorites', label: 'Favorites' },
             ].map((tab) => (
@@ -89,8 +90,8 @@ export const StoriesPage: React.FC = () => {
                 onClick={() => setViewMode(tab.id as ViewMode)}
                 className={`flex-1 py-2 px-4 text-sm font-medium rounded-lg transition-all ${
                   viewMode === tab.id
-                    ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm'
-                    : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+                    ? 'bg-white/10 text-white shadow-sm'
+                    : 'text-slate-400 hover:text-white'
                 }`}
               >
                 {tab.label}
@@ -104,8 +105,8 @@ export const StoriesPage: React.FC = () => {
       <div className="max-w-4xl mx-auto py-6">
         {/* Story rings carousel */}
         <div className="mb-8">
-          <h2 className="px-4 text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">
-            Recent Stories
+          <h2 className="px-4 text-sm font-semibold text-slate-200 uppercase tracking-wide mb-4">
+            Recent Signals
           </h2>
           <StoryGrid
             stories={filteredStories}
@@ -117,15 +118,15 @@ export const StoriesPage: React.FC = () => {
 
         {/* Story cards grid */}
         <div className="px-4">
-          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">
-            All Stories
+          <h2 className="text-sm font-semibold text-slate-200 uppercase tracking-wide mb-4">
+            All Signals
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
             {filteredStories.map((story, index) => (
               <button
                 key={story.id}
                 onClick={() => handleStoryClick(index)}
-                className="relative aspect-9/16 rounded-2xl overflow-hidden group"
+                className="relative aspect-9/16 rounded-2xl overflow-hidden group border border-white/5 bg-white/5"
               >
                 {/* Background image */}
                 <img
@@ -135,18 +136,18 @@ export const StoriesPage: React.FC = () => {
                 />
                 
                 {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-black/20" />
+                <div className="absolute inset-0 bg-black/35" />
 
                 {/* Live badge */}
                 {story.isLive && (
-                  <div className="absolute top-3 left-3 px-2 py-0.5 bg-linear-to-r from-pink-500 to-red-500 text-white text-xs font-bold uppercase rounded">
+                  <div className="absolute top-3 left-3 px-2 py-0.5 rounded-full bg-white/85 text-slate-900 text-xs font-semibold uppercase tracking-wide">
                     Live
                   </div>
                 )}
 
                 {/* Story count badge */}
                 {story.items.length > 1 && (
-                  <div className="absolute top-3 right-3 px-2 py-0.5 bg-black/50 text-white text-xs font-medium rounded">
+                  <div className="absolute top-3 right-3 px-2 py-0.5 bg-white/80 text-slate-900 text-xs font-medium rounded">
                     {story.items.length}
                   </div>
                 )}
@@ -154,7 +155,7 @@ export const StoriesPage: React.FC = () => {
                 {/* User info */}
                 <div className="absolute bottom-0 left-0 right-0 p-3">
                   <div className="flex items-center gap-2">
-                    <div className={`p-0.5 rounded-full ${story.hasUnseenItems ? 'bg-linear-to-tr from-amber-500 via-pink-500 to-violet-600' : 'bg-white/30'}`}>
+                    <div className={`p-0.5 rounded-full ${story.hasUnseenItems ? 'bg-white/70' : 'bg-white/30'}`}>
                       <img
                         src={story.user.avatarUrl}
                         alt={story.user.name}
@@ -177,7 +178,7 @@ export const StoriesPage: React.FC = () => {
 
                 {/* Unseen indicator ring */}
                 {story.hasUnseenItems && (
-                  <div className="absolute inset-0 rounded-2xl ring-2 ring-violet-500 ring-offset-2 ring-offset-gray-50 dark:ring-offset-gray-950" />
+                  <div className="absolute inset-0 rounded-2xl ring-2 ring-white/70 ring-offset-2 ring-offset-slate-900" />
                 )}
               </button>
             ))}
@@ -190,17 +191,17 @@ export const StoriesPage: React.FC = () => {
             <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
               <Icon name="stories" size={40} className="text-gray-400" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-              No stories yet
+            <h3 className="text-lg font-semibold text-white mb-2">
+              No signals yet
             </h3>
-            <p className="text-gray-500 text-sm max-w-sm mx-auto mb-6">
-              Stories from people you follow will appear here
+            <p className="text-slate-300 text-sm max-w-sm mx-auto mb-6">
+              Signals from people you follow will appear here
             </p>
             <button
               onClick={handleAddStory}
-              className="px-6 py-2.5 bg-violet-600 hover:bg-violet-700 text-white font-medium rounded-xl transition-colors"
+              className="px-6 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white font-semibold hover:border-white/20 hover:bg-white/10 transition"
             >
-              Create your first story
+              Create your first signal
             </button>
           </div>
         )}

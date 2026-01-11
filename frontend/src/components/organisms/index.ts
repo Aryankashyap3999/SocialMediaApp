@@ -15,3 +15,9 @@ export type { ComposeBoxProps } from './ComposeBox';
 
 export { StoriesBar } from './StoriesBar';
 export type { StoriesBarProps, Story } from './StoriesBar';
+
+export { CreateButton } from './CreateButton';
+export type { CreateOption, CreateButtonPosition } from './CreateButton';
+
+// Modals
+export { CreatePostModal, CreateOptionsMenu } from './Modals';

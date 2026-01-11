@@ -28,13 +28,13 @@ export const ProfilePostGrid: React.FC<ProfilePostGridProps> = ({
   if (items.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-16 px-4">
-        <div className="w-20 h-20 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-4">
-          <Icon name="image" size={32} className="text-gray-400 dark:text-gray-600" />
+        <div className="w-20 h-20 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-4">
+          <Icon name="image" size={32} className="text-cyan-400 dark:text-cyan-500" />
         </div>
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+        <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2">
           No media yet
         </h3>
-        <p className="text-gray-500 dark:text-gray-400 text-center max-w-sm">
+        <p className="text-slate-500 dark:text-slate-400 text-center max-w-sm">
           When you post photos or videos, they will appear here.
         </p>
       </div>
@@ -47,7 +47,7 @@ export const ProfilePostGrid: React.FC<ProfilePostGridProps> = ({
         <button
           key={item.id}
           onClick={() => onItemClick?.(item)}
-          className="relative aspect-square group overflow-hidden bg-gray-100 dark:bg-gray-800"
+          className="relative aspect-square group overflow-hidden bg-slate-100 dark:bg-slate-800"
         >
           <img
             src={item.thumbnailUrl || item.url}

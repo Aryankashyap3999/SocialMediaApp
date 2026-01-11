@@ -43,7 +43,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   return (
     <div className="relative">
       {/* Cover Image */}
-      <div className="relative h-48 sm:h-64 bg-linear-to-br from-violet-500 via-purple-500 to-indigo-600">
+      <div className="relative h-48 sm:h-64 bg-linear-to-br from-cyan-500 via-cyan-400 to-amber-400">
         {user.coverUrl ? (
           <img
             src={user.coverUrl}
@@ -51,7 +51,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
             className="w-full h-full object-cover"
           />
         ) : (
-          <div className="absolute inset-0 bg-linear-to-br from-violet-500 via-purple-500 to-indigo-600">
+          <div className="absolute inset-0 bg-linear-to-br from-cyan-500 via-cyan-400 to-amber-400">
             {/* Decorative pattern */}
             <div className="absolute inset-0 opacity-20">
               <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
@@ -79,8 +79,8 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
         {/* Avatar */}
         <div className="relative -mt-16 sm:-mt-20 mb-4">
           <div className="relative inline-block">
-            <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-2xl bg-linear-to-br from-violet-500 to-indigo-500 p-1 shadow-xl">
-              <div className="w-full h-full rounded-xl overflow-hidden bg-white dark:bg-gray-950 ring-4 ring-white dark:ring-gray-950">
+            <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-2xl bg-linear-to-br from-cyan-500 to-amber-400 p-1 shadow-xl">
+              <div className="w-full h-full rounded-xl overflow-hidden bg-slate-50 dark:bg-slate-950 ring-4 ring-slate-50 dark:ring-slate-950">
                 {user.avatarUrl ? (
                   <img
                     src={user.avatarUrl}
@@ -88,7 +88,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full bg-linear-to-br from-violet-400 to-indigo-500 flex items-center justify-center text-white text-4xl font-bold">
+                  <div className="w-full h-full bg-linear-to-br from-cyan-400 to-amber-400 flex items-center justify-center text-white text-4xl font-bold">
                     {user.name.charAt(0)}
                   </div>
                 )}
@@ -97,14 +97,14 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
             
             {/* Verified badge */}
             {user.isVerified && (
-              <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-white dark:bg-gray-950 rounded-full flex items-center justify-center shadow-lg">
+              <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-slate-50 dark:bg-slate-950 rounded-full flex items-center justify-center shadow-lg">
                 <Icon name="verified" size={24} />
               </div>
             )}
             
             {/* Edit avatar button */}
             {isOwnProfile && (
-              <button className="absolute bottom-2 right-2 p-2 bg-violet-600 hover:bg-violet-700 rounded-full text-white transition-colors shadow-lg">
+              <button className="absolute bottom-2 right-2 p-2 bg-cyan-500 hover:bg-cyan-600 rounded-full text-white transition-colors shadow-lg">
                 <Icon name="image" size={16} />
               </button>
             )}
@@ -115,14 +115,14 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+              <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
                 {user.name}
               </h1>
               {user.isVerified && (
-                <Icon name="verified" size={20} className="text-violet-500" />
+                <Icon name="verified" size={20} className="text-cyan-400" />
               )}
             </div>
-            <p className="text-gray-500 dark:text-gray-400">@{user.username}</p>
+            <p className="text-slate-500 dark:text-slate-400">@{user.username}</p>
           </div>
 
           {/* Action Buttons */}
@@ -130,7 +130,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
             {isOwnProfile ? (
               <Button
                 onClick={onEditClick}
-                className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 px-6"
+                className="bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-700 px-6"
               >
                 Edit Profile
               </Button>
@@ -138,24 +138,24 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
               <>
                 <button
                   onClick={onMoreClick}
-                  className="p-2.5 rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                  className="p-2.5 rounded-full border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                 >
-                  <Icon name="dotsVertical" size={20} className="text-gray-600 dark:text-gray-400" />
+                  <Icon name="dotsVertical" size={20} className="text-slate-600 dark:text-slate-400" />
                 </button>
                 
                 <button
                   onClick={onMessageClick}
-                  className="p-2.5 rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                  className="p-2.5 rounded-full border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                 >
-                  <Icon name="messages" size={20} className="text-gray-600 dark:text-gray-400" />
+                  <Icon name="messages" size={20} className="text-slate-600 dark:text-slate-400" />
                 </button>
                 
                 <Button
                   onClick={onFollowClick}
                   className={`px-6 ${
                     isFollowing
-                      ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-red-50 hover:text-red-600 hover:border-red-200 dark:hover:bg-red-900/20 dark:hover:text-red-400'
-                      : 'bg-linear-to-r from-violet-600 to-indigo-600 text-white hover:from-violet-700 hover:to-indigo-700'
+                      ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 hover:bg-red-50 hover:text-red-600 hover:border-red-200 dark:hover:bg-red-900/20 dark:hover:text-red-400'
+                      : 'bg-linear-to-r from-cyan-500 to-amber-400 text-white hover:from-cyan-600 hover:to-amber-500 shadow-[0_10px_30px_-18px_rgba(0,0,0,0.8)]'
                   }`}
                 >
                   {isFollowing ? 'Following' : 'Follow'}
@@ -167,13 +167,13 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
 
         {/* Bio */}
         {user.bio && (
-          <p className="text-gray-800 dark:text-gray-200 text-[15px] leading-relaxed mb-4 max-w-2xl">
+          <p className="text-slate-700 dark:text-slate-300 text-[15px] leading-relaxed mb-4 max-w-2xl">
             {user.bio}
           </p>
         )}
 
         {/* Meta Info */}
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-500 dark:text-gray-400 mb-4">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-slate-500 dark:text-slate-400 mb-4">
           {user.location && (
             <div className="flex items-center gap-1.5">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -189,7 +189,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
               href={user.website}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-violet-600 dark:text-violet-400 hover:underline"
+              className="flex items-center gap-1.5 text-cyan-500 dark:text-cyan-400 hover:underline"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
@@ -207,23 +207,23 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
         {/* Stats */}
         <div className="flex items-center gap-6">
           <button className="group">
-            <span className="font-bold text-gray-900 dark:text-white group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
+            <span className="font-bold text-slate-900 dark:text-slate-100 group-hover:text-cyan-500 dark:group-hover:text-cyan-400 transition-colors">
               {user.followingCount.toLocaleString()}
             </span>
-            <span className="text-gray-500 dark:text-gray-400 ml-1">Following</span>
+            <span className="text-slate-500 dark:text-slate-400 ml-1">Following</span>
           </button>
           
           <button className="group">
-            <span className="font-bold text-gray-900 dark:text-white group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
+            <span className="font-bold text-slate-900 dark:text-slate-100 group-hover:text-cyan-500 dark:group-hover:text-cyan-400 transition-colors">
               {user.followersCount.toLocaleString()}
             </span>
-            <span className="text-gray-500 dark:text-gray-400 ml-1">Followers</span>
+            <span className="text-slate-500 dark:text-slate-400 ml-1">Followers</span>
           </button>
         </div>
       </div>
 
       {/* Divider */}
-      <div className="h-px bg-linear-to-r from-transparent via-gray-200 dark:via-gray-800 to-transparent" />
+      <div className="h-px bg-linear-to-r from-transparent via-slate-200 dark:via-slate-800 to-transparent" />
     </div>
   );
 };

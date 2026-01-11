@@ -46,14 +46,14 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   const hasContent = message.trim().length > 0;
 
   return (
-    <div className="px-4 py-3 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950">
+    <div className="px-4 py-3 border-t border-slate-800 bg-slate-950">
       <form onSubmit={handleSubmit} className="flex items-center gap-2">
         {/* Emoji button */}
         <button
           type="button"
-          className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
+          className="p-2 hover:bg-slate-900 rounded-full transition-colors"
         >
-          <Icon name="emoji" size={22} className="text-gray-500" />
+          <Icon name="emoji" size={22} className="text-slate-400" />
         </button>
 
         {/* Input */}
@@ -66,7 +66,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
             onKeyDown={handleKeyPress}
             placeholder={placeholder}
             disabled={disabled}
-            className="w-full bg-gray-100 dark:bg-gray-900 rounded-full py-2.5 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/50 placeholder:text-gray-400 disabled:opacity-50"
+            className="w-full bg-slate-900 rounded-full py-2.5 px-4 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 placeholder:text-slate-500 disabled:opacity-50"
           />
         </div>
 
@@ -75,23 +75,23 @@ export const MessageInput: React.FC<MessageInputProps> = ({
           <button
             type="submit"
             disabled={disabled}
-            className="p-2 bg-violet-600 hover:bg-violet-700 rounded-full transition-colors disabled:opacity-50"
+            className="p-2 rounded-full transition-colors bg-linear-to-r from-cyan-400 to-amber-300 hover:from-cyan-300 hover:to-amber-200 shadow-[0_10px_30px_-18px_rgba(0,0,0,0.8)] disabled:opacity-50"
           >
-            <Icon name="send" size={20} className="text-white" />
+            <Icon name="send" size={20} className="text-slate-950" />
           </button>
         ) : (
           <>
             <button
               type="button"
-              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
+              className="p-2 hover:bg-slate-900 rounded-full transition-colors"
             >
-              <Icon name="image" size={22} className="text-gray-500" />
+              <Icon name="image" size={22} className="text-slate-400" />
             </button>
             <button
               type="button"
-              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
+              className="p-2 hover:bg-slate-900 rounded-full transition-colors"
             >
-              <Icon name="microphone" size={22} className="text-gray-500" />
+              <Icon name="microphone" size={22} className="text-slate-400" />
             </button>
           </>
         )}
