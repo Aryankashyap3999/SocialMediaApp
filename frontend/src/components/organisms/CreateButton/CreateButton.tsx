@@ -16,31 +16,31 @@ const defaultOptions: CreateOption[] = [
     id: 'post',
     label: 'New Post',
     icon: 'image',
-    color: 'bg-gradient-to-br from-violet-500 to-purple-600',
+    color: 'bg-linear-to-br from-violet-500 to-purple-600',
   },
   {
     id: 'story',
     label: 'Story',
     icon: 'stories',
-    color: 'bg-gradient-to-br from-pink-500 to-rose-600',
+    color: 'bg-linear-to-br from-pink-500 to-rose-600',
   },
   {
     id: 'reel',
     label: 'Reel',
     icon: 'play',
-    color: 'bg-gradient-to-br from-orange-500 to-red-600',
+    color: 'bg-linear-to-br from-orange-500 to-red-600',
   },
   {
     id: 'live',
     label: 'Go Live',
     icon: 'video',
-    color: 'bg-gradient-to-br from-red-500 to-pink-600',
+    color: 'bg-linear-to-br from-red-500 to-pink-600',
   },
   {
     id: 'poll',
     label: 'Poll',
     icon: 'stats',
-    color: 'bg-gradient-to-br from-cyan-500 to-blue-600',
+    color: 'bg-linear-to-br from-cyan-500 to-blue-600',
   },
 ];
 
