@@ -1,5 +1,6 @@
 import React from 'react';
 import { CreatePostModal } from '@components/organisms/Modals/CreatePostModal';
+import { CreateDropModal } from '@components/organisms/Modals/CreateDropModal';
 import { ConfirmModal } from '@components/molecules/Modal';
 import { useModalStore } from '@/store/useModalStore';
 
@@ -26,7 +27,10 @@ export const Modals: React.FC = () => {
 
   return (
     <>
-      {/* Create Post Modal */}
+      {/* Create Drop Modal - Unified creation for all drop types */}
+      <CreateDropModal />
+
+      {/* Create Post Modal (legacy - can be removed) */}
       <CreatePostModal />
 
       {/* Confirm Modal - Generic confirmation dialog */}
@@ -42,12 +46,6 @@ export const Modals: React.FC = () => {
         confirmText={data.confirmText}
         cancelText={data.cancelText}
       />
-
-      {/* Add more modals here as they are created */}
-      {/* <CreateStoryModal /> */}
-      {/* <CreateReelModal /> */}
-      {/* <EditProfileModal /> */}
-      {/* <ShareModal /> */}
     </>
   );
 };

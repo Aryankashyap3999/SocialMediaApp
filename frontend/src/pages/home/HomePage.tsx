@@ -3,6 +3,8 @@ import { FeedCard } from '@components/organisms/FeedCard';
 import { RightSidebar } from '@components/organisms/RightSidebar';
 import { ComposeBox } from '@components/organisms/ComposeBox';
 import { StoriesBar } from '@components/organisms/StoriesBar';
+import { useDropStore } from '@/store/useDropStore';
+import { useModalStore } from '@/store/useModalStore';
 import type { Story } from '@components/organisms/StoriesBar';
 
 // Mock signal capsules data
@@ -208,8 +210,25 @@ const mockTrending = [
  * Main feed page with unique Aptoodate design
  */
 export const HomePage: React.FC = () => {
-  const handlePost = (content: string) => {
-    console.log('New post:', content);
+  const drops = useDropStore((state) => state.drops);
+  const likeDrop = useDropStore((state) => state.likeDrop);
+  const { openModal } = useModalStore();
+
+  // Get only published posts and reels for the feed
+  const feedDrops = drops.filter(
+    (drop) => drop.status === 'published' && (drop.type === 'post' || drop.type === 'reel')
+  );
+
+  // Debug log - check the console to verify drops are being created
+  React.useEffect(() => {
+    console.log('📦 Total drops in store:', drops.length);
+    console.log('📰 Feed drops (posts/reels):', feedDrops.length);
+    console.log('📋 All drops:', drops.map(d => ({ id: d.id, type: d.type, status: d.status, caption: d.caption.substring(0, 30) })));
+  }, [drops, feedDrops]);
+
+  const handlePost = () => {
+    // Open the create modal instead of direct posting
+    openModal('createPost');
   };
 
   const handleStoryClick = (story: Story) => {
@@ -240,20 +259,21 @@ export const HomePage: React.FC = () => {
           <StoriesBar 
             stories={mockStories}
             onStoryClick={handleStoryClick}
-            onAddStory={() => console.log('Add signal')}
+            onAddStory={() => openModal('createStory')}
           />
 
           {/* Composer */}
           <ComposeBox
             currentUser={{
               name: 'Aryan Kashyap',
-              avatarUrl: undefined,
+              avatarUrl: 'https://i.pravatar.cc/150?u=aryan',
             }}
             onPost={handlePost}
           />
 
-          {/* Feed stack */}
+          {/* Feed stack - Now using drops from store */}
           <div className="space-y-4">
+            {/* Show mock posts first */}
             {mockPosts.map((post) => (
               <FeedCard
                 key={post.id}
@@ -271,6 +291,53 @@ export const HomePage: React.FC = () => {
                 onAuthorClick={() => console.log('View author profile', post.author.name)}
               />
             ))}
+
+            {/* Render user-created drops at the end */}
+            {feedDrops.map((drop) => (
+              <FeedCard
+                key={drop.id}
+                id={drop.id}
+                author={{
+                  name: drop.authorName,
+                  username: drop.authorId,
+                  avatarUrl: drop.authorAvatar,
+                  isVerified: false,
+                }}
+                content={drop.caption}
+                language="English"
+                media={drop.media[0] ? {
+                  type: drop.media[0].type === 'video' ? 'video' : 'image',
+                  url: drop.media[0].url,
+                } : undefined}
+                likesCount={drop.likes}
+                commentsCount={drop.comments}
+                sharesCount={drop.shares}
+                timestamp={getRelativeTime(drop.createdAt)}
+                onLike={() => likeDrop(drop.id)}
+                onComment={() => console.log('Comment on drop', drop.id)}
+                onShare={() => console.log('Share drop', drop.id)}
+                onAuthorClick={() => console.log('View author profile', drop.authorName)}
+              />
+            ))}
+            
+            {/* Show empty state only if both are empty */}
+            {feedDrops.length === 0 && mockPosts.length === 0 && (
+              <div className="text-center py-16 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl">
+                <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
+                  <svg className="w-10 h-10 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">No drops yet</h3>
+                <p className="text-slate-400 mb-6">Be the first to launch a drop!</p>
+                <button
+                  onClick={() => openModal('createPost')}
+                  className="px-6 py-3 rounded-xl bg-linear-to-r from-cyan-500 to-amber-400 text-slate-950 font-bold hover:opacity-90 transition-opacity"
+                >
+                  Launch a Drop
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
@@ -289,5 +356,23 @@ export const HomePage: React.FC = () => {
     </div>
   );
 };
+
+/**
+ * Helper to get relative time string
+ */
+function getRelativeTime(dateString: string): string {
+  const now = new Date();
+  const date = new Date(dateString);
+  const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+  
+  if (seconds < 60) return 'Just now';
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes}m`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h`;
+  const days = Math.floor(hours / 24);
+  if (days < 7) return `${days}d`;
+  return date.toLocaleDateString();
+}
 
 HomePage.displayName = 'HomePage';

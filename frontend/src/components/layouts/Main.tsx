@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Sidebar } from '@components/organisms/Sidebar';
+import { useModalStore } from '@/store/useModalStore';
 
 export interface MainLayoutProps {
   children: React.ReactNode;
@@ -11,11 +12,18 @@ export interface MainLayoutProps {
  */
 export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const [isCollapsed] = useState(false);
+  const { openModal } = useModalStore();
 
   // Mock current user - replace with actual auth context
   const currentUser = {
     name: 'Aryan Kashyap',
-    avatarUrl: undefined,
+    username: 'aryankashyap',
+    avatarUrl: 'https://i.pravatar.cc/150?u=aryan',
+  };
+
+  // Handle "Launch a Drop" button click
+  const handleCreateClick = () => {
+    openModal('createPost'); // Opens the CreateDropModal
   };
 
   return (
@@ -26,6 +34,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         currentUser={currentUser}
         unreadMessages={8}
         unreadNotifications={3}
+        onCreateClick={handleCreateClick}
       />
 
       {/* Main Content - this is the scroll container */}

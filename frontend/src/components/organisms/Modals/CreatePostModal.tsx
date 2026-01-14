@@ -3,6 +3,7 @@ import { BaseModal } from '@components/molecules/Modal';
 import { Avatar } from '@components/atoms/Avatar';
 import { Icon } from '@components/atoms/Icon';
 import { useModalStore } from '@/store/useModalStore';
+import { useDropStore, type MediaItem } from '@/store/useDropStore';
 
 interface PostData {
   content: string;
@@ -17,6 +18,7 @@ interface PostData {
  */
 export const CreatePostModal: React.FC = () => {
   const { type, isOpen, closeModal } = useModalStore();
+  const createDrop = useDropStore((state) => state.createDrop);
   const [content, setContent] = useState('');
   const [media, setMedia] = useState<File[]>([]);
   const [mediaPreviews, setMediaPreviews] = useState<string[]>([]);
@@ -57,11 +59,26 @@ export const CreatePostModal: React.FC = () => {
 
     setIsSubmitting(true);
     try {
-      // TODO: Implement actual post creation API call
-      console.log('Creating post:', { content, media, visibility });
+      // Convert File objects to MediaItem format
+      const mediaItems: MediaItem[] = mediaPreviews.map((preview, index) => ({
+        id: `media_${Date.now()}_${index}`,
+        type: media[index]?.type.startsWith('video') ? 'video' : 'image',
+        url: preview,
+        thumbnailUrl: preview,
+      }));
+
+      // Create the drop and save to store
+      const newDrop = createDrop({
+        type: 'post',
+        caption: content.trim(),
+        media: mediaItems,
+        tags: [],
+        commentsEnabled: true,
+        likesVisible: true,
+        shareEnabled: true,
+      });
       
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      console.log('✅ Post created and saved to store:', newDrop);
       
       // Reset and close
       handleClose();
