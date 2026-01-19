@@ -67,5 +67,5 @@ export const useModalStore = create<ModalState & ModalActions>((set) => ({
   
   closeModal: () => set({ type: null, isOpen: false, data: {} }),
   
-  setData: (data) => set((state) => ({ data: { ...state.data, ...data } })),
+  setData: (data) => set((state) => ({ data: { ...data, ...state.data } })),
 }));

@@ -118,7 +118,23 @@
   display: none;
 }
 
-html {
+/* Safe area insets for notched devices */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.safe-area-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* Ensure smooth touch scrolling on mobile */
+.touch-scroll {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Full viewport height including dynamic viewport */
+html, body, #root {
+  min-height: 100dvh;
   scroll-behavior: smooth;
 }
 
@@ -128,14 +144,13 @@ body {
     radial-gradient(circle at 72% 16%, rgba(255, 214, 94, 0.12), transparent 40%),
     linear-gradient(135deg, rgba(18, 20, 26, 0.9), rgba(22, 24, 30, 0.9));
   color: var(--color-text);
+  /* Prevent pull-to-refresh on mobile which can affect fixed positioning */
+  overscroll-behavior-y: contain;
 }
 
-
-
-
-
-
-
-
-
-
+/* Ensure fixed elements work properly */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  body {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}

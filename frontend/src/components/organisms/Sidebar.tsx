@@ -1,7 +1,8 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useState, useRef, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { NavItem } from '@components/molecules/NavItem';
 import { Avatar } from '@components/atoms/Avatar';
+import { setCurrentUser } from '../../pages/messages/mockData';
 
 export interface SidebarProps {
   isCollapsed?: boolean;
@@ -13,6 +14,7 @@ export interface SidebarProps {
   unreadMessages?: number;
   unreadNotifications?: number;
   onCreateClick?: () => void;
+  onLogout?: () => void;
 }
 
 /**
@@ -25,8 +27,36 @@ export const Sidebar: React.FC<SidebarProps> = ({
   unreadMessages = 0,
   unreadNotifications = 0,
   onCreateClick,
+  onLogout,
 }) => {
   const location = useLocation();
+  const [showLogoutMenu, setShowLogoutMenu] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setShowLogoutMenu(false);
+      }
+    };
+
+    if (showLogoutMenu) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showLogoutMenu]);
+
+  const handleLogoutClick = () => {
+    setShowLogoutMenu(false);
+    setCurrentUser(null); // Clear session
+    navigate('/auth/signin');
+    onLogout?.();
+  };
 
   return (
     <aside
@@ -34,9 +64,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
         sticky left-0 top-0 h-screen 
         bg-linear-to-br from-[#05060b] via-[#0a0b12] to-[#050608]
         border-r border-cyan-500/10 backdrop-blur-xl
-        flex flex-col justify-between py-8 px-3
+        flex flex-col justify-between py-6 lg:py-8 px-2 lg:px-3
         transition-all duration-300 z-40 shrink-0
-        ${isCollapsed ? 'w-24' : 'w-72'}
+        ${isCollapsed ? 'w-20 lg:w-24' : 'w-60 lg:w-72'}
       `}
     >
       {/* Logo & pulse bar - Enhanced */}
@@ -136,24 +166,44 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
         
         {currentUser && !isCollapsed && (
-          <div className="flex items-center gap-3 px-4 py-3 mt-2 rounded-2xl border-2 border-white/10 bg-white/8 hover:bg-white/15 hover:border-cyan-400/40 transition-all duration-300 cursor-pointer backdrop-blur-md shadow-lg shadow-black/20 hover:shadow-cyan-500/20 group relative overflow-hidden">
-            <div className="absolute inset-0 bg-linear-to-r from-cyan-500/0 via-cyan-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <Avatar
-              src={currentUser.avatarUrl}
-              alt={currentUser.name}
-              size="sm"
-            />
-            <div className="flex-1 min-w-0 relative z-10">
-              <p className="text-sm font-bold truncate text-white">{currentUser.name}</p>
-              {currentUser.username && (
-                <p className="text-xs text-cyan-300/70 truncate">@{currentUser.username}</p>
-              )}
+          <div className="relative" ref={menuRef}>
+            <div 
+              onClick={() => setShowLogoutMenu(!showLogoutMenu)}
+              className="flex items-center gap-3 px-4 py-3 mt-2 rounded-2xl border-2 border-white/10 bg-white/8 hover:bg-white/15 hover:border-cyan-400/40 transition-all duration-300 cursor-pointer backdrop-blur-md shadow-lg shadow-black/20 hover:shadow-cyan-500/20 group relative overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-linear-to-r from-cyan-500/0 via-cyan-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <Avatar
+                src={currentUser.avatarUrl}
+                alt={currentUser.name}
+                size="sm"
+              />
+              <div className="flex-1 min-w-0 relative z-10">
+                <p className="text-sm font-bold truncate text-white">{currentUser.name}</p>
+                {currentUser.username && (
+                  <p className="text-xs text-cyan-300/70 truncate">@{currentUser.username}</p>
+                )}
+              </div>
+              <svg className="w-4 h-4 text-cyan-300/60 group-hover:text-cyan-300 transition-colors relative z-10" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="5" r="1.5" />
+                <circle cx="12" cy="12" r="1.5" />
+                <circle cx="12" cy="19" r="1.5" />
+              </svg>
             </div>
-            <svg className="w-4 h-4 text-cyan-300/60 group-hover:text-cyan-300 transition-colors relative z-10" viewBox="0 0 24 24" fill="currentColor">
-              <circle cx="12" cy="5" r="1.5" />
-              <circle cx="12" cy="12" r="1.5" />
-              <circle cx="12" cy="19" r="1.5" />
-            </svg>
+
+            {/* Logout Dropdown Menu */}
+            {showLogoutMenu && (
+              <div className="absolute bottom-full left-0 right-0 mb-2 rounded-2xl border-2 border-cyan-400/30 bg-[#0a0b12]/95 backdrop-blur-xl shadow-2xl shadow-cyan-500/20 overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-200">
+                <button
+                  onClick={handleLogoutClick}
+                  className="w-full px-4 py-3 flex items-center gap-3 text-left hover:bg-white/10 transition-colors group"
+                >
+                  <svg className="w-5 h-5 text-red-400 group-hover:text-red-300 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                  </svg>
+                  <span className="text-sm font-semibold text-white group-hover:text-red-300 transition-colors">Log out</span>
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>

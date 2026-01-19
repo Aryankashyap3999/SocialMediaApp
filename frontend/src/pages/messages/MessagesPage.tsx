@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { ConversationList, ChatView, EmptyState } from './components';
-import { mockConversations, mockMessages, currentUser } from './mockData';
+import { mockConversations, mockMessages, getCurrentUser } from './mockData';
 import type { Message } from './types';
 
 /**
@@ -36,7 +36,7 @@ export const MessagesPage: React.FC = () => {
 
     const newMessage: Message = {
       id: `msg-${Date.now()}`,
-      senderId: currentUser.id,
+      senderId: getCurrentUser()?.id || 'unknown',
       content,
       timestamp: 'Just now',
       type: 'text',
@@ -93,7 +93,7 @@ export const MessagesPage: React.FC = () => {
           <ChatView
             conversation={activeConversation}
             messages={activeMessages}
-            currentUserId={currentUser.id}
+            currentUserId={getCurrentUser()?.id || 'unknown'}
             onSendMessage={handleSendMessage}
             onBack={handleBack}
           />

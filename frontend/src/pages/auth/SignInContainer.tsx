@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SignInCard } from './SignInCard'; 
+import { findUserByEmailAndPassword, setCurrentUser } from '../messages/mockData';
 
 export interface SignInFormData {
   email: string;
@@ -70,23 +71,19 @@ export const SignInContainer: React.FC = () => {
     setErrors({});
 
     try {
-      // TODO: Replace with actual API call
-      // const response = await signInAPI(formData);
-      
-      // Simulated API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-
-      console.log('Sign in attempt:', {
-        email: formData.email,
-        rememberMe,
-      });
-
-      setIsSuccess(true);
-      
-      // Navigate after success
-      setTimeout(() => {
-        navigate('/home');
-      }, 1000);
+      // Find user in mock data
+      const user = findUserByEmailAndPassword(formData.email, formData.password);
+      await new Promise(resolve => setTimeout(resolve, 500)); // Simulate API delay
+      if (user) {
+        setCurrentUser(user);
+        setIsSuccess(true);
+        setTimeout(() => {
+          navigate('/home');
+        }, 500);
+      } else {
+        setErrors({ general: 'Invalid email or password.' });
+        setIsSuccess(false);
+      }
     } catch (error) {
       setErrors({
         general: error instanceof Error ? error.message : 'Failed to sign in. Please try again.',

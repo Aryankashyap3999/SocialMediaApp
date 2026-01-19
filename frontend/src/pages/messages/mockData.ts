@@ -1,68 +1,86 @@
 import type { User, Conversation, Message } from './types';
 
 /**
- * Mock Data for Messages Feature
- * 
  * Centralized mock data - easily replaceable with API calls
  */
 
-export const currentUser: User = {
-  id: 'current',
-  name: 'Aryan Kashyap',
-  username: 'aryankashyap',
-  avatarUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop',
-  isOnline: true,
-};
+let currentUser: (User & { password: string; email: string }) | null = null;
 
-export const mockUsers: User[] = [
+/**
+ * Set the current user after successful sign-in
+ */
+export function setCurrentUser(user: (User & { password: string; email: string }) | null) {
+  currentUser = user;
+}
+
+/**
+ * Get the current user
+ */
+export function getCurrentUser() {
+  return currentUser;
+}
+
+export const mockUsers: (User & { password: string; email: string })[] = [
   {
     id: '1',
     name: 'Sarah Chen',
     username: 'sarahchen',
+    email: 'sarah@example.com',
     avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop',
     isVerified: true,
     isOnline: true,
+    password: 'sarah123',
   },
   {
     id: '2',
     name: 'Alex Rivera',
     username: 'alexrivera',
+    email: 'alex@example.com',
     avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop',
     isOnline: false,
     lastSeen: '2h ago',
+    password: 'alex123',
   },
   {
     id: '3',
     name: 'Tech Insights',
     username: 'techinsights',
+    email: 'tech@example.com',
     avatarUrl: 'https://images.unsplash.com/photo-1535303311164-664fc9ec6532?w=100&h=100&fit=crop',
     isVerified: true,
     isOnline: true,
+    password: 'tech123',
   },
   {
     id: '4',
     name: 'Emily Watson',
     username: 'emilywatson',
+    email: 'emily@example.com',
     avatarUrl: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop',
     isOnline: false,
     lastSeen: '1d ago',
+    password: 'emily123',
   },
   {
     id: '5',
     name: 'Marcus Johnson',
     username: 'marcusj',
+    email: 'marcus@example.com',
     avatarUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop',
     isVerified: true,
     isOnline: true,
+    password: 'marcus123',
   },
   {
     id: '6',
     name: 'Design Weekly',
     username: 'designweekly',
+    email: 'design@example.com',
     avatarUrl: 'https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=100&h=100&fit=crop',
     isVerified: true,
     isOnline: false,
     lastSeen: '30m ago',
+    password: 'design123',
   },
 ];
 
@@ -177,3 +195,27 @@ export const mockMessages: Record<string, Message[]> = {
     { id: '3', senderId: '1', content: 'Meeting at 3pm today 📅', timestamp: '2h ago', type: 'text' },
   ],
 };
+
+/**
+ * Find user by email and password for demo sign-in
+ * @param email Email address (from form)
+ * @param password Password
+ * @returns User object if found, else undefined
+ */
+export function findUserByEmailAndPassword(email: string, password: string) {
+  return mockUsers.find(
+    (u) => u && u.email === email && u.password === password
+  );
+}
+
+/**
+ * Find user by username and password for demo sign-in
+ * @param username Username (from email field in form)
+ * @param password Password
+ * @returns User object if found, else undefined
+ */
+export function findUserByUsernameAndPassword(username: string, password: string) {
+  return mockUsers.find(
+    (u) => u && u.username === username && u.password === password
+  );
+}

@@ -19,5 +19,8 @@ export type { StoriesBarProps, Story } from './StoriesBar';
 export { CreateButton } from './CreateButton';
 export type { CreateOption, CreateButtonPosition } from './CreateButton';
 
+export { MobileBottomNav } from './MobileBottomNav';
+export type { MobileBottomNavProps } from './MobileBottomNav';
+
 // Modals
 export { CreatePostModal, CreateOptionsMenu } from './Modals';

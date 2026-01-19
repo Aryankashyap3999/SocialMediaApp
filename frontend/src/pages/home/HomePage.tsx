@@ -5,6 +5,7 @@ import { ComposeBox } from '@components/organisms/ComposeBox';
 import { StoriesBar } from '@components/organisms/StoriesBar';
 import { useDropStore } from '@/store/useDropStore';
 import { useModalStore } from '@/store/useModalStore';
+import { getCurrentUser } from '../messages/mockData';
 import type { Story } from '@components/organisms/StoriesBar';
 
 // Mock signal capsules data
@@ -214,10 +215,10 @@ export const HomePage: React.FC = () => {
   const likeDrop = useDropStore((state) => state.likeDrop);
   const { openModal } = useModalStore();
 
-  // Get only published posts and reels for the feed
-  const feedDrops = drops.filter(
-    (drop) => drop.status === 'published' && (drop.type === 'post' || drop.type === 'reel')
-  );
+  // Get only published posts and reels for the feed, sorted by most recent
+  const feedDrops = drops
+    .filter((drop) => drop.status === 'published' && (drop.type === 'post' || drop.type === 'reel'))
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
   // Debug log - check the console to verify drops are being created
   React.useEffect(() => {
@@ -236,25 +237,25 @@ export const HomePage: React.FC = () => {
   };
 
   return (
-    <div className="relative max-w-7xl mx-auto px-2 sm:px-4 pb-12 space-y-6">
-      {/* Hero banner */}
-      <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 sm:p-8 shadow-2xl shadow-cyan-500/10">
+    <div className="relative max-w-7xl mx-auto px-3 sm:px-4 pb-12 pt-4 lg:pt-0 space-y-4 sm:space-y-6">
+      {/* Hero banner - Responsive */}
+      <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-4 sm:p-6 lg:p-8 shadow-2xl shadow-cyan-500/10">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(34,211,238,0.18),transparent_45%),radial-gradient(circle_at_78%_0%,rgba(245,158,11,0.16),transparent_38%)]" />
-        <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="relative flex flex-col gap-4">
           <div className="space-y-2">
-            <p className="text-xs uppercase tracking-[0.3em] text-cyan-200/80">Aptoodate / Signal Desk</p>
-            <h1 className="text-3xl sm:text-4xl font-bold text-white leading-tight">Broadcast signals, not stories</h1>
-            <p className="text-cyan-50/80 max-w-2xl">Swap endless scroll for signals, capsules, and editorial drops. Drop a note, pin a moment, broadcast an idea.</p>
+            <p className="text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] text-cyan-200/80">Aptoodate / Signal Desk</p>
+            <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold text-white leading-tight">Broadcast signals,<br className="sm:hidden" /> not stories</h1>
+            <p className="text-sm sm:text-base text-cyan-50/80 max-w-2xl hidden sm:block">Swap endless scroll for signals, capsules, and editorial drops. Drop a note, pin a moment, broadcast an idea.</p>
           </div>
-          <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 text-cyan-100">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+          <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-3 py-1.5 sm:px-4 sm:py-2 text-cyan-100 text-xs sm:text-sm w-fit">
+            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-400 animate-pulse" />
             Live desk
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-12 gap-5">
-        <div className="col-span-12 xl:col-span-8 space-y-5">
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-4 lg:gap-5">
+        <div className="xl:col-span-8 space-y-4 lg:space-y-5">
           {/* Signal Capsules */}
           <StoriesBar 
             stories={mockStories}
@@ -264,35 +265,18 @@ export const HomePage: React.FC = () => {
 
           {/* Composer */}
           <ComposeBox
-            currentUser={{
-              name: 'Aryan Kashyap',
-              avatarUrl: 'https://i.pravatar.cc/150?u=aryan',
-            }}
+            currentUser={(() => {
+              const user = getCurrentUser();
+              return user
+                ? { name: user.name, avatarUrl: user.avatarUrl }
+                : { name: 'Guest', avatarUrl: undefined };
+            })()}
             onPost={handlePost}
           />
 
           {/* Feed stack - Now using drops from store */}
           <div className="space-y-4">
-            {/* Show mock posts first */}
-            {mockPosts.map((post) => (
-              <FeedCard
-                key={post.id}
-                id={post.id}
-                author={post.author}
-                content={post.content}
-                language={post.language}
-                media={post.media}
-                likesCount={post.likesCount}
-                commentsCount={post.commentsCount}
-                sharesCount={post.sharesCount}
-                timestamp={post.timestamp}
-                onComment={() => console.log('Comment on post', post.id)}
-                onShare={() => console.log('Share post', post.id)}
-                onAuthorClick={() => console.log('View author profile', post.author.name)}
-              />
-            ))}
-
-            {/* Render user-created drops at the end */}
+            {/* Show user-created posts first, then mock posts */}
             {feedDrops.map((drop) => (
               <FeedCard
                 key={drop.id}
@@ -319,6 +303,48 @@ export const HomePage: React.FC = () => {
                 onAuthorClick={() => console.log('View author profile', drop.authorName)}
               />
             ))}
+
+            {/* Show mock posts after user-created posts, sorted by most recent (assuming timestamp is in a comparable format) */}
+            {[...mockPosts]
+              .sort((a, b) => {
+                // Try to parse as date, fallback to string comparison
+                const dateA = Date.parse(a.timestamp);
+                const dateB = Date.parse(b.timestamp);
+                if (!isNaN(dateA) && !isNaN(dateB)) {
+                  return dateB - dateA;
+                }
+                // If not valid dates, try to extract number and unit (e.g., '2h', '5m')
+                const parseRelative = (str: string) => {
+                  const match = str.match(/(\d+)([a-zA-Z]+)/);
+                  if (!match) return 0;
+                  const num = parseInt(match[1], 10);
+                  const unit = match[2];
+                  switch (unit) {
+                    case 'm': return Date.now() - num * 60 * 1000;
+                    case 'h': return Date.now() - num * 60 * 60 * 1000;
+                    case 'd': return Date.now() - num * 24 * 60 * 60 * 1000;
+                    default: return 0;
+                  }
+                };
+                return parseRelative(a.timestamp) - parseRelative(b.timestamp);
+              })
+              .map((post) => (
+                <FeedCard
+                  key={post.id}
+                  id={post.id}
+                  author={post.author}
+                  content={post.content}
+                  language={post.language}
+                  media={post.media}
+                  likesCount={post.likesCount}
+                  commentsCount={post.commentsCount}
+                  sharesCount={post.sharesCount}
+                  timestamp={post.timestamp}
+                  onComment={() => console.log('Comment on post', post.id)}
+                  onShare={() => console.log('Share post', post.id)}
+                  onAuthorClick={() => console.log('View author profile', post.author.name)}
+                />
+              ))}
             
             {/* Show empty state only if both are empty */}
             {feedDrops.length === 0 && mockPosts.length === 0 && (
@@ -341,13 +367,15 @@ export const HomePage: React.FC = () => {
           </div>
         </div>
 
-        {/* Right column */}
-        <div className="col-span-12 xl:col-span-4">
+        {/* Right column - Hidden on mobile, visible on xl */}
+        <div className="hidden xl:block xl:col-span-4">
           <RightSidebar
-            currentUser={{
-              name: 'Aryan Kashyap',
-              username: 'aryankashyap2939',
-            }}
+            currentUser={(() => {
+              const user = getCurrentUser();
+              return user
+                ? { name: user.name, username: user.username, avatarUrl: user.avatarUrl }
+                : { name: 'Guest', username: 'guest', avatarUrl: undefined };
+            })()}
             suggestions={mockSuggestions}
             trending={mockTrending}
           />
