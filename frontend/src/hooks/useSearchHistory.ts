@@ -37,7 +37,7 @@ export const useSearchHistory = () => {
     const prev = readStorage();
     const deduped = prev.filter(h => !(h.type === 'search' && h.query === q));
     persist([
-      { id: `s-${Date.now()}`, query: q, type: 'search', timestamp: Date.now() },
+      { id: `s-${Date.now()}`, query: q, type: 'search' as const, timestamp: Date.now() },
       ...deduped,
     ].slice(0, MAX_ITEMS));
   }, [persist]);
@@ -51,7 +51,7 @@ export const useSearchHistory = () => {
       {
         id: `u-${Date.now()}`,
         query: user.username,
-        type: 'user',
+        type: 'user' as const,
         timestamp: Date.now(),
         userId: user.id,
         username: user.username,

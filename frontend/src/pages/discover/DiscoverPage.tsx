@@ -2,7 +2,6 @@ import React, { useState, useMemo, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Icon } from '@components/atoms/Icon';
 import { Avatar } from '@components/atoms/Avatar';
-import { SectionHeader } from '@components/atoms/SectionHeader';
 import { TabIndicator } from '@components/atoms/TabIndicator';
 import { FeedCard } from '@components/organisms/FeedCard';
 import { useFeed } from '@/hooks/queries/usePosts';
@@ -211,6 +210,7 @@ const HistoryDropdown: React.FC<{
 };
 
 export const DiscoverPage: React.FC = () => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState<ViewMode>('explore');
   const [isSearchFocused, setIsSearchFocused] = useState(false);

@@ -70,7 +70,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
         });
 
         // Message deleted
-        socket.on('message:deleted', ({ messageId }: { messageId: string }) => {
+        socket.on('message:deleted', ({ messageId: _messageId }: { messageId: string }) => {
             queryClient.invalidateQueries({ queryKey: ['messages'] });
         });
 

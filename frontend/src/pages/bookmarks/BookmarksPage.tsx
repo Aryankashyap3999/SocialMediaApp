@@ -1,12 +1,11 @@
 import React from 'react';
 import { FeedCard } from '@components/organisms/FeedCard';
-import { useUserBookmarks, useBookmarkPost, useUnbookmarkPost } from '@/hooks';
+import { useUserBookmarks, useUnbookmarkPost } from '@/hooks';
 import { useLikePost, useUnlikePost } from '@/hooks';
 import { getRelativeTime } from '@/utils/helpers';
 
 export const BookmarksPage: React.FC = () => {
   const { data, isLoading } = useUserBookmarks();
-  const bookmarkMutation = useBookmarkPost();
   const unbookmarkMutation = useUnbookmarkPost();
   const likeMutation = useLikePost();
   const unlikeMutation = useUnlikePost();
