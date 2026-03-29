@@ -1,14 +1,29 @@
 @import "tailwindcss";
 
 /* ================================
+   Indian Theme — Google Fonts
+   Baloo 2: warm, Indian-origin display font
+   Noto Sans Devanagari: native script rendering
+   ================================ */
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap');
+
+/* ================================
    CSS Variables & Design System
    ================================ */
 
 :root {
-  /* Colors - Primary Brand */
-  --color-primary: #6366f1;
-  --color-primary-light: #818cf8;
-  --color-primary-dark: #4f46e5;
+  /* Colors - Primary Brand (Indian Saffron) */
+  --color-primary: #f97316;
+  --color-primary-light: #fb923c;
+  --color-primary-dark: #ea580c;
+
+  /* Indian Cultural Colors */
+  --color-saffron: #FF9933;
+  --color-turmeric: #E8B923;
+  --color-gulabi: #E91E8C;
+  --color-mehndi: #4CAF50;
+  --color-peacock: #0097A7;
+  --color-sindoor: #DC143C;
   
   /* Colors - Secondary */
   --color-secondary: #8b5cf6;
@@ -139,13 +154,52 @@ html, body, #root {
 }
 
 body {
+  /* Warm Indian ambient light — saffron, turmeric, and gulabi glow */
   background:
-    radial-gradient(circle at 18% 18%, rgba(34, 211, 238, 0.06), transparent 34%),
-    radial-gradient(circle at 72% 16%, rgba(255, 214, 94, 0.12), transparent 40%),
-    linear-gradient(135deg, rgba(18, 20, 26, 0.9), rgba(22, 24, 30, 0.9));
+    radial-gradient(circle at 15% 20%, rgba(180, 83, 9, 0.07), transparent 38%),
+    radial-gradient(circle at 78% 14%, rgba(180, 83, 9, 0.05), transparent 42%),
+    radial-gradient(circle at 88% 83%, rgba(233, 30, 140, 0.03), transparent 30%),
+    radial-gradient(circle at 8%  78%, rgba(146, 64, 14, 0.04), transparent 28%),
+    linear-gradient(135deg, rgba(14, 8, 5, 1), rgba(19, 10, 4, 1));
   color: var(--color-text);
   /* Prevent pull-to-refresh on mobile which can affect fixed positioning */
   overscroll-behavior-y: contain;
+}
+
+/* Subtle rangoli dot-grid watermark on the root canvas */
+#root {
+  position: relative;
+}
+#root::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(255, 153, 51, 0.025) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Baloo 2 for headings and Indian brand elements */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Baloo 2', system-ui, -apple-system, sans-serif;
+}
+
+.font-brand {
+  font-family: 'Baloo 2', system-ui, -apple-system, sans-serif;
+}
+
+/* Saffron glow utility */
+.saffron-glow {
+  box-shadow: 0 0 20px rgba(180, 83, 9, 0.20);
+}
+
+/* Indian tricolor bar utility */
+.tricolor-bar {
+  background: linear-gradient(to right,
+    #FF9933 33.33%,
+    rgba(255,255,255,0.7) 33.33% 66.66%,
+    #138808 66.66%);
 }
 
 /* Ensure fixed elements work properly */

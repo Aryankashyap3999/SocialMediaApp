@@ -4,6 +4,8 @@ import { Avatar } from '@components/atoms/Avatar';
 import { Icon } from '@components/atoms/Icon';
 import { useModalStore } from '@/store/useModalStore';
 import { useDropStore, type MediaItem } from '@/store/useDropStore';
+import { useCreatePost } from '@/hooks';
+import { useAuth } from '@/hooks/context/useAuth';
 
 interface PostData {
   content: string;
@@ -18,15 +20,17 @@ interface PostData {
  */
 export const CreatePostModal: React.FC = () => {
   const { type, isOpen, closeModal } = useModalStore();
+  const { auth } = useAuth();
   const createDrop = useDropStore((state) => state.createDrop);
+  const createPostMutation = useCreatePost();
   const [content, setContent] = useState('');
   const [media, setMedia] = useState<File[]>([]);
   const [mediaPreviews, setMediaPreviews] = useState<string[]>([]);
   const [visibility, setVisibility] = useState<PostData['visibility']>('public');
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const isModalOpen = isOpen && type === 'createPost';
+  const isSubmitting = createPostMutation.isPending;
 
   // Handle media selection
   const handleMediaSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,9 +61,20 @@ export const CreatePostModal: React.FC = () => {
   const handleSubmit = async () => {
     if (!content.trim() && media.length === 0) return;
 
-    setIsSubmitting(true);
     try {
-      // Convert File objects to MediaItem format
+      // For now, just send text content. TODO: Add image upload
+      await createPostMutation.mutateAsync({
+        content: content.trim(),
+        type: 'post',
+        visibility: visibility,
+        // TODO: Upload media files to server and get URLs
+        // media: mediaPreviews.length > 0 ? {
+        //   type: media[0]?.type.startsWith('video') ? 'video' : 'image',
+        //   url: mediaPreviews[0],
+        // } : undefined,
+      });
+      
+      // Also save to local store for immediate UI update
       const mediaItems: MediaItem[] = mediaPreviews.map((preview, index) => ({
         id: `media_${Date.now()}_${index}`,
         type: media[index]?.type.startsWith('video') ? 'video' : 'image',
@@ -67,8 +82,7 @@ export const CreatePostModal: React.FC = () => {
         thumbnailUrl: preview,
       }));
 
-      // Create the drop and save to store
-      const newDrop = createDrop({
+      createDrop({
         type: 'post',
         caption: content.trim(),
         media: mediaItems,
@@ -78,14 +92,10 @@ export const CreatePostModal: React.FC = () => {
         shareEnabled: true,
       });
       
-      console.log('✅ Post created and saved to store:', newDrop);
-      
       // Reset and close
       handleClose();
     } catch (error) {
       console.error('Failed to create post:', error);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -111,12 +121,12 @@ export const CreatePostModal: React.FC = () => {
         {/* User info */}
         <div className="flex items-center gap-3 mb-4">
           <Avatar
-            src={undefined}
+            src={auth.user?.avatarUrl}
             alt="Your avatar"
             size="md"
           />
           <div>
-            <p className="font-semibold text-gray-900 dark:text-white">Aryan Kashyap</p>
+            <p className="font-semibold text-gray-900 dark:text-white">{auth.user?.username || 'You'}</p>
             <button
               onClick={() => {
                 const options: PostData['visibility'][] = ['public', 'followers', 'private'];

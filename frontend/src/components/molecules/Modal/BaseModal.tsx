@@ -14,12 +14,6 @@ export interface BaseModalProps {
   className?: string;
 }
 
-/**
- * BaseModal Component
- * 
- * Reusable modal wrapper with consistent styling and behavior
- * Use this as the foundation for all modals in the app
- */
 export const BaseModal: React.FC<BaseModalProps> = ({
   isOpen,
   onClose,
@@ -32,11 +26,8 @@ export const BaseModal: React.FC<BaseModalProps> = ({
   closeOnEscape = true,
   className = '',
 }) => {
-  // Handle escape key
   const handleEscape = useCallback((e: KeyboardEvent) => {
-    if (e.key === 'Escape' && closeOnEscape) {
-      onClose();
-    }
+    if (e.key === 'Escape' && closeOnEscape) onClose();
   }, [closeOnEscape, onClose]);
 
   useEffect(() => {
@@ -57,22 +48,24 @@ export const BaseModal: React.FC<BaseModalProps> = ({
     md: 'max-w-lg',
     lg: 'max-w-2xl',
     xl: 'max-w-4xl',
-    full: 'max-w-[95vw] max-h-[95vh]',
+    full: 'max-w-full max-h-full w-full h-full !rounded-none',
   };
+
+  const isFullScreen = size === 'full';
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Overlay */}
       <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
+        className={`absolute inset-0 ${isFullScreen ? 'bg-black' : 'bg-black/75 backdrop-blur-md'} animate-in fade-in duration-200`}
         onClick={closeOnOverlayClick ? onClose : undefined}
       />
 
       {/* Modal Content */}
       <div
         className={`
-          relative w-full ${sizeClasses[size]} mx-4
-          bg-white dark:bg-gray-900 rounded-2xl shadow-2xl
+          relative w-full ${sizeClasses[size]} ${isFullScreen ? '' : 'mx-4'}
+          ${isFullScreen ? 'bg-[#0e0805]' : 'bg-[#1a0d05] border border-orange-500/15 rounded-2xl shadow-2xl shadow-black/60'}
           animate-in fade-in zoom-in-95 duration-200
           ${className}
         `}
@@ -82,16 +75,16 @@ export const BaseModal: React.FC<BaseModalProps> = ({
         aria-describedby={description ? 'modal-description' : undefined}
       >
         {/* Header */}
-        {(title || showCloseButton) && (
-          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-gray-800">
+        {(title || showCloseButton) && !isFullScreen && (
+          <div className="flex items-center justify-between px-6 py-4 border-b border-orange-500/10">
             <div>
               {title && (
-                <h2 id="modal-title" className="text-lg font-semibold text-gray-900 dark:text-white">
+                <h2 id="modal-title" className="text-lg font-bold text-white">
                   {title}
                 </h2>
               )}
               {description && (
-                <p id="modal-description" className="text-sm text-gray-500 mt-1">
+                <p id="modal-description" className="text-sm text-slate-400 mt-0.5">
                   {description}
                 </p>
               )}
@@ -99,17 +92,17 @@ export const BaseModal: React.FC<BaseModalProps> = ({
             {showCloseButton && (
               <button
                 onClick={onClose}
-                className="p-2 -mr-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
+                className="p-2 -mr-2 hover:bg-orange-500/10 rounded-full transition-colors"
                 aria-label="Close modal"
               >
-                <Icon name="close" size={20} className="text-gray-500" />
+                <Icon name="close" size={20} className="text-slate-400" />
               </button>
             )}
           </div>
         )}
 
         {/* Body */}
-        <div className="overflow-y-auto max-h-[calc(100vh-200px)]">
+        <div className={isFullScreen ? 'w-full h-full' : 'overflow-y-auto max-h-[calc(100vh-200px)]'}>
           {children}
         </div>
       </div>

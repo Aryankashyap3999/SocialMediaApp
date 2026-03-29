@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { SignInCard } from './SignInCard'; 
-import { findUserByEmailAndPassword, setCurrentUser } from '../messages/mockData';
+import { SignInCard } from './SignInCard';
+import { useSignIn } from '@/hooks/mutations/useSignIn';
 
 export interface SignInFormData {
   email: string;
@@ -17,6 +17,7 @@ export interface SignInErrors {
 
 export const SignInContainer: React.FC = () => {
   const navigate = useNavigate();
+  const { signInMutation, isPending, isSuccess } = useSignIn();
 
   // Form state
   const [formData, setFormData] = useState<SignInFormData>({
@@ -25,10 +26,17 @@ export const SignInContainer: React.FC = () => {
   });
 
   // UI state
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
   const [errors, setErrors] = useState<SignInErrors>({});
   const [rememberMe, setRememberMe] = useState(false);
+
+  // Navigate to home on successful signin
+  useEffect(() => {
+    if (isSuccess) {
+      setTimeout(() => {
+        navigate('/home');
+      }, 500);
+    }
+  }, [isSuccess, navigate]);
 
   /**
    * Validate form data
@@ -44,11 +52,11 @@ export const SignInContainer: React.FC = () => {
       newErrors.email = 'Please enter a valid email address';
     }
 
-    // Password validation
+    // Password validation - minimum 4 characters only
     if (!formData.password) {
       newErrors.password = 'Password is required';
-    } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
+    } else if (formData.password.length < 4) {
+      newErrors.password = 'Password must be at least 4 characters';
     }
 
     setErrors(newErrors);
@@ -67,29 +75,20 @@ export const SignInContainer: React.FC = () => {
       return;
     }
 
-    setIsLoading(true);
     setErrors({});
 
     try {
-      // Find user in mock data
-      const user = findUserByEmailAndPassword(formData.email, formData.password);
-      await new Promise(resolve => setTimeout(resolve, 500)); // Simulate API delay
-      if (user) {
-        setCurrentUser(user);
-        setIsSuccess(true);
-        setTimeout(() => {
-          navigate('/home');
-        }, 500);
-      } else {
-        setErrors({ general: 'Invalid email or password.' });
-        setIsSuccess(false);
-      }
-    } catch (error) {
-      setErrors({
-        general: error instanceof Error ? error.message : 'Failed to sign in. Please try again.',
+      await signInMutation({
+        email: formData.email,
+        password: formData.password
       });
-    } finally {
-      setIsLoading(false);
+    } catch (error: unknown) {
+      const axiosError = error as { response?: { data?: { message?: string } }; message?: string };
+      setErrors({
+        general:
+          axiosError?.response?.data?.message ||
+          (error instanceof Error ? error.message : 'Failed to sign in. Please try again.'),
+      });
     }
   };
 
@@ -142,7 +141,7 @@ export const SignInContainer: React.FC = () => {
       onInputChange={handleInputChange}
       onRememberMeChange={handleRememberMeChange}
       onSubmit={handleSubmit}
-      isLoading={isLoading}
+      isLoading={isPending}
       isSuccess={isSuccess}
       errors={errors}
       rememberMe={rememberMe}

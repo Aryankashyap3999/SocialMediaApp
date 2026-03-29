@@ -1,254 +1,230 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FeedCard } from '@components/organisms/FeedCard';
-import { RightSidebar } from '@components/organisms/RightSidebar';
 import { ComposeBox } from '@components/organisms/ComposeBox';
+import { FestivalBanner } from '@components/organisms/FestivalBanner';
+import { RightSidebar } from '@components/organisms/RightSidebar';
 import { StoriesBar } from '@components/organisms/StoriesBar';
 import { useDropStore } from '@/store/useDropStore';
 import { useModalStore } from '@/store/useModalStore';
-import { getCurrentUser } from '../messages/mockData';
 import type { Story } from '@components/organisms/StoriesBar';
-
-// Mock signal capsules data
-const mockStories = [
-  {
-    id: '0',
-    username: 'Your story',
-    avatarUrl: undefined,
-    isYou: true,
-  },
-  {
-    id: '1',
-    username: 'sarah_travels',
-    avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop',
-    hasUnwatched: true,
-  },
-  {
-    id: '2',
-    username: 'marco.chen',
-    avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop',
-    hasUnwatched: true,
-    isLive: true,
-  },
-  {
-    id: '3',
-    username: 'emma_rod',
-    avatarUrl: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop',
-    hasUnwatched: true,
-  },
-  {
-    id: '4',
-    username: 'alex.t',
-    avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop',
-    hasUnwatched: false,
-  },
-  {
-    id: '5',
-    username: 'lucia_m',
-    avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop',
-    hasUnwatched: true,
-  },
-  {
-    id: '6',
-    username: 'travel_diary',
-    avatarUrl: 'https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=100&h=100&fit=crop',
-    hasUnwatched: false,
-  },
-  {
-    id: '7',
-    username: 'foodie_life',
-    avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop',
-    hasUnwatched: true,
-  },
-];
-
-// Mock data for posts
-const mockPosts = [
-  {
-    id: '1',
-    author: {
-      name: 'Sarah Johnson',
-      username: 'sarahjohnson',
-      avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop',
-      isVerified: false,
-    },
-    content: "Just finished an incredible journey through Southeast Asia! The cultures, food, and people I met along the way were absolutely amazing. Can't wait to share more stories and tips with you all. What's your dream travel destination?",
-    language: 'English',
-    likesCount: 124,
-    commentsCount: 23,
-    sharesCount: 12,
-    timestamp: '2h',
-  },
-  {
-    id: '2',
-    author: {
-      name: 'Marco Chen',
-      username: 'marcochen',
-      avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop',
-      isVerified: false,
-    },
-    content: 'Sunset views from Santorini never disappoint. This place is pure magic!',
-    language: 'Spanish',
-    media: {
-      type: 'image' as const,
-      url: 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=800&h=600&fit=crop',
-    },
-    likesCount: 342,
-    commentsCount: 58,
-    sharesCount: 28,
-    timestamp: '4h',
-  },
-  {
-    id: '3',
-    author: {
-      name: 'Emma Rodriguez',
-      username: 'emmarodriguez',
-      avatarUrl: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop',
-      isVerified: true,
-    },
-    content: 'Quick tour of the Louvre Museum! So much history in one place.',
-    language: 'French',
-    media: {
-      type: 'video' as const,
-      url: 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=800&h=600&fit=crop',
-      duration: '0:45',
-    },
-    likesCount: 267,
-    commentsCount: 41,
-    sharesCount: 18,
-    timestamp: '5h',
-  },
-  {
-    id: '4',
-    author: {
-      name: 'Alex Thompson',
-      username: 'alexthompson',
-      avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop',
-      isVerified: false,
-    },
-    content: "Pro tip for digital nomads: Always research the local coworking spaces before you arrive. It makes such a difference in productivity and meeting like-minded people. Currently working from Bali and loving the community here! 🌴💻",
-    language: 'English',
-    likesCount: 89,
-    commentsCount: 15,
-    sharesCount: 7,
-    timestamp: '7h',
-  },
-  {
-    id: '5',
-    author: {
-      name: 'Lucia Martinez',
-      username: 'luciamartinez',
-      avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop',
-      isVerified: false,
-    },
-    content: 'Morning coffee with this view in Barcelona. Life is good! ☕️✨',
-    language: 'Spanish',
-    media: {
-      type: 'image' as const,
-      url: 'https://images.unsplash.com/photo-1583422409516-2895a77efded?w=800&h=600&fit=crop',
-    },
-    likesCount: 198,
-    commentsCount: 32,
-    sharesCount: 14,
-    timestamp: '9h',
-  },
-];
-
-// Mock suggestions data
-const mockSuggestions = [
-  {
-    id: '1',
-    name: 'Keshav Kumar',
-    username: 'keshav_k',
-  },
-  {
-    id: '2',
-    name: 'Sundar Pichai',
-    username: 'sundarpichai',
-    isVerified: true,
-  },
-  {
-    id: '3',
-    name: 'HUMOURED MAN',
-    username: 'humouredman',
-  },
-  {
-    id: '4',
-    name: 'Krishna Gupta',
-    username: 'krishnagupta_1_2_3',
-  },
-];
-
-// Mock trending data
-const mockTrending = [
-  {
-    id: '1',
-    category: 'Technology · Trending',
-    title: '#AIRevolution',
-    postsCount: '52.4K',
-  },
-  {
-    id: '2',
-    category: 'Design · Trending',
-    title: 'UI/UX',
-    postsCount: '18.2K',
-  },
-  {
-    id: '3',
-    category: 'Business · Trending',
-    title: 'Remote Work',
-    postsCount: '9.8K',
-  },
-  {
-    id: '4',
-    category: 'Entertainment · Trending',
-    title: 'New Album Drop',
-    postsCount: '124K',
-  },
-];
+import { SignalViewerModal } from './SignalViewerModal';
+import type { Drop, SignalTier } from '@/store/useDropStore';
+import { useFeed, useLikePost, useUnlikePost, useBookmarkPost, useUnbookmarkPost, useEchoPost, useBoostPost } from '@/hooks';
+import { useActiveStories } from '@/hooks/queries/useStories';
+import { useTrendingTags, useTrendingUsers } from '@/hooks/queries/useTrending';
+import { useAuth } from '@/hooks/context/useAuth';
+import { getRelativeTime } from '@/utils/helpers';
 
 /**
  * HomePage
  * Main feed page with unique Aptoodate design
  */
 export const HomePage: React.FC = () => {
+  const navigate = useNavigate();
   const drops = useDropStore((state) => state.drops);
   const likeDrop = useDropStore((state) => state.likeDrop);
   const { openModal } = useModalStore();
+  const { auth } = useAuth();
+  
+  // State for viewing a signal/story
+  const [selectedSignal, setSelectedSignal] = useState<Drop | null>(null);
+  const [isSignalViewerOpen, setIsSignalViewerOpen] = useState(false);
 
-  // Get only published posts and reels for the feed, sorted by most recent
+  // Fetch feed from API
+  const { data: feedData, isLoading, error } = useFeed(20, 0);
+  const likePostMutation = useLikePost();
+  const unlikePostMutation = useUnlikePost();
+  const bookmarkPostMutation = useBookmarkPost();
+  const unbookmarkPostMutation = useUnbookmarkPost();
+  const echoPostMutation = useEchoPost();
+  const boostPostMutation = useBoostPost();
+
+  // Fetch trending data for RightSidebar
+  const { data: trendingTagsData } = useTrendingTags(5);
+  const { data: trendingUsersData } = useTrendingUsers(5);
+
+  // Transform trending tags → RightSidebar trending prop
+  interface ApiTag { tag: string; count: number; heat?: number }
+  interface ApiTrendingUser { id: string; _id?: string; username: string; name?: string; avatarUrl?: string; followersCount?: number }
+
+  const trendingTopics = useMemo(() => {
+    const tags: ApiTag[] = trendingTagsData?.data ?? [];
+    return tags.map((t, i) => ({
+      id: `tag-${i}`,
+      category: 'Trending',
+      title: `#${t.tag}`,
+      postsCount: t.count >= 1000 ? `${(t.count / 1000).toFixed(1)}K` : `${t.count}`,
+      heat: t.heat,
+    }));
+  }, [trendingTagsData]);
+
+  // Transform trending users → RightSidebar suggestions prop
+  const trendingSuggestions = useMemo(() => {
+    const users: ApiTrendingUser[] = trendingUsersData?.data ?? [];
+    return users.map((u) => ({
+      id: u._id || u.id,
+      name: u.name || u.username,
+      username: u.username,
+      avatarUrl: u.avatarUrl,
+      mutualFollowers: u.followersCount ? `${u.followersCount} listeners` : undefined,
+    }));
+  }, [trendingUsersData]);
+
+  // Fetch stories from API
+  const { data: storiesData } = useActiveStories(20, 0);
+
+  // Get only published posts and reels for the feed (from local store), sorted by most recent
   const feedDrops = drops
     .filter((drop) => drop.status === 'published' && (drop.type === 'post' || drop.type === 'reel'))
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
-  // Debug log - check the console to verify drops are being created
-  React.useEffect(() => {
-    console.log('📦 Total drops in store:', drops.length);
-    console.log('📰 Feed drops (posts/reels):', feedDrops.length);
-    console.log('📋 All drops:', drops.map(d => ({ id: d.id, type: d.type, status: d.status, caption: d.caption.substring(0, 30) })));
-  }, [drops, feedDrops]);
+  interface ApiStory {
+    id: string;
+    user?: { id: string; username: string; avatarUrl?: string };
+    media?: { type: string; url: string };
+    caption?: string;
+    signalTier?: SignalTier;
+    viewers?: number;
+    createdAt?: string;
+  }
 
-  const handlePost = () => {
-    // Open the create modal instead of direct posting
-    openModal('createPost');
+  // Full API story data keyed by id for quick lookup in handleStoryClick
+  const apiStoryMap = useMemo(() => {
+    const map: Record<string, ApiStory> = {};
+    (storiesData?.data ?? []).forEach((s: ApiStory) => { map[s.id] = s; });
+    return map;
+  }, [storiesData]);
+
+  // Convert API stories to Story format for StoriesBar
+  const apiStories: Story[] = useMemo(() => {
+    if (!storiesData?.data) return [];
+    return (storiesData.data as ApiStory[]).map((story) => ({
+      id: story.id,
+      username: story.user?.username || 'user',
+      avatarUrl: story.user?.avatarUrl || '',
+      hasUnwatched: true,
+      signalTier: story.signalTier || 'pulse',
+    }));
+  }, [storiesData]);
+
+  // Get user's own stories (signals) from local store for now
+  // TODO: Replace with API call when user auth is implemented
+  const userStories = useMemo(() => {
+    return drops
+      .filter((drop) => drop.status === 'published' && drop.type === 'story')
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }, [drops]);
+
+  // Create combined stories list for StoriesBar
+  const allStories: Story[] = useMemo(() => {
+    const latestUserStory = userStories[0];
+    const yourStory: Story = {
+      id: 'your_story',
+      username: userStories.length > 0 ? 'Your signal' : 'Add signal',
+      avatarUrl: latestUserStory?.media[0]?.url || '',
+      isYou: true,
+      hasUnwatched: userStories.length > 0,
+      signalTier: latestUserStory?.signalTier,
+    };
+    
+    // Convert user's stories to Story format (show other recent ones)
+    const userSignalItems: Story[] = userStories.slice(1).map((drop) => ({
+      id: drop.id,
+      username: drop.authorName.split(' ')[0].toLowerCase(),
+      avatarUrl: drop.media[0]?.url || drop.authorAvatar,
+      hasUnwatched: true,
+      signalTier: drop.signalTier,
+    }));
+    
+    // Combine: Your story + user stories + API stories
+    return [yourStory, ...userSignalItems, ...apiStories];
+  }, [userStories, apiStories]);
+
+  const handleShare = (postId: string) => {
+    const url = `${window.location.origin}/post/${postId}`;
+    navigator.clipboard.writeText(url).catch(() => {});
+  };
+
+  const handleAuthorClick = (username?: string) => {
+    if (username) navigate(`/profile/${username}`);
   };
 
   const handleStoryClick = (story: Story) => {
-    console.log('View signal:', story.username);
+    // "Your story" card
+    if (story.isYou) {
+      if (userStories.length > 0) {
+        setSelectedSignal(userStories[0]);
+        setIsSignalViewerOpen(true);
+      } else {
+        openModal('createStory', { source: 'storyBar' });
+      }
+      return;
+    }
+
+    // Check local store first (user-created stories)
+    const localStory = drops.find(d => d.id === story.id && d.type === 'story');
+    if (localStory) {
+      setSelectedSignal(localStory);
+      setIsSignalViewerOpen(true);
+      return;
+    }
+
+    // Fall back to API story
+    const apiStory = apiStoryMap[story.id];
+    if (apiStory) {
+      const drop: Drop = {
+        id: apiStory.id,
+        type: 'story',
+        status: 'published',
+        signalTier: apiStory.signalTier || 'pulse',
+        caption: apiStory.caption || '',
+        media: apiStory.media
+          ? [{ id: apiStory.id, type: apiStory.media.type as 'image' | 'video', url: apiStory.media.url }]
+          : [],
+        authorId: apiStory.user?.id || '',
+        authorName: apiStory.user?.username || '',
+        authorAvatar: apiStory.user?.avatarUrl || '',
+        likes: apiStory.viewers || 0,
+        comments: 0,
+        shares: 0,
+        views: apiStory.viewers || 0,
+        tags: [],
+        mentions: [],
+        createdAt: apiStory.createdAt || new Date().toISOString(),
+        updatedAt: apiStory.createdAt || new Date().toISOString(),
+        commentsEnabled: true,
+        likesVisible: true,
+        shareEnabled: true,
+      };
+      setSelectedSignal(drop);
+      setIsSignalViewerOpen(true);
+    }
+  };
+
+  const handleCloseSignalViewer = () => {
+    setIsSignalViewerOpen(false);
+    setSelectedSignal(null);
   };
 
   return (
     <div className="relative max-w-7xl mx-auto px-3 sm:px-4 pb-12 pt-4 lg:pt-0 space-y-4 sm:space-y-6">
-      {/* Hero banner - Responsive */}
-      <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-4 sm:p-6 lg:p-8 shadow-2xl shadow-cyan-500/10">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(34,211,238,0.18),transparent_45%),radial-gradient(circle_at_78%_0%,rgba(245,158,11,0.16),transparent_38%)]" />
+      {/* Hero banner - Indian warm theme */}
+      <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-orange-500/15 bg-[#1a0d05]/70 backdrop-blur-xl p-4 sm:p-6 lg:p-8 shadow-2xl shadow-orange-950/30">
+        {/* Warm Indian ambient glow */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(249,115,22,0.15),transparent_45%),radial-gradient(circle_at_78%_0%,rgba(232,185,35,0.12),transparent_38%)]" />
+        {/* Subtle rangoli dot pattern */}
+        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle, rgba(255,153,51,1) 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
         <div className="relative flex flex-col gap-4">
           <div className="space-y-2">
-            <p className="text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] text-cyan-200/80">Aptoodate / Signal Desk</p>
-            <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold text-white leading-tight">Broadcast signals,<br className="sm:hidden" /> not stories</h1>
-            <p className="text-sm sm:text-base text-cyan-50/80 max-w-2xl hidden sm:block">Swap endless scroll for signals, capsules, and editorial drops. Drop a note, pin a moment, broadcast an idea.</p>
+            <p className="text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] text-orange-200/70">Aptoodate / Signal Desk</p>
+            <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold text-white leading-tight" style={{ fontFamily: "'Baloo 2', sans-serif" }}>
+              Broadcast signals,<br className="sm:hidden" /> not stories
+            </h1>
+            <p className="text-sm sm:text-base text-amber-50/70 max-w-2xl hidden sm:block">Swap endless scroll for signals, capsules, and editorial drops. Drop a note, pin a moment, broadcast an idea.</p>
           </div>
-          <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-3 py-1.5 sm:px-4 sm:py-2 text-cyan-100 text-xs sm:text-sm w-fit">
-            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-400 animate-pulse" />
+          <div className="flex items-center gap-2 bg-orange-500/10 border border-orange-500/20 rounded-full px-3 py-1.5 sm:px-4 sm:py-2 text-orange-200 text-xs sm:text-sm w-fit">
+            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-green-400 animate-pulse" />
             Live desk
           </div>
         </div>
@@ -256,27 +232,81 @@ export const HomePage: React.FC = () => {
 
       <div className="grid grid-cols-1 xl:grid-cols-12 gap-4 lg:gap-5">
         <div className="xl:col-span-8 space-y-4 lg:space-y-5">
+          {/* Indian festival banner — shows when within 7 days of a major festival */}
+          <FestivalBanner />
+
           {/* Signal Capsules */}
           <StoriesBar 
-            stories={mockStories}
+            stories={allStories}
             onStoryClick={handleStoryClick}
-            onAddStory={() => openModal('createStory')}
+            onAddStory={() => openModal('createStory', { source: 'stories' })}
           />
 
-          {/* Composer */}
-          <ComposeBox
-            currentUser={(() => {
-              const user = getCurrentUser();
-              return user
-                ? { name: user.name, avatarUrl: user.avatarUrl }
-                : { name: 'Guest', avatarUrl: undefined };
-            })()}
-            onPost={handlePost}
-          />
+          {/* Compose box */}
+          <ComposeBox />
 
-          {/* Feed stack - Now using drops from store */}
+          {/* Feed stack - Using real API data */}
           <div className="space-y-4">
-            {/* Show user-created posts first, then mock posts */}
+            {/* Loading state */}
+            {isLoading && (
+              <div className="text-center py-16 rounded-3xl border border-orange-500/10 bg-[#1a0d05]/50 backdrop-blur-xl">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full border-2 border-orange-400/30 border-t-orange-400 animate-spin" />
+                <p className="text-amber-200/50">Loading feed...</p>
+              </div>
+            )}
+
+            {/* Error state */}
+            {error && (
+              <div className="text-center py-16 rounded-3xl border border-red-500/20 bg-red-500/5 backdrop-blur-xl">
+                <p className="text-red-400">Failed to load feed. Please try again.</p>
+              </div>
+            )}
+
+            {/* Show API posts */}
+            {feedData?.data?.map((post: {
+                _id: string; content: string; language?: string;
+                media?: { type: 'image'|'video'; url: string; duration?: string };
+                author: { username: string; name?: string; avatarUrl?: string };
+                likes: number; comments: number; shares: number;
+                echoCount?: number; signalStrength?: number;
+                isLiked?: boolean; isBookmarked?: boolean;
+                isEcho?: boolean; isBoosted?: boolean; boostTier?: 'pulse'|'flash'|'broadcast';
+                createdAt: string;
+              }) => (
+              <FeedCard
+                key={post._id}
+                id={post._id}
+                author={{
+                  name: post.author?.name || post.author?.username,
+                  username: post.author?.username,
+                  avatarUrl: post.author?.avatarUrl,
+                  isVerified: false,
+                }}
+                content={post.content}
+                language={post.language || 'English'}
+                media={post.media?.url ? { type: post.media.type, url: post.media.url, duration: post.media.duration } : undefined}
+                likesCount={post.likes || 0}
+                commentsCount={post.comments || 0}
+                sharesCount={post.shares || 0}
+                echoCount={post.echoCount || 0}
+                signalStrength={post.signalStrength || 0}
+                isLiked={post.isLiked}
+                isEcho={post.isEcho}
+                echoAuthorName={post.isEcho ? post.author?.username : undefined}
+                isBoosted={post.isBoosted}
+                boostTier={post.boostTier}
+                timestamp={getRelativeTime(post.createdAt)}
+                onLike={() => post.isLiked ? unlikePostMutation.mutate(post._id) : likePostMutation.mutate(post._id)}
+                onComment={() => navigate(`/post/${post._id}#comments`)}
+                onShare={() => handleShare(post._id)}
+                onBookmark={() => post.isBookmarked ? unbookmarkPostMutation.mutate(post._id) : bookmarkPostMutation.mutate(post._id)}
+                onEcho={() => echoPostMutation.mutate(post._id)}
+                onBoost={() => boostPostMutation.mutate({ postId: post._id, tier: 'flash' })}
+                onAuthorClick={() => handleAuthorClick(post.author?.username)}
+              />
+            ))}
+
+            {/* Show user-created drops from store */}
             {feedDrops.map((drop) => (
               <FeedCard
                 key={drop.id}
@@ -298,56 +328,14 @@ export const HomePage: React.FC = () => {
                 sharesCount={drop.shares}
                 timestamp={getRelativeTime(drop.createdAt)}
                 onLike={() => likeDrop(drop.id)}
-                onComment={() => console.log('Comment on drop', drop.id)}
-                onShare={() => console.log('Share drop', drop.id)}
-                onAuthorClick={() => console.log('View author profile', drop.authorName)}
+                onComment={() => navigate(`/post/${drop.id}#comments`)}
+                onShare={() => handleShare(drop.id)}
+                onAuthorClick={() => handleAuthorClick(drop.authorId)}
               />
             ))}
 
-            {/* Show mock posts after user-created posts, sorted by most recent (assuming timestamp is in a comparable format) */}
-            {[...mockPosts]
-              .sort((a, b) => {
-                // Try to parse as date, fallback to string comparison
-                const dateA = Date.parse(a.timestamp);
-                const dateB = Date.parse(b.timestamp);
-                if (!isNaN(dateA) && !isNaN(dateB)) {
-                  return dateB - dateA;
-                }
-                // If not valid dates, try to extract number and unit (e.g., '2h', '5m')
-                const parseRelative = (str: string) => {
-                  const match = str.match(/(\d+)([a-zA-Z]+)/);
-                  if (!match) return 0;
-                  const num = parseInt(match[1], 10);
-                  const unit = match[2];
-                  switch (unit) {
-                    case 'm': return Date.now() - num * 60 * 1000;
-                    case 'h': return Date.now() - num * 60 * 60 * 1000;
-                    case 'd': return Date.now() - num * 24 * 60 * 60 * 1000;
-                    default: return 0;
-                  }
-                };
-                return parseRelative(a.timestamp) - parseRelative(b.timestamp);
-              })
-              .map((post) => (
-                <FeedCard
-                  key={post.id}
-                  id={post.id}
-                  author={post.author}
-                  content={post.content}
-                  language={post.language}
-                  media={post.media}
-                  likesCount={post.likesCount}
-                  commentsCount={post.commentsCount}
-                  sharesCount={post.sharesCount}
-                  timestamp={post.timestamp}
-                  onComment={() => console.log('Comment on post', post.id)}
-                  onShare={() => console.log('Share post', post.id)}
-                  onAuthorClick={() => console.log('View author profile', post.author.name)}
-                />
-              ))}
-            
-            {/* Show empty state only if both are empty */}
-            {feedDrops.length === 0 && mockPosts.length === 0 && (
+            {/* Show empty state only if API data and drops are empty */}
+            {!isLoading && feedData && feedData.data?.length === 0 && feedDrops?.length === 0 && (
               <div className="text-center py-16 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl">
                 <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
                   <svg className="w-10 h-10 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -357,7 +345,7 @@ export const HomePage: React.FC = () => {
                 <h3 className="text-xl font-bold text-white mb-2">No drops yet</h3>
                 <p className="text-slate-400 mb-6">Be the first to launch a drop!</p>
                 <button
-                  onClick={() => openModal('createPost')}
+                  onClick={() => openModal('createPost', { source: 'feed' })}
                   className="px-6 py-3 rounded-xl bg-linear-to-r from-cyan-500 to-amber-400 text-slate-950 font-bold hover:opacity-90 transition-opacity"
                 >
                   Launch a Drop
@@ -370,37 +358,22 @@ export const HomePage: React.FC = () => {
         {/* Right column - Hidden on mobile, visible on xl */}
         <div className="hidden xl:block xl:col-span-4">
           <RightSidebar
-            currentUser={(() => {
-              const user = getCurrentUser();
-              return user
-                ? { name: user.name, username: user.username, avatarUrl: user.avatarUrl }
-                : { name: 'Guest', username: 'guest', avatarUrl: undefined };
-            })()}
-            suggestions={mockSuggestions}
-            trending={mockTrending}
+            currentUser={{ name: auth.user?.username || 'User', username: auth.user?.username || 'user', avatarUrl: auth.user?.avatarUrl || '' }}
+            suggestions={trendingSuggestions}
+            trending={trendingTopics}
           />
         </div>
       </div>
+
+      {/* Signal Viewer Modal */}
+      <SignalViewerModal
+        isOpen={isSignalViewerOpen}
+        onClose={handleCloseSignalViewer}
+        signal={selectedSignal}
+      />
     </div>
   );
 };
 
-/**
- * Helper to get relative time string
- */
-function getRelativeTime(dateString: string): string {
-  const now = new Date();
-  const date = new Date(dateString);
-  const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-  
-  if (seconds < 60) return 'Just now';
-  const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return `${minutes}m`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h`;
-  const days = Math.floor(hours / 24);
-  if (days < 7) return `${days}d`;
-  return date.toLocaleDateString();
-}
 
 HomePage.displayName = 'HomePage';

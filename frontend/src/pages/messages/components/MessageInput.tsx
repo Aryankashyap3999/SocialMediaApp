@@ -47,7 +47,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   const hasContent = message.trim().length > 0;
 
   return (
-    <div className="px-4 py-3 border-t border-slate-700 bg-[#0a0a0a]">
+    <div className="px-4 py-3 border-t border-orange-500/10 bg-[#0e0805]">
       <form onSubmit={handleSubmit} className="flex items-center gap-2">
         {/* Emoji button */}
         <IconButton type="button" rounded="full" label="Add emoji">
@@ -64,7 +64,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
             onKeyDown={handleKeyPress}
             placeholder={placeholder}
             disabled={disabled}
-            className="w-full bg-[#141414] rounded-full py-2.5 px-4 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 placeholder:text-slate-500 disabled:opacity-50"
+            className="w-full bg-orange-500/5 border border-orange-500/10 rounded-full py-2.5 px-4 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-orange-400/50 placeholder:text-slate-500 disabled:opacity-50"
           />
         </div>
 
@@ -73,9 +73,9 @@ export const MessageInput: React.FC<MessageInputProps> = ({
           <button
             type="submit"
             disabled={disabled}
-            className="p-2 rounded-full transition-colors bg-linear-to-r from-cyan-400 to-amber-300 hover:from-cyan-300 hover:to-amber-200 shadow-[0_10px_30px_-18px_rgba(0,0,0,0.8)] disabled:opacity-50"
+            className="p-2 rounded-full transition-colors bg-linear-to-r from-orange-500 to-amber-400 hover:from-orange-400 hover:to-amber-300 shadow-[0_10px_30px_-18px_rgba(0,0,0,0.8)] disabled:opacity-50"
           >
-            <Icon name="send" size={20} className="text-slate-950" />
+            <Icon name="send" size={20} className="text-white" />
           </button>
         ) : (
           <>

@@ -15,13 +15,13 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             className={`
               w-full px-4 py-3 text-base
-              border rounded-lg
-              bg-gray-50 text-gray-900 placeholder-gray-400
+              border rounded-xl
+              bg-white/5 text-white placeholder-slate-600
               transition-all duration-200
-              focus:outline-none focus:bg-white
-              ${error 
-                ? 'border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-100' 
-                : 'border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100'
+              focus:outline-none focus:bg-white/8
+              ${error
+                ? 'border-red-500/60 focus:border-red-400 focus:ring-1 focus:ring-red-400/20'
+                : 'border-white/10 focus:border-cyan-500/60 focus:ring-1 focus:ring-cyan-500/20'
               }
               ${endIcon ? 'pr-12' : ''}
               ${className}
@@ -29,13 +29,13 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {...props}
           />
           {endIcon && (
-            <div className="absolute right-4 text-gray-400 hover:text-gray-600 transition-colors">
+            <div className="absolute right-4 text-slate-500 hover:text-slate-300 transition-colors">
               {endIcon}
             </div>
           )}
         </div>
         {error && (
-          <p className="mt-1.5 text-sm text-red-600">{error}</p>
+          <p className="mt-1.5 text-sm text-red-400">{error}</p>
         )}
       </div>
     );

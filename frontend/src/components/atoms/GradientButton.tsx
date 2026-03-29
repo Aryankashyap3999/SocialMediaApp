@@ -44,9 +44,9 @@ export const GradientButton: React.FC<GradientButtonProps> = ({
         ${sizeClasses[size]}
         ${roundedClasses[rounded]}
         ${fullWidth ? 'w-full' : ''}
-        bg-linear-to-r from-cyan-400 to-amber-300 
-        hover:from-cyan-300 hover:to-amber-200 
-        text-slate-950 font-semibold 
+        bg-linear-to-r from-amber-700 to-orange-600
+        hover:from-amber-600 hover:to-orange-500
+        text-white font-semibold
         transition-colors
         shadow-[0_10px_30px_-16px_rgba(0,0,0,0.8)]
         disabled:opacity-50 disabled:cursor-not-allowed

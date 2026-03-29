@@ -11,7 +11,6 @@ export { RightSidebar } from './RightSidebar';
 export type { RightSidebarProps, TrendingTopic } from './RightSidebar';
 
 export { ComposeBox } from './ComposeBox';
-export type { ComposeBoxProps } from './ComposeBox';
 
 export { StoriesBar } from './StoriesBar';
 export type { StoriesBarProps, Story } from './StoriesBar';
@@ -22,5 +21,10 @@ export type { CreateOption, CreateButtonPosition } from './CreateButton';
 export { MobileBottomNav } from './MobileBottomNav';
 export type { MobileBottomNavProps } from './MobileBottomNav';
 
+// Indian cultural components
+export { FestivalBanner } from './FestivalBanner';
+export { CricketWidget } from './CricketWidget';
+export { BharatPulse } from './BharatPulse';
+
 // Modals
-export { CreatePostModal, CreateOptionsMenu } from './Modals';
+export { CreateDropModal, CreateOptionsMenu } from './Modals';

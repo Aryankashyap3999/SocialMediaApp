@@ -1,137 +1,65 @@
-import React, { useState } from 'react';
-import { Icon } from '@components/atoms/Icon';
-import { Button } from '@components/atoms/Button';
+import React from 'react';
+import { useAuth } from '@/hooks/context/useAuth';
+import { useModalStore } from '@/store/useModalStore';
+import { Avatar } from '@components/atoms/Avatar';
 
-export interface ComposeBoxProps {
-  currentUser?: {
-    name: string;
-    avatarUrl?: string;
-  };
-  placeholder?: string;
-  onPost?: (content: string) => void;
-}
-
-/**
- * ComposeBox Organism
- * Create new post component for Aptoodate
- */
-export const ComposeBox: React.FC<ComposeBoxProps> = ({
-  currentUser,
-  placeholder = "What's happening?",
-  onPost,
-}) => {
-  const [content, setContent] = useState('');
-  const maxLength = 280;
-
-  const handlePost = () => {
-    if (content.trim()) {
-      onPost?.(content);
-      setContent('');
-    }
-  };
-
-  const remaining = maxLength - content.length;
-  const isOverLimit = remaining < 0;
-  const isNearLimit = remaining <= 20 && remaining > 0;
+export const ComposeBox: React.FC = () => {
+  const { auth } = useAuth();
+  const { openModal } = useModalStore();
 
   return (
-    <div className="rounded-2xl sm:rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl px-3 sm:px-5 py-4 sm:py-5 shadow-xl shadow-indigo-500/10">
-      <div className="flex gap-3 sm:gap-4">
-        {/* Avatar */}
-        <div className="shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-linear-to-br from-cyan-500 to-amber-400 flex items-center justify-center text-slate-950 font-bold text-sm sm:text-base shadow-lg shadow-cyan-500/30">
-          {currentUser?.name ? currentUser.name.charAt(0) : 'U'}
+    <div
+      onClick={() => openModal('createPost', { source: 'composeBox' })}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => e.key === 'Enter' && openModal('createPost', { source: 'composeBox' })}
+      className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-4 cursor-text hover:border-orange-400/30 hover:bg-white/8 transition-all duration-200 shadow-lg shadow-black/20"
+    >
+      {/* Warm saffron ambient glow on hover */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,rgba(249,115,22,0.07),transparent_60%)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+      <div className="relative flex items-center gap-3">
+        <Avatar
+          src={auth.user?.avatarUrl}
+          alt={auth.user?.username || 'You'}
+          size="md"
+        />
+
+        <div className="flex-1 min-w-0">
+          <p className="text-slate-500 text-sm group-hover:text-slate-400 transition-colors">
+            What are you broadcasting today?
+          </p>
         </div>
 
-        {/* Compose Area */}
-        <div className="flex-1 space-y-2 sm:space-y-3 min-w-0">
-          <div className="flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs uppercase tracking-[0.15em] sm:tracking-[0.2em] text-cyan-200/80 overflow-x-auto scrollbar-hide">
-            <span className="px-2 py-0.5 sm:py-1 rounded-full bg-white/5 border border-white/10 whitespace-nowrap">Signal</span>
-            <span className="px-2 py-0.5 sm:py-1 rounded-full bg-white/5 border border-white/10 whitespace-nowrap">Image</span>
-            <span className="px-2 py-0.5 sm:py-1 rounded-full bg-white/5 border border-white/10 whitespace-nowrap">Link</span>
-          </div>
-
-          <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder={placeholder}
-            rows={2}
-            className="w-full bg-transparent border-none resize-none text-base sm:text-lg text-white placeholder:text-indigo-200/60 focus:outline-none"
-          />
-
-          {/* Prompt chips - Hidden on mobile for cleaner look */}
-          <div className="hidden sm:flex flex-wrap gap-2 text-sm">
-            {['What moved you today?', 'Link a track', 'Drop a location', 'Who inspired you?'].map((chip) => (
-              <button
-                key={chip}
-                type="button"
-                className="px-3 py-1.5 rounded-full border border-white/10 text-indigo-100 hover:border-indigo-400/60 hover:text-white transition-colors"
-                onClick={() => setContent((prev) => prev ? `${prev} ${chip}` : chip)}
-              >
-                {chip}
-              </button>
-            ))}
-          </div>
-
-          {/* Actions Row */}
-          <div className="flex items-center justify-between pt-1 gap-2">
-            {/* Media Actions - Show fewer on mobile */}
-            <div className="flex items-center gap-1 sm:gap-2">
-              {(['image','gif','emoji'] as const).map((icon) => (
-                <button key={icon} className="p-1.5 sm:p-2 rounded-lg sm:rounded-xl bg-white/5 border border-white/10 text-indigo-200 hover:text-white hover:border-indigo-400/60 transition-colors">
-                  <Icon name={icon} size={16} className="sm:hidden" />
-                  <Icon name={icon} size={18} className="hidden sm:block" />
-                </button>
-              ))}
-              {/* Additional icons hidden on mobile */}
-              {(['calendar','location'] as const).map((icon) => (
-                <button key={icon} className="hidden sm:block p-2 rounded-xl bg-white/5 border border-white/10 text-indigo-200 hover:text-white hover:border-indigo-400/60 transition-colors">
-                  <Icon name={icon} size={18} />
-                </button>
-              ))}
-            </div>
-
-            {/* Post Button & Character Count */}
-            <div className="flex items-center gap-2 sm:gap-3">
-              {content.length > 0 && (
-                <div className="hidden sm:flex items-center gap-2">
-                  <div className="relative w-7 h-7">
-                    <svg className="w-7 h-7 -rotate-90" viewBox="0 0 24 24">
-                      <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2" className="text-white/10" />
-                      <circle
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeDasharray={`${Math.min(content.length / maxLength, 1) * 62.83} 62.83`}
-                        className={
-                          isOverLimit ? 'text-red-400' :
-                          isNearLimit ? 'text-amber-400' :
-                          'text-indigo-400'
-                        }
-                      />
-                    </svg>
-                    {remaining <= 30 && (
-                      <span className={`absolute inset-0 flex items-center justify-center text-[10px] font-semibold ${isOverLimit ? 'text-red-400' : 'text-indigo-100'}`}>
-                        {remaining}
-                      </span>
-                    )}
-                  </div>
-                  <div className="w-px h-6 bg-white/10" />
-                </div>
-              )}
-              <Button
-                onClick={handlePost}
-                disabled={!content.trim() || isOverLimit}
-                className="bg-linear-to-r from-cyan-500 to-amber-400 hover:from-cyan-400 hover:to-amber-300 disabled:from-white/10 disabled:to-white/10 disabled:text-white/40 text-slate-950 font-bold px-4 sm:px-5 py-2 sm:py-2.5 rounded-full shadow-lg shadow-cyan-500/25 text-sm sm:text-base"
-              >
-                <span className="hidden sm:inline">Broadcast</span>
-                <span className="sm:hidden">Post</span>
-              </Button>
-            </div>
-          </div>
+        {/* Quick action buttons */}
+        <div className="flex items-center gap-1 shrink-0" onClick={(e) => e.stopPropagation()}>
+          <button
+            onClick={() => openModal('createPost', { source: 'composeBox', mediaType: 'image' })}
+            className="p-2 rounded-xl text-slate-500 hover:text-orange-400 hover:bg-orange-500/10 transition-all"
+            title="Attach image"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </button>
+          <button
+            onClick={() => openModal('createStory', { source: 'composeBox' })}
+            className="p-2 rounded-xl text-slate-500 hover:text-amber-400 hover:bg-amber-500/10 transition-all"
+            title="Create signal"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </button>
         </div>
+
+        <button
+          onClick={() => openModal('createPost', { source: 'composeBox' })}
+          className="shrink-0 px-4 py-1.5 rounded-full bg-linear-to-r from-orange-500 to-rose-500 text-white text-xs font-bold hover:opacity-90 active:scale-95 transition-all shadow-lg shadow-orange-500/25"
+          style={{ fontFamily: "'Baloo 2', sans-serif" }}
+        >
+          Drop
+        </button>
       </div>
     </div>
   );

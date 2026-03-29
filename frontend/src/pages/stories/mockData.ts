@@ -4,6 +4,12 @@ import type { Story, StoryGroup } from './types';
  * Mock Data for Stories Feature
  * 
  * Centralized mock data - easily replaceable with API calls
+ * 
+ * Frequency Bands:
+ * - breaking: Real-time urgent signals (< 1hr old, high engagement)
+ * - trending: High engagement signals getting attention
+ * - chill: Casual everyday moments
+ * - broadcast: Verified creator announcements
  */
 
 export const mockStories: Story[] = [
@@ -38,6 +44,8 @@ export const mockStories: Story[] = [
       },
     ],
     hasUnseenItems: true,
+    frequencyBand: 'trending',
+    signalStrength: 5,
   },
   {
     id: 's2',
@@ -60,6 +68,8 @@ export const mockStories: Story[] = [
       },
     ],
     hasUnseenItems: true,
+    frequencyBand: 'chill',
+    signalStrength: 3,
   },
   {
     id: 's3',
@@ -100,6 +110,8 @@ export const mockStories: Story[] = [
     ],
     hasUnseenItems: true,
     isLive: true,
+    frequencyBand: 'breaking',
+    signalStrength: 5,
   },
   {
     id: 's4',
@@ -121,6 +133,8 @@ export const mockStories: Story[] = [
       },
     ],
     hasUnseenItems: false,
+    frequencyBand: 'chill',
+    signalStrength: 2,
   },
   {
     id: 's5',
@@ -144,6 +158,8 @@ export const mockStories: Story[] = [
       },
     ],
     hasUnseenItems: false,
+    frequencyBand: 'trending',
+    signalStrength: 4,
   },
   {
     id: 's6',
@@ -174,6 +190,8 @@ export const mockStories: Story[] = [
       },
     ],
     hasUnseenItems: false,
+    frequencyBand: 'broadcast',
+    signalStrength: 5,
   },
 ];
 

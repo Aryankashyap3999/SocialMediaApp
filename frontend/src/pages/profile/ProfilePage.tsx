@@ -1,266 +1,94 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { ProfileHeader } from './ProfileHeader';
 import { ProfileTabs, type ProfileTab } from './ProfileTabs';
-import { ProfilePostGrid, type MediaItem } from './ProfilePostGrid';
+import { ProfilePostGrid } from './ProfilePostGrid';
 import { EditProfileModal, type ProfileData } from './EditProfileModal';
 import { FeedCard } from '@components/organisms/FeedCard';
 import { Icon } from '@components/atoms/Icon';
-
-// Mock user data
-const mockUser = {
-  id: '1',
-  name: 'Sarah Johnson',
-  username: 'sarahjohnson',
-  avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop',
-  coverUrl: 'https://images.unsplash.com/photo-1488330890490-c291ecf62571?w=1200&h=400&fit=crop',
-  bio: '✨ Travel enthusiast | 📸 Photography lover | 🌍 Exploring the world one city at a time. Always seeking new adventures and authentic experiences.',
-  location: 'San Francisco, CA',
-  website: 'https://sarahtravels.com',
-  joinDate: 'March 2021',
-  isVerified: true,
-  followersCount: 12453,
-  followingCount: 892,
-  postsCount: 234,
-};
-
-// Mock posts data
-const mockPosts = [
-  {
-    id: '1',
-    author: {
-      name: mockUser.name,
-      username: mockUser.username,
-      avatarUrl: mockUser.avatarUrl,
-      isVerified: mockUser.isVerified,
-    },
-    content: "Just finished an incredible journey through Southeast Asia! The cultures, food, and people I met along the way were absolutely amazing. Can't wait to share more stories and tips with you all. 🌏✈️",
-    language: 'English',
-    likesCount: 342,
-    commentsCount: 58,
-    sharesCount: 28,
-    timestamp: '2h',
-  },
-  {
-    id: '2',
-    author: {
-      name: mockUser.name,
-      username: mockUser.username,
-      avatarUrl: mockUser.avatarUrl,
-      isVerified: mockUser.isVerified,
-    },
-    content: 'Sunset views from Santorini never disappoint. This place is pure magic! 🌅',
-    language: 'English',
-    media: {
-      type: 'image' as const,
-      url: 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=800&h=600&fit=crop',
-    },
-    likesCount: 892,
-    commentsCount: 124,
-    sharesCount: 67,
-    timestamp: '1d',
-  },
-  {
-    id: '3',
-    author: {
-      name: mockUser.name,
-      username: mockUser.username,
-      avatarUrl: mockUser.avatarUrl,
-      isVerified: mockUser.isVerified,
-    },
-    content: 'Morning coffee with a view. There\'s something magical about starting your day in a new city. What\'s your favorite morning ritual when traveling? ☕️',
-    language: 'English',
-    media: {
-      type: 'image' as const,
-      url: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&h=600&fit=crop',
-    },
-    likesCount: 567,
-    commentsCount: 89,
-    sharesCount: 34,
-    timestamp: '3d',
-  },
-];
-
-// Mock media items
-const mockMedia: MediaItem[] = [
-  {
-    id: '1',
-    type: 'image',
-    url: 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=400&h=400&fit=crop',
-    likesCount: 892,
-    commentsCount: 124,
-  },
-  {
-    id: '2',
-    type: 'image',
-    url: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=400&fit=crop',
-    likesCount: 567,
-    commentsCount: 89,
-  },
-  {
-    id: '3',
-    type: 'video',
-    url: 'https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?w=400&h=400&fit=crop',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?w=400&h=400&fit=crop',
-    likesCount: 1234,
-    commentsCount: 156,
-    duration: '0:45',
-  },
-  {
-    id: '4',
-    type: 'image',
-    url: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=400&h=400&fit=crop',
-    likesCount: 445,
-    commentsCount: 67,
-  },
-  {
-    id: '5',
-    type: 'image',
-    url: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=400&h=400&fit=crop',
-    likesCount: 789,
-    commentsCount: 98,
-  },
-  {
-    id: '6',
-    type: 'image',
-    url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&h=400&fit=crop',
-    likesCount: 654,
-    commentsCount: 78,
-  },
-  {
-    id: '7',
-    type: 'video',
-    url: 'https://images.unsplash.com/photo-1682686581580-d99b0230064e?w=400&h=400&fit=crop',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1682686581580-d99b0230064e?w=400&h=400&fit=crop',
-    likesCount: 2341,
-    commentsCount: 234,
-    duration: '1:23',
-  },
-  {
-    id: '8',
-    type: 'image',
-    url: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=400&fit=crop',
-    likesCount: 543,
-    commentsCount: 65,
-  },
-  {
-    id: '9',
-    type: 'image',
-    url: 'https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=400&h=400&fit=crop',
-    likesCount: 876,
-    commentsCount: 112,
-  },
-];
-
-// Mock liked posts
-const mockLikedPosts = [
-  {
-    id: 'liked-1',
-    author: {
-      name: 'Marco Chen',
-      username: 'marcochen',
-      avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop',
-      isVerified: true,
-    },
-    content: 'The beauty of minimalist design is in its ability to communicate more with less. Every element should serve a purpose. 🎨',
-    language: 'English',
-    likesCount: 456,
-    commentsCount: 34,
-    sharesCount: 12,
-    timestamp: '5h',
-    isLiked: true,
-  },
-  {
-    id: 'liked-2',
-    author: {
-      name: 'Emma Rodriguez',
-      username: 'emmarodriguez',
-      avatarUrl: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop',
-      isVerified: false,
-    },
-    content: 'Just discovered an amazing hidden gem in Barcelona. Sometimes the best experiences come from getting lost! 🇪🇸',
-    language: 'Spanish',
-    media: {
-      type: 'image' as const,
-      url: 'https://images.unsplash.com/photo-1583422409516-2895a77efded?w=800&h=600&fit=crop',
-    },
-    likesCount: 789,
-    commentsCount: 67,
-    sharesCount: 45,
-    timestamp: '1d',
-    isLiked: true,
-  },
-];
+import { useAuth } from '@/hooks/context/useAuth';
+import { useUserById } from '@/hooks/queries/useUsers';
+import { useUpdateProfile } from '@/hooks/mutations/useUsers';
+import { useUserPosts } from '@/hooks';
+import { useFollowStats, useFollowingStatus } from '@/hooks';
+import { useFollowUser, useUnfollowUser } from '@/hooks';
+import { useUserLikes } from '@/hooks/queries/useLikes';
+import { getRelativeTime } from '@/utils/helpers';
 
 export interface ProfilePageProps {
   userId?: string;
 }
 
-/**
- * ProfilePage Component
- * 
- * Main profile page displaying user information, posts, media, and likes
- */
-export const ProfilePage: React.FC<ProfilePageProps> = ({ userId }) => {
-  const [activeTab, setActiveTab] = useState<ProfileTab>('posts');
-  const [isFollowing, setIsFollowing] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
+export const ProfilePage: React.FC<ProfilePageProps> = () => {
+  const { userId: routeUserId } = useParams<{ userId: string }>();
+  const { auth } = useAuth();
+  const currentUserId = auth.user?._id || '';
 
-  // Determine if viewing own profile (for demo, always true)
-  const isOwnProfile = !userId || userId === mockUser.id;
+  const profileUserId = routeUserId || currentUserId;
+  const isOwnProfile = !routeUserId || routeUserId === currentUserId;
+
+  const [activeTab, setActiveTab] = useState<ProfileTab>('posts');
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  const { data: userData, isLoading: userLoading } = useUserById(profileUserId);
+  const { data: postsData } = useUserPosts(profileUserId);
+  const { data: followStatsData } = useFollowStats(profileUserId);
+  const { data: followingStatusData } = useFollowingStatus(isOwnProfile ? '' : profileUserId);
+  const { data: likesData } = useUserLikes(isOwnProfile ? currentUserId : '');
+
+  const followUser = useFollowUser();
+  const unfollowUser = useUnfollowUser();
+  const updateProfile = useUpdateProfile();
+
+  const isFollowing = followingStatusData?.data?.isFollowing ?? false;
+
+  const user = userData?.data;
+  const posts = postsData?.data ?? [];
+  const followersCount = followStatsData?.data?.followersCount ?? 0;
+  const followingCount = followStatsData?.data?.followingCount ?? 0;
+  const likedPosts = likesData?.data ?? [];
 
   const handleFollowClick = () => {
-    setIsFollowing(!isFollowing);
-  };
-
-  const handleEditClick = () => {
-    setIsEditModalOpen(true);
+    if (isFollowing) {
+      unfollowUser.mutate(profileUserId);
+    } else {
+      followUser.mutate(profileUserId);
+    }
   };
 
   const handleSaveProfile = async (data: ProfileData) => {
-    setIsSaving(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log('Saving profile:', data);
-    setIsSaving(false);
+    await updateProfile.mutateAsync({
+      name: data.name,
+      bio: data.bio,
+      avatarUrl: data.avatarUrl,
+    });
     setIsEditModalOpen(false);
-  };
-
-  const handleMessageClick = () => {
-    console.log('Opening messages...');
-  };
-
-  const handleMoreClick = () => {
-    console.log('Opening more options...');
   };
 
   const renderEmptyState = (type: string) => (
     <div className="flex flex-col items-center justify-center py-16 px-4">
-      <div className="w-20 h-20 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-4">
-        <Icon 
-          name={type === 'posts' ? 'home' : type === 'replies' ? 'comment' : 'heart'} 
-          size={32} 
-          className="text-cyan-400 dark:text-cyan-500" 
+      <div className="w-20 h-20 rounded-2xl bg-white/5 border border-white/8 flex items-center justify-center mb-4">
+        <Icon
+          name={type === 'posts' ? 'home' : type === 'replies' ? 'comment' : 'heart'}
+          size={32}
+          className="text-orange-400"
         />
       </div>
-      <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+      <h3 className="text-xl font-black text-white mb-2">
         {type === 'posts' && 'No posts yet'}
         {type === 'replies' && 'No replies yet'}
         {type === 'likes' && 'No likes yet'}
       </h3>
-      <p className="text-slate-500 dark:text-slate-400 text-center max-w-sm">
-        {type === 'posts' && (isOwnProfile 
-          ? "When you post something, it will show up here." 
-          : "This user hasn't posted anything yet."
-        )}
-        {type === 'replies' && (isOwnProfile 
-          ? "When you reply to posts, they will show up here." 
-          : "This user hasn't replied to any posts yet."
-        )}
-        {type === 'likes' && (isOwnProfile 
-          ? "Posts you like will appear here." 
-          : "This user hasn't liked any posts yet."
-        )}
+      <p className="text-slate-500 text-center max-w-sm">
+        {type === 'posts' && (isOwnProfile
+          ? 'When you post something, it will show up here.'
+          : "This user hasn't posted anything yet.")}
+        {type === 'replies' && (isOwnProfile
+          ? 'When you reply to posts, they will show up here.'
+          : "This user hasn't replied to any posts yet.")}
+        {type === 'likes' && (isOwnProfile
+          ? 'Posts you like will appear here.'
+          : "This user hasn't liked any posts yet.")}
       </p>
     </div>
   );
@@ -268,13 +96,25 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ userId }) => {
   const renderContent = () => {
     switch (activeTab) {
       case 'posts':
-        return mockPosts.length > 0 ? (
-          <div className="bg-black rounded-xl overflow-hidden">
-            <div className="divide-y divide-slate-800">
-              {mockPosts.map((post) => (
+        return posts.length > 0 ? (
+          <div className="bg-white/3 rounded-2xl overflow-hidden border border-white/5">
+            <div className="divide-y divide-white/5">
+              {posts.map((post: { _id: string; content: string; author: { username: string; avatarUrl?: string }; likes?: number; comments?: number; createdAt: string }) => (
                 <FeedCard
-                  key={post.id}
-                  {...post}
+                  key={post._id}
+                  id={post._id}
+                  author={{
+                    name: post.author?.username || user?.username || '',
+                    username: post.author?.username || user?.username || '',
+                    avatarUrl: post.author?.avatarUrl || user?.avatarUrl,
+                    isVerified: false,
+                  }}
+                  content={post.content}
+                  language="English"
+                  likesCount={post.likes || 0}
+                  commentsCount={post.comments || 0}
+                  sharesCount={0}
+                  timestamp={getRelativeTime(post.createdAt)}
                 />
               ))}
             </div>
@@ -287,21 +127,38 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ userId }) => {
       case 'media':
         return (
           <ProfilePostGrid
-            items={mockMedia}
+            items={[]}
             onItemClick={(item) => console.log('Clicked:', item)}
           />
         );
 
       case 'likes':
-        return mockLikedPosts.length > 0 ? (
-          <div className="bg-black rounded-xl overflow-hidden">
-            <div className="divide-y divide-slate-800">
-              {mockLikedPosts.map((post) => (
-                <FeedCard
-                  key={post.id}
-                  {...post}
-                />
-              ))}
+        return likedPosts.length > 0 ? (
+          <div className="bg-white/3 rounded-2xl overflow-hidden border border-white/5">
+            <div className="divide-y divide-white/5">
+              {likedPosts.map((like: { _id: string; post?: { _id: string; content: string; author: { username: string; avatarUrl?: string }; likes?: number; comments?: number; createdAt: string } }) => {
+                const post = like.post;
+                if (!post) return null;
+                return (
+                  <FeedCard
+                    key={like._id}
+                    id={post._id}
+                    author={{
+                      name: post.author?.username || '',
+                      username: post.author?.username || '',
+                      avatarUrl: post.author?.avatarUrl,
+                      isVerified: false,
+                    }}
+                    content={post.content}
+                    language="English"
+                    likesCount={post.likes || 0}
+                    commentsCount={post.comments || 0}
+                    sharesCount={0}
+                    isLiked={true}
+                    timestamp={getRelativeTime(post.createdAt)}
+                  />
+                );
+              })}
             </div>
           </div>
         ) : renderEmptyState('likes');
@@ -311,66 +168,86 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ userId }) => {
     }
   };
 
+  if (userLoading || !user) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="w-12 h-12 rounded-full border-2 border-orange-400/30 border-t-cyan-400 animate-spin" />
+      </div>
+    );
+  }
+
+  const profileUser = {
+    id: user._id || user.id || profileUserId,
+    name: user.name || user.username,
+    username: user.username,
+    avatarUrl: user.avatarUrl,
+    bio: user.bio,
+    joinDate: user.createdAt
+      ? new Date(user.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+      : '',
+    isVerified: user.isVerified,
+    followersCount,
+    followingCount,
+    postsCount: posts.length,
+  };
+
   return (
-    <div className="min-h-screen bg-white dark:bg-black">
+    <div className="min-h-screen" style={{ background: 'linear-gradient(180deg, #0e0805 0%, #130a04 100%)' }}>
       {/* Back button for mobile */}
-      <div className="sticky top-0 z-20 flex items-center gap-4 px-4 py-3 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 lg:hidden">
+      <div className="sticky top-0 z-20 flex items-center gap-4 px-4 py-3 backdrop-blur-xl border-b border-white/5 lg:hidden"
+        style={{ background: 'rgba(5,6,10,0.85)' }}
+      >
         <button
           onClick={() => window.history.back()}
-          className="p-2 -ml-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors"
+          className="p-2 -ml-2 hover:bg-white/10 rounded-full transition-colors"
         >
-          <svg className="w-5 h-5 text-slate-700 dark:text-slate-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <svg className="w-5 h-5 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
         </button>
         <div>
-          <h1 className="font-bold text-lg text-slate-900 dark:text-slate-100">{mockUser.name}</h1>
-          <p className="text-xs text-slate-500">{mockUser.postsCount} posts</p>
+          <h1 className="font-black text-lg text-white">{profileUser.name}</h1>
+          <p className="text-xs text-orange-400/60 font-mono">{posts.length} drops</p>
         </div>
       </div>
 
-      {/* Profile Header */}
       <ProfileHeader
-        user={mockUser}
+        user={profileUser}
         isOwnProfile={isOwnProfile}
         isFollowing={isFollowing}
         onFollowClick={handleFollowClick}
-        onEditClick={handleEditClick}
-        onMessageClick={handleMessageClick}
-        onMoreClick={handleMoreClick}
+        onEditClick={() => setIsEditModalOpen(true)}
+        onMessageClick={() => console.log('Opening messages...')}
+        onMoreClick={() => console.log('Opening more options...')}
       />
 
-      {/* Profile Tabs */}
       <ProfileTabs
         activeTab={activeTab}
         onTabChange={setActiveTab}
         counts={{
-          posts: mockPosts.length,
+          posts: posts.length,
           replies: 0,
-          media: mockMedia.length,
-          likes: mockLikedPosts.length,
+          media: 0,
+          likes: likedPosts.length,
         }}
       />
 
-      {/* Tab Content */}
       <div className="pb-20">
         {renderContent()}
       </div>
 
-      {/* Edit Profile Modal */}
       <EditProfileModal
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
         onSave={handleSaveProfile}
         initialData={{
-          name: mockUser.name,
-          bio: mockUser.bio || '',
-          location: mockUser.location || '',
-          website: mockUser.website || '',
-          avatarUrl: mockUser.avatarUrl,
-          coverUrl: mockUser.coverUrl,
+          name: profileUser.name,
+          bio: profileUser.bio || '',
+          location: '',
+          website: '',
+          avatarUrl: profileUser.avatarUrl,
         }}
-        isLoading={isSaving}
+        isLoading={updateProfile.isPending}
       />
     </div>
   );

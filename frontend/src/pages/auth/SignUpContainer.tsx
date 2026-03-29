@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SignUpCard } from './SignUpCard';
+import { useSignUp } from '@/hooks/mutations/useSignUp';
 
 export interface SignUpFormData {
   fullName: string;
+  username: string;
   email: string;
   password: string;
   confirmPassword: string;
@@ -11,6 +13,7 @@ export interface SignUpFormData {
 
 export interface SignUpErrors {
   fullName?: string;
+  username?: string;
   email?: string;
   password?: string;
   confirmPassword?: string;
@@ -33,20 +36,29 @@ export interface SignUpErrors {
  */
 export const SignUpContainer: React.FC = () => {
   const navigate = useNavigate();
+  const { signUpMutation, isPending, isSuccess } = useSignUp();
 
   // Form state
   const [formData, setFormData] = useState<SignUpFormData>({
     fullName: '',
+    username: '',
     email: '',
     password: '',
     confirmPassword: '',
   });
 
   // UI state
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
   const [errors, setErrors] = useState<SignUpErrors>({});
   const [acceptTerms, setAcceptTerms] = useState(false);
+
+  // Navigate to signin on successful signup
+  useEffect(() => {
+    if (isSuccess) {
+      setTimeout(() => {
+        navigate('/auth/signin');
+      }, 2000);
+    }
+  }, [isSuccess, navigate]);
 
   /**
    * Validate form data
@@ -61,6 +73,13 @@ export const SignUpContainer: React.FC = () => {
       newErrors.fullName = 'Name must be at least 2 characters';
     }
 
+    // Username validation
+    if (!formData.username.trim()) {
+      newErrors.username = 'Username is required';
+    } else if (formData.username.trim().length < 3) {
+      newErrors.username = 'Username must be at least 3 characters';
+    }
+
     // Email validation
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
@@ -68,13 +87,11 @@ export const SignUpContainer: React.FC = () => {
       newErrors.email = 'Please enter a valid email address';
     }
 
-    // Password validation
+    // Password validation - minimum 4 characters only
     if (!formData.password) {
       newErrors.password = 'Password is required';
-    } else if (formData.password.length < 8) {
-      newErrors.password = 'Password must be at least 8 characters';
-    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
-      newErrors.password = 'Password must contain uppercase, lowercase, and number';
+    } else if (formData.password.length < 4) {
+      newErrors.password = 'Password must be at least 4 characters';
     }
 
     // Confirm password validation
@@ -103,29 +120,19 @@ export const SignUpContainer: React.FC = () => {
       return;
     }
 
-    setIsLoading(true);
     setErrors({});
 
     try {
-      // TODO: Replace with actual API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-
-      console.log('Sign up attempt:', {
-        fullName: formData.fullName,
+      await signUpMutation({
         email: formData.email,
+        password: formData.password,
+        username: formData.username,
+        bio: formData.fullName // Using fullName as bio temporarily
       });
-
-      setIsSuccess(true);
-      
-      setTimeout(() => {
-        navigate('/auth/signin');
-      }, 2000);
     } catch (error) {
       setErrors({
         general: error instanceof Error ? error.message : 'Failed to create account. Please try again.',
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -177,7 +184,7 @@ export const SignUpContainer: React.FC = () => {
       onTermsChange={handleTermsChange}
       onSubmit={handleSubmit}
       onSignIn={handleSignIn}
-      isLoading={isLoading}
+      isLoading={isPending}
       isSuccess={isSuccess}
       errors={errors}
     />

@@ -1,238 +1,470 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Icon } from '@components/atoms/Icon';
 import { Avatar } from '@components/atoms/Avatar';
 import { SectionHeader } from '@components/atoms/SectionHeader';
 import { TabIndicator } from '@components/atoms/TabIndicator';
 import { FeedCard } from '@components/organisms/FeedCard';
-
-// Mock categories
-const categories = [
-  { id: 'all', label: 'For You', icon: 'trending' },
-  { id: 'tech', label: 'Technology', icon: 'settings' },
-  { id: 'travel', label: 'Travel', icon: 'discover' },
-  { id: 'sports', label: 'Sports', icon: 'trending' },
-  { id: 'music', label: 'Music', icon: 'stories' },
-  { id: 'art', label: 'Art & Design', icon: 'image' },
-  { id: 'food', label: 'Food', icon: 'emoji' },
-  { id: 'news', label: 'News', icon: 'notifications' },
-];
-
-// Mock trending topics
-const trendingTopics = [
-  { id: '1', tag: '#AIRevolution', posts: '125K', category: 'Technology' },
-  { id: '2', tag: '#WorldCup2026', posts: '89K', category: 'Sports' },
-  { id: '3', tag: '#SustainableLiving', posts: '45K', category: 'Lifestyle' },
-  { id: '4', tag: '#RemoteWork', posts: '38K', category: 'Business' },
-  { id: '5', tag: '#NFTArt', posts: '29K', category: 'Art' },
-];
-
-// Mock suggested users
-const suggestedUsers = [
-  {
-    id: '1',
-    name: 'Tech Insights',
-    username: 'techinsights',
-    avatarUrl: 'https://images.unsplash.com/photo-1535303311164-664fc9ec6532?w=100&h=100&fit=crop',
-    bio: 'Daily tech news and insights',
-    isVerified: true,
-    followers: '1.2M',
-  },
-  {
-    id: '2',
-    name: 'Travel Diaries',
-    username: 'traveldiaries',
-    avatarUrl: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=100&h=100&fit=crop',
-    bio: 'Exploring hidden gems worldwide',
-    isVerified: true,
-    followers: '892K',
-  },
-  {
-    id: '3',
-    name: 'Design Weekly',
-    username: 'designweekly',
-    avatarUrl: 'https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=100&h=100&fit=crop',
-    bio: 'UI/UX inspiration & tutorials',
-    isVerified: false,
-    followers: '456K',
-  },
-  {
-    id: '4',
-    name: 'Foodie Adventures',
-    username: 'foodieadv',
-    avatarUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=100&h=100&fit=crop',
-    bio: 'Food photography & recipes',
-    isVerified: true,
-    followers: '678K',
-  },
-];
-
-// Mock trending posts
-const trendingPosts = [
-  {
-    id: 't1',
-    author: {
-      name: 'Tech Insights',
-      username: 'techinsights',
-      avatarUrl: 'https://images.unsplash.com/photo-1535303311164-664fc9ec6532?w=100&h=100&fit=crop',
-      isVerified: true,
-    },
-    content: '🚀 Breaking: AI assistants are now capable of understanding context better than ever! The latest advancements in large language models are truly remarkable. What do you think this means for the future of work? #AIRevolution #TechNews',
-    language: 'English',
-    media: {
-      type: 'image' as const,
-      url: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=600&fit=crop',
-    },
-    likesCount: 4523,
-    commentsCount: 342,
-    sharesCount: 189,
-    timestamp: '2h',
-  },
-  {
-    id: 't2',
-    author: {
-      name: 'Travel Diaries',
-      username: 'traveldiaries',
-      avatarUrl: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=100&h=100&fit=crop',
-      isVerified: true,
-    },
-    content: 'Just discovered this hidden waterfall in Bali! 🌴💦 The locals call it the "Secret Garden." After a 2-hour trek through the jungle, this view made every step worth it. Save this for your next adventure!',
-    language: 'English',
-    media: {
-      type: 'image' as const,
-      url: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800&h=600&fit=crop',
-    },
-    likesCount: 8234,
-    commentsCount: 567,
-    sharesCount: 423,
-    timestamp: '4h',
-  },
-  {
-    id: 't3',
-    author: {
-      name: 'Design Weekly',
-      username: 'designweekly',
-      avatarUrl: 'https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=100&h=100&fit=crop',
-      isVerified: false,
-    },
-    content: '✨ Design tip of the day: White space is not empty space—it\'s breathing room for your content. The best designs know when to let elements breathe. Less is truly more! #DesignTips #UIUX',
-    language: 'English',
-    likesCount: 2156,
-    commentsCount: 98,
-    sharesCount: 234,
-    timestamp: '6h',
-  },
-];
-
-// Mock explore grid items
-const exploreGridItems = [
-  { id: 'e1', type: 'image', url: 'https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?w=400&h=400&fit=crop', likes: 12400 },
-  { id: 'e2', type: 'image', url: 'https://images.unsplash.com/photo-1682686581580-d99b0230064e?w=400&h=400&fit=crop', likes: 8900 },
-  { id: 'e3', type: 'video', url: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=400&h=400&fit=crop', likes: 45000, duration: '0:32' },
-  { id: 'e4', type: 'image', url: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=400&fit=crop', likes: 6700 },
-  { id: 'e5', type: 'image', url: 'https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=400&h=400&fit=crop', likes: 9200 },
-  { id: 'e6', type: 'video', url: 'https://images.unsplash.com/photo-1574169208507-84376144848b?w=400&h=400&fit=crop', likes: 23400, duration: '1:05' },
-  { id: 'e7', type: 'image', url: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=400&h=400&fit=crop', likes: 15600 },
-  { id: 'e8', type: 'image', url: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=400&h=400&fit=crop', likes: 11200 },
-  { id: 'e9', type: 'image', url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&h=400&fit=crop', likes: 7800 },
-];
+import { useFeed } from '@/hooks/queries/usePosts';
+import { useAllUsers } from '@/hooks/queries/useUsers';
+import { useFollowUser, useUnfollowUser } from '@/hooks/mutations/useFollow';
+import { useFollowing, useFollowers } from '@/hooks/queries/useFollow';
+import { useLikePost, useUnlikePost, useBookmarkPost, useUnbookmarkPost, useEchoPost } from '@/hooks';
+import { useTrendingTags, useTrendingPosts, useTrendingUsers } from '@/hooks/queries/useTrending';
+import { useSearch } from '@/hooks/queries/useSearch';
+import { useAuth } from '@/hooks/context/useAuth';
+import { useSearchHistory } from '@/hooks/useSearchHistory';
+import type { SearchHistoryItem } from '@/hooks/useSearchHistory';
+import { getRelativeTime, formatNumber } from '@/utils/helpers';
 
 type ViewMode = 'explore' | 'trending' | 'people';
 
-/**
- * DiscoverPage Component
- * 
- * Explore and discover trending content, topics, and users
- */
+// Signal bars based on follower count
+const SignalBars: React.FC<{ count: number; size?: 'sm' | 'md' }> = ({ count, size = 'sm' }) => {
+  const strength = count >= 500 ? 5 : count >= 100 ? 4 : count >= 50 ? 3 : count >= 10 ? 2 : 1;
+  const w = size === 'sm' ? 'w-1' : 'w-1.5';
+  return (
+    <div className="flex items-end gap-0.5">
+      {[1, 2, 3, 4, 5].map(bar => (
+        <div
+          key={bar}
+          className={`${w} rounded-full transition-all
+            ${bar <= strength ? 'bg-orange-400' : 'bg-white/10'}
+          `}
+          style={{ height: `${bar * (size === 'sm' ? 2.5 : 3) + 3}px` }}
+        />
+      ))}
+    </div>
+  );
+};
+
+// Unique broadcaster card
+const BroadcasterCard: React.FC<{
+  user: any;
+  isFollowing: boolean;
+  followsYou: boolean;
+  onFollow: () => void;
+  onUnfollow: () => void;
+  isPending: boolean;
+  isMe: boolean;
+}> = ({ user, isFollowing, followsYou, onFollow, onUnfollow, isPending, isMe }) => {
+  const navigate = useNavigate();
+  const userId = user.id || user._id;
+  const followers = user.followersCount || user.followers || 0;
+
+  return (
+    <div
+      onClick={() => navigate(`/profile/${userId}`)}
+      className={`relative group rounded-2xl border transition-all duration-300 overflow-hidden cursor-pointer
+        ${followsYou
+          ? 'border-orange-400/30 bg-orange-500/5 hover:border-orange-400/50'
+          : 'border-white/8 bg-white/3 hover:border-white/15 hover:bg-white/5'
+        }
+      `}
+    >
+      {/* Glow on hover */}
+      <div className="absolute inset-0 bg-linear-to-r from-orange-500/0 via-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+
+      <div className="relative p-4 flex items-center gap-3">
+        {/* Avatar with ring */}
+        <div className="relative shrink-0">
+          <div className={`p-0.5 rounded-full transition-all
+            ${followsYou
+              ? 'bg-linear-to-br from-orange-400 to-amber-400 shadow-lg shadow-orange-500/25'
+              : isFollowing
+              ? 'bg-linear-to-br from-orange-500/60 to-emerald-400/60'
+              : 'bg-white/10'
+            }
+          `}>
+            <div className="p-0.5 bg-[#0e0805] rounded-full">
+              <Avatar src={user.avatarUrl} alt={user.name || user.username} size="md" />
+            </div>
+          </div>
+
+          {/* "Tunes in to you" pulse */}
+          {followsYou && (
+            <span className="absolute inset-0 rounded-full border-2 border-orange-400/50 animate-ping" />
+          )}
+        </div>
+
+        {/* User info */}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2">
+            <p className="font-bold text-sm text-white truncate">{user.name || user.username}</p>
+            {user.isVerified && <Icon name="verified" size={13} className="text-amber-300 shrink-0" />}
+          </div>
+          <p className="text-xs text-orange-400/60 font-mono truncate">@{user.username}</p>
+
+          <div className="flex items-center gap-2 mt-1">
+            <SignalBars count={followers} />
+            <span className="text-[10px] text-slate-600">{formatNumber(followers)} listeners</span>
+            {followsYou && (
+              <span className="flex items-center gap-0.5 text-[10px] font-semibold text-orange-400 bg-orange-500/10 border border-orange-400/20 px-1.5 py-0.5 rounded-full">
+                <span>📡</span> tunes in to you
+              </span>
+            )}
+          </div>
+
+          {user.bio && (
+            <p className="text-[11px] text-slate-500 mt-1 line-clamp-1">{user.bio}</p>
+          )}
+        </div>
+
+        {/* Follow / Unfollow button */}
+        {!isMe && (
+          <button
+            onClick={e => { e.stopPropagation(); isFollowing ? onUnfollow() : onFollow(); }}
+            disabled={isPending}
+            className={`shrink-0 px-4 py-2 text-xs font-bold rounded-xl transition-all duration-200 active:scale-95 disabled:opacity-50
+              ${isFollowing
+                ? 'border border-white/10 bg-white/5 text-slate-300 hover:border-red-400/30 hover:text-red-400 hover:bg-red-500/5'
+                : 'bg-linear-to-r from-orange-500 to-amber-400 text-white shadow-lg shadow-orange-500/20 hover:from-orange-400 hover:to-amber-300 hover:shadow-orange-500/30'
+              }
+            `}
+          >
+            {isPending ? '…' : isFollowing ? 'Tuned In' : 'Tune In'}
+          </button>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// Search history dropdown
+const HistoryDropdown: React.FC<{
+  history: SearchHistoryItem[];
+  onSelect: (item: SearchHistoryItem) => void;
+  onRemove: (id: string) => void;
+  onClear: () => void;
+}> = ({ history, onSelect, onRemove, onClear }) => {
+  if (history.length === 0) return (
+    <div className="absolute top-full left-0 right-0 mt-2 z-50 rounded-2xl border border-white/10 bg-[#130a04]/98 backdrop-blur-xl shadow-2xl shadow-black/60 overflow-hidden">
+      <div className="px-4 py-6 text-center">
+        <span className="text-2xl">📡</span>
+        <p className="text-xs text-slate-500 mt-2">No recent signals</p>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="absolute top-full left-0 right-0 mt-2 z-50 rounded-2xl border border-white/10 bg-[#130a04]/98 backdrop-blur-xl shadow-2xl shadow-black/60 overflow-hidden">
+      {/* Header */}
+      <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/5">
+        <span className="text-[10px] font-black uppercase tracking-widest text-orange-400/60 font-mono">Recent Signals</span>
+        <button
+          onMouseDown={e => { e.preventDefault(); onClear(); }}
+          className="text-[10px] text-slate-500 hover:text-red-400 transition-colors font-semibold"
+        >
+          Clear all
+        </button>
+      </div>
+
+      {/* Items */}
+      <div className="py-1">
+        {history.map(item => (
+          <div
+            key={item.id}
+            className="flex items-center gap-3 px-4 py-2.5 hover:bg-white/5 group transition-colors"
+          >
+            {/* Icon / avatar */}
+            <div className="shrink-0">
+              {item.type === 'user' && item.avatarUrl ? (
+                <div className="w-8 h-8 rounded-full overflow-hidden border border-white/10">
+                  <img src={item.avatarUrl} alt="" className="w-full h-full object-cover" />
+                </div>
+              ) : (
+                <div className="w-8 h-8 rounded-xl bg-white/5 border border-white/8 flex items-center justify-center">
+                  <svg className="w-3.5 h-3.5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+              )}
+            </div>
+
+            {/* Text — click area */}
+            <button
+              onMouseDown={e => { e.preventDefault(); onSelect(item); }}
+              className="flex-1 text-left min-w-0"
+            >
+              <p className="text-sm font-semibold text-slate-200 truncate">
+                {item.type === 'user' ? (item.name || item.username) : item.query}
+              </p>
+              {item.type === 'user' && (
+                <p className="text-[11px] text-orange-400/60 font-mono">@{item.username}</p>
+              )}
+            </button>
+
+            {/* Remove */}
+            <button
+              onMouseDown={e => { e.preventDefault(); e.stopPropagation(); onRemove(item.id); }}
+              className="shrink-0 p-1.5 rounded-lg opacity-0 group-hover:opacity-100 hover:bg-white/10 transition-all"
+            >
+              <svg className="w-3 h-3 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 export const DiscoverPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeCategory, setActiveCategory] = useState('all');
   const [viewMode, setViewMode] = useState<ViewMode>('explore');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [isPeopleSearchFocused, setIsPeopleSearchFocused] = useState(false);
+  const [peopleSearch, setPeopleSearch] = useState('');
+  const blurTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const formatNumber = (num: number): string => {
-    if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
-    if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
-    return num.toString();
+  const { history, addSearch, addUser, removeItem, clearAll } = useSearchHistory();
+  // Map of userId → boolean override (true = just followed, false = just unfollowed)
+  const [followOverrides, setFollowOverrides] = useState<Map<string, boolean>>(new Map());
+  const [pendingIds, setPendingIds] = useState<Set<string>>(new Set());
+
+  const { auth } = useAuth();
+  const currentUserId = auth.user?._id || '';
+
+  const { data: feedData, isLoading: feedLoading } = useFeed(30, 0);
+  const { data: usersData, isLoading: usersLoading } = useAllUsers();
+  const { data: trendingTagsData } = useTrendingTags(10);
+  const { data: trendingPostsData, isLoading: trendingLoading } = useTrendingPosts(15);
+  const { data: trendingUsersData } = useTrendingUsers(8);
+  const { data: searchData, isLoading: searchLoading } = useSearch(searchQuery, 'all', searchQuery.length >= 2);
+
+  // Who I follow + who follows me
+  const { data: followingData } = useFollowing(currentUserId, 200, 0);
+  const { data: followersData } = useFollowers(currentUserId, 200, 0);
+
+  const followMutation = useFollowUser();
+  const unfollowMutation = useUnfollowUser();
+  const likeMutation = useLikePost();
+  const unlikeMutation = useUnlikePost();
+  const bookmarkMutation = useBookmarkPost();
+  const unbookmarkMutation = useUnbookmarkPost();
+  const echoMutation = useEchoPost();
+
+  const posts: any[] = feedData?.data ?? [];
+  const users: any[] = usersData?.data ?? [];
+  const trendingTags: { tag: string; count: number }[] = trendingTagsData?.data ?? [];
+  const trendingPosts: any[] = trendingPostsData?.data ?? [];
+  const trendingUsersList: { user: any; newFollowers: number }[] = trendingUsersData?.data ?? [];
+
+  // Build sets from API data for fast lookup
+  const followingIds = useMemo<Set<string>>(() => {
+    const set = new Set<string>();
+    (followingData?.data ?? []).forEach((f: any) => {
+      const id = f.following?.id || f.following?._id || (typeof f.following === 'string' ? f.following : null);
+      if (id) set.add(id);
+    });
+    return set;
+  }, [followingData]);
+
+  const followerIds = useMemo<Set<string>>(() => {
+    const set = new Set<string>();
+    (followersData?.data ?? []).forEach((f: any) => {
+      const id = f.follower?.id || f.follower?._id || (typeof f.follower === 'string' ? f.follower : null);
+      if (id) set.add(id);
+    });
+    return set;
+  }, [followersData]);
+
+  const isFollowingUser = useCallback((userId: string): boolean => {
+    if (followOverrides.has(userId)) return followOverrides.get(userId)!;
+    return followingIds.has(userId);
+  }, [followOverrides, followingIds]);
+
+  const handleFollow = useCallback((userId: string) => {
+    setPendingIds(p => new Set(p).add(userId));
+    setFollowOverrides(m => new Map(m).set(userId, true));
+    followMutation.mutate(userId, {
+      onSettled: () => setPendingIds(p => { const s = new Set(p); s.delete(userId); return s; }),
+      onError: () => setFollowOverrides(m => { const n = new Map(m); n.delete(userId); return n; }),
+    });
+  }, [followMutation]);
+
+  const handleUnfollow = useCallback((userId: string) => {
+    setPendingIds(p => new Set(p).add(userId));
+    setFollowOverrides(m => new Map(m).set(userId, false));
+    unfollowMutation.mutate(userId, {
+      onSettled: () => setPendingIds(p => { const s = new Set(p); s.delete(userId); return s; }),
+      onError: () => setFollowOverrides(m => { const n = new Map(m); n.delete(userId); return n; }),
+    });
+  }, [unfollowMutation]);
+
+  const isSearching = searchQuery.length >= 2;
+  const searchResults = searchData?.data;
+
+  const filteredPosts = useMemo(() => {
+    if (isSearching && searchResults) return searchResults.posts ?? [];
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      return posts.filter(p => p.content?.toLowerCase().includes(q) || p.author?.username?.toLowerCase().includes(q));
+    }
+    return posts;
+  }, [posts, searchQuery, isSearching, searchResults]);
+
+  const filteredUsers = useMemo(() => {
+    if (isSearching && searchResults) return searchResults.users ?? [];
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      return users.filter(u => u.username?.toLowerCase().includes(q) || u.name?.toLowerCase().includes(q));
+    }
+    return users;
+  }, [users, searchQuery, isSearching, searchResults]);
+
+  const exploreGridPosts = useMemo(() => filteredPosts.filter((p: any) => p.media?.url), [filteredPosts]);
+
+  // People tab filtered users
+  const peopleList = useMemo(() => {
+    const q = peopleSearch.toLowerCase();
+    return users.filter(u => {
+      if (!q) return true;
+      return u.username?.toLowerCase().includes(q) || u.name?.toLowerCase().includes(q);
+    });
+  }, [users, peopleSearch]);
+
+  // Split: not yet following (excluding self) vs already following
+  const suggestedPeople = useMemo(
+    () => peopleList.filter(u => {
+      const id = u.id || u._id;
+      return id !== currentUserId && !isFollowingUser(id);
+    }),
+    [peopleList, currentUserId, isFollowingUser]
+  );
+
+  const followingPeople = useMemo(
+    () => peopleList.filter(u => {
+      const id = u.id || u._id;
+      return id !== currentUserId && isFollowingUser(id);
+    }),
+    [peopleList, currentUserId, isFollowingUser]
+  );
+
+  const renderPostCard = (post: any) => (
+    <FeedCard
+      key={post._id}
+      id={post._id}
+      author={{
+        name: post.author?.name || post.author?.username || 'Unknown',
+        username: post.author?.username,
+        avatarUrl: post.author?.avatarUrl,
+        isVerified: post.author?.isVerified,
+      }}
+      content={post.content}
+      language={post.language}
+      media={post.media?.url ? { type: post.media.type, url: post.media.url } : undefined}
+      likesCount={post.likes || 0}
+      commentsCount={post.comments || 0}
+      sharesCount={post.shares || 0}
+      echoCount={post.echoCount || 0}
+      signalStrength={post.signalStrength || 0}
+      isLiked={post.isLiked || false}
+      isEcho={post.isEcho}
+      isBoosted={post.isBoosted}
+      boostTier={post.boostTier}
+      timestamp={getRelativeTime(post.createdAt)}
+      onLike={() => post.isLiked ? unlikeMutation.mutate(post._id) : likeMutation.mutate(post._id)}
+      onBookmark={() => post.isBookmarked ? unbookmarkMutation.mutate(post._id) : bookmarkMutation.mutate(post._id)}
+      onEcho={() => echoMutation.mutate(post._id)}
+      onComment={() => {}}
+      onShare={() => {}}
+      onAuthorClick={() => {}}
+    />
+  );
+
+  const renderBroadcasterCard = (user: any, badge?: number) => {
+    const id = user.id || user._id;
+    return (
+      <div key={id} onClick={() => addUser({ id, username: user.username, name: user.name, avatarUrl: user.avatarUrl })}>
+        {badge !== undefined && (
+          <div className="mb-1 px-1">
+            <span className="text-[10px] text-emerald-400 font-mono">+{badge} new listeners this week</span>
+          </div>
+        )}
+        <BroadcasterCard
+          user={user}
+          isFollowing={isFollowingUser(id)}
+          followsYou={followerIds.has(id)}
+          onFollow={() => handleFollow(id)}
+          onUnfollow={() => handleUnfollow(id)}
+          isPending={pendingIds.has(id)}
+          isMe={id === currentUserId}
+        />
+      </div>
+    );
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
-      {/* Sticky Header with Search */}
-      <div className="sticky top-0 z-20 bg-[#0a0a0a]/92 backdrop-blur-xl border-b border-slate-700">
-        {/* Search Bar */}
+    <div className="min-h-screen" style={{ background: 'linear-gradient(180deg, #0e0805 0%, #130a04 100%)' }}>
+      {/* Sticky Header */}
+      <div className="sticky top-0 z-20 border-b border-white/5 backdrop-blur-xl"
+        style={{ background: 'rgba(14,8,5,0.90)' }}
+      >
         <div className="px-4 py-3">
           <div className={`relative transition-all duration-300 ${isSearchFocused ? 'scale-[1.01]' : ''}`}>
-            <div className={`absolute inset-0 bg-linear-to-r from-cyan-500/12 via-emerald-400/8 to-amber-300/12 rounded-2xl blur-xl transition-opacity duration-300 ${isSearchFocused ? 'opacity-100' : 'opacity-0'}`} />
-            
+            <div className={`absolute inset-0 bg-linear-to-r from-orange-500/12 via-emerald-400/8 to-amber-300/12 rounded-2xl blur-xl transition-opacity duration-300 ${isSearchFocused ? 'opacity-100' : 'opacity-0'}`} />
             <div className="relative flex items-center">
-              <Icon 
-                name="search" 
-                size={20} 
-                className={`absolute left-4 transition-colors ${isSearchFocused ? 'text-cyan-400' : 'text-slate-500'}`} 
-              />
+              <Icon name="search" size={18} className={`absolute left-4 transition-colors ${isSearchFocused ? 'text-orange-400' : 'text-slate-500'}`} />
               <input
                 type="text"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onFocus={() => setIsSearchFocused(true)}
-                onBlur={() => setIsSearchFocused(false)}
-                placeholder="Search topics, people, or posts..."
-                className="w-full bg-[#141414] border-2 border-transparent rounded-2xl py-3.5 pl-12 pr-4 text-base text-slate-100 focus:outline-none focus:border-cyan-400/50 focus:bg-[#141414] transition-all placeholder:text-slate-500"
+                onChange={e => setSearchQuery(e.target.value)}
+                onFocus={() => {
+                  if (blurTimer.current) clearTimeout(blurTimer.current);
+                  setIsSearchFocused(true);
+                }}
+                onBlur={() => {
+                  blurTimer.current = setTimeout(() => setIsSearchFocused(false), 150);
+                }}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' && searchQuery.trim()) {
+                    addSearch(searchQuery);
+                  }
+                }}
+                placeholder="Search drops, topics, or broadcasters…"
+                className="w-full bg-white/5 border-2 border-transparent rounded-2xl py-3 pl-11 pr-4 text-sm text-slate-100 focus:outline-none focus:border-orange-400/50 transition-all placeholder:text-slate-600"
               />
               {searchQuery && (
-                <button 
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-4 p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full transition-colors"
-                >
-                  <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <button onClick={() => setSearchQuery('')} className="absolute right-4 p-1 hover:bg-white/10 rounded-full transition-colors">
+                  <svg className="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
               )}
             </div>
-          </div>
-        </div>
 
-        {/* Category Pills */}
-        <div className="px-4 pb-3 overflow-x-auto scrollbar-hide">
-          <div className="flex gap-2">
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setActiveCategory(category.id)}
-                className={`
-                  flex items-center gap-2 px-4 py-2 rounded-full whitespace-nowrap border
-                  text-sm font-medium transition-all duration-200
-                  ${activeCategory === category.id
-                    ? 'bg-[#141414] border-cyan-500/60 text-slate-50 shadow-[0_8px_30px_-18px_rgba(0,0,0,0.8)]'
-                    : 'bg-[#141414] border-slate-700 text-slate-300 hover:border-cyan-400/50'
+            {/* History dropdown — shown when focused and no active query */}
+            {isSearchFocused && !searchQuery && (
+              <HistoryDropdown
+                history={history}
+                onSelect={item => {
+                  if (item.type === 'user' && item.userId) {
+                    navigate(`/profile/${item.userId}`);
+                  } else {
+                    setSearchQuery(item.query);
                   }
-                `}
-              >
-                <Icon name={category.icon} size={16} />
-                {category.label}
-              </button>
-            ))}
+                  setIsSearchFocused(false);
+                }}
+                onRemove={removeItem}
+                onClear={clearAll}
+              />
+            )}
           </div>
         </div>
 
-        {/* View Mode Tabs */}
-        <div className="flex border-t border-slate-700">
+        {/* Tabs */}
+        <div className="flex border-t border-white/5">
           {([
             { id: 'explore', label: 'Explore' },
             { id: 'trending', label: 'Pulse' },
-            { id: 'people', label: 'People' },
-          ] as const).map((tab) => (
+            { id: 'people', label: 'Frequencies' },
+          ] as const).map(tab => (
             <button
               key={tab.id}
               onClick={() => setViewMode(tab.id)}
-              className={`
-                flex-1 py-3.5 text-sm font-medium relative transition-colors
-                ${viewMode === tab.id 
-                  ? 'text-cyan-300' 
-                  : 'text-slate-500 hover:text-slate-200'
-                }
-              `}
+              className={`flex-1 py-3 text-xs font-bold relative transition-colors ${viewMode === tab.id ? 'text-orange-300' : 'text-slate-500 hover:text-slate-300'}`}
             >
               {tab.label}
               {viewMode === tab.id && <TabIndicator thick />}
@@ -241,175 +473,235 @@ export const DiscoverPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Content */}
       <div className="pb-20">
-        {/* Explore Grid View */}
-        {viewMode === 'explore' && (
-          <div className="grid grid-cols-3 gap-0.5">
-            {exploreGridItems.map((item, index) => (
-              <button
-                key={item.id}
-                className={`
-                  relative aspect-square group overflow-hidden bg-[#141414]
-                  ${index === 0 ? 'col-span-2 row-span-2' : ''}
-                `}
-              >
-                <img
-                  src={item.url}
-                  alt=""
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  loading="lazy"
-                />
-                
-                {/* Video indicator */}
-                {item.type === 'video' && (
-                  <>
-                    <div className="absolute top-2 right-2 px-1.5 py-0.5 bg-black/70 rounded text-white text-xs font-medium">
-                      {item.duration}
+        {/* Search results overlay */}
+        {isSearching && (
+          <div className="p-4 space-y-6">
+            {searchLoading ? (
+              <div className="flex items-center justify-center py-12">
+                <div className="w-8 h-8 border-2 border-orange-400/30 border-t-orange-400 rounded-full animate-spin" />
+              </div>
+            ) : (
+              <>
+                {filteredUsers.length > 0 && (
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-widest text-orange-400/60 font-mono mb-3">Broadcasters ({filteredUsers.length})</p>
+                    <div className="space-y-2">
+                      {filteredUsers.slice(0, 5).map((u: any) => renderBroadcasterCard(u))}
                     </div>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-12 h-12 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center">
-                        <Icon name="play" size={24} className="text-white ml-1" />
-                      </div>
-                    </div>
-                  </>
+                  </div>
                 )}
-                
-                {/* Hover overlay */}
-                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <div className="flex items-center gap-1.5 text-white">
-                    <Icon name="heart" size={20} filled className="text-amber-300" />
-                    <span className="font-semibold">{formatNumber(item.likes)}</span>
+                {filteredPosts.length > 0 && (
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-widest text-orange-400/60 font-mono mb-3">Drops ({filteredPosts.length})</p>
+                    <div className="space-y-3">{filteredPosts.slice(0, 10).map(renderPostCard)}</div>
                   </div>
-                </div>
-              </button>
-            ))}
+                )}
+                {filteredUsers.length === 0 && filteredPosts.length === 0 && (
+                  <div className="text-center py-16">
+                    <p className="text-3xl mb-3">📡</p>
+                    <p className="font-bold text-white">No signal for "{searchQuery}"</p>
+                    <p className="text-sm text-slate-500 mt-1">Try a different frequency</p>
+                  </div>
+                )}
+              </>
+            )}
           </div>
         )}
 
-        {/* Trending View */}
-        {viewMode === 'trending' && (
+        {/* Explore Grid */}
+        {!isSearching && viewMode === 'explore' && (
           <div>
-            {/* Pulse Topics Section */}
-            <div className="p-4 border-b border-slate-700">
-              <SectionHeader title="Pulse Topics" className="mb-4" />
-              <div className="space-y-3">
-                {trendingTopics.map((topic, index) => (
-                  <button
-                    key={topic.id}
-                    className="w-full flex items-start gap-4 p-3 rounded-xl bg-[#141414] border border-slate-700 hover:border-cyan-400/30 transition-colors group"
-                  >
-                    <span className="text-2xl font-bold text-slate-700 group-hover:text-cyan-300 transition-colors">
-                      {index + 1}
-                    </span>
-                    <div className="flex-1 text-left">
-                      <p className="text-xs text-slate-500">{topic.category}</p>
-                      <p className="font-bold text-slate-50 group-hover:text-cyan-300 transition-colors">
-                        {topic.tag}
-                      </p>
-                      <p className="text-xs text-slate-500 flex items-center gap-1 mt-0.5">
-                        <Icon name="trending" size={12} className="text-amber-300" />
-                        {topic.posts} drops
-                      </p>
+            {feedLoading ? (
+              <div className="flex items-center justify-center py-20">
+                <div className="w-8 h-8 border-2 border-orange-400/30 border-t-orange-400 rounded-full animate-spin" />
+              </div>
+            ) : exploreGridPosts.length === 0 ? (
+              <div className="text-center py-16 text-slate-500">
+                <p className="text-3xl mb-3">📡</p>
+                <p className="font-semibold">No drops with media yet</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-3 gap-0.5">
+                {exploreGridPosts.map((post: any, index: number) => (
+                  <button key={post._id} className={`relative aspect-square group overflow-hidden bg-white/5 ${index === 0 ? 'col-span-2 row-span-2' : ''}`}>
+                    <img src={post.media.url} alt="" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+                    {post.isBoosted && (
+                      <div className="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded-full bg-amber-500/80 text-white text-[10px] font-bold">⚡</div>
+                    )}
+                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <div className="flex items-center gap-3 text-white text-xs font-bold">
+                        <span className="flex items-center gap-1"><Icon name="heart" size={14} filled className="text-amber-300" />{formatNumber(post.likes || 0)}</span>
+                        <span className="flex items-center gap-1"><Icon name="comment" size={14} />{formatNumber(post.comments || 0)}</span>
+                      </div>
                     </div>
-                    <Icon name="dotsVertical" size={18} className="text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </button>
                 ))}
               </div>
-            </div>
+            )}
+          </div>
+        )}
 
-            {/* Hot Drops */}
-            <div>
-              <SectionHeader title="Hot Drops" className="p-4" />
-              <div className="divide-y divide-slate-700">
-                {trendingPosts.map((post) => (
-                  <FeedCard key={post.id} {...post} />
-                ))}
+        {/* Pulse / Trending */}
+        {!isSearching && viewMode === 'trending' && (
+          <div>
+            {trendingTags.length > 0 && (
+              <div className="p-4 border-b border-white/5">
+                <p className="text-xs font-bold uppercase tracking-widest text-orange-400/60 font-mono mb-4">Trending Signals</p>
+                <div className="space-y-2">
+                  {trendingTags.map((item, index) => (
+                    <button
+                      key={item.tag}
+                      onClick={() => setSearchQuery(item.tag)}
+                      className="w-full flex items-center gap-4 p-3 rounded-xl bg-white/5 border border-white/8 hover:border-orange-400/30 transition-colors group"
+                    >
+                      <span className="text-lg font-black text-slate-700 group-hover:text-orange-300 transition-colors w-6 text-center">{index + 1}</span>
+                      <div className="flex-1 text-left">
+                        <p className="font-bold text-slate-100 group-hover:text-orange-300 text-sm">#{item.tag}</p>
+                        <p className="text-xs text-slate-600 flex items-center gap-1 mt-0.5">
+                          <Icon name="trending" size={11} className="text-amber-300" />
+                          {item.count} drops · last 48h
+                        </p>
+                      </div>
+                      <Icon name="chevronRight" size={14} className="text-slate-700 group-hover:text-slate-400" />
+                    </button>
+                  ))}
+                </div>
               </div>
+            )}
+            <div className="p-4">
+              <p className="text-xs font-bold uppercase tracking-widest text-orange-400/60 font-mono mb-4">Hot Drops</p>
+              {trendingLoading ? (
+                <div className="flex items-center justify-center py-10">
+                  <div className="w-8 h-8 border-2 border-orange-400/30 border-t-orange-400 rounded-full animate-spin" />
+                </div>
+              ) : trendingPosts.length === 0 ? (
+                <div className="text-center py-10 text-slate-500">
+                  <p className="text-3xl mb-2">📡</p>
+                  <p className="text-sm">No trending drops yet</p>
+                </div>
+              ) : (
+                <div className="space-y-4">{trendingPosts.map(renderPostCard)}</div>
+              )}
             </div>
           </div>
         )}
 
-        {/* People View */}
-        {viewMode === 'people' && (
-          <div className="p-4">
-            <SectionHeader title="Suggested for You" className="mb-4" />
-            <div className="space-y-3">
-              {suggestedUsers.map((user) => (
-                <div
-                  key={user.id}
-                  className="flex items-center gap-4 p-4 rounded-2xl bg-[#141414] border border-slate-700 hover:border-cyan-400/30 transition-colors group"
-                >
-                  {/* Avatar with gradient ring */}
-                  <div className="relative shrink-0">
-                    <div className="p-0.5 bg-linear-to-br from-cyan-500 to-amber-300 rounded-full">
-                      <div className="p-0.5 bg-[#0a0a0a] rounded-full">
-                        <Avatar
-                          src={user.avatarUrl}
-                          alt={user.name}
-                          size="lg"
-                        />
-                      </div>
-                    </div>
-                    {user.isVerified && (
-                      <div className="absolute -bottom-0.5 -right-0.5 bg-[#0a0a0a] rounded-full p-0.5 border border-slate-700">
-                        <Icon name="verified" size={16} className="text-amber-300" />
-                      </div>
-                    )}
-                  </div>
-                  
-                  {/* User Info */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1">
-                      <span className="font-bold text-slate-50 truncate">
-                        {user.name}
-                      </span>
-                    </div>
-                    <p className="text-sm text-slate-500">@{user.username}</p>
-                    <p className="text-sm text-slate-300 mt-1 line-clamp-1">{user.bio}</p>
-                    <p className="text-xs text-slate-500 mt-1">{user.followers} followers</p>
-                  </div>
-                  
-                  {/* Follow Button */}
-                  <button className="px-5 py-2 bg-slate-100 text-slate-950 text-sm font-bold rounded-full transition-all hover:bg-cyan-400 hover:text-slate-950 active:scale-95">
-                    Follow
-                  </button>
-                </div>
-              ))}
+        {/* Frequencies — People Discovery */}
+        {!isSearching && viewMode === 'people' && (
+          <div className="p-4 space-y-6">
+            {/* People-specific search */}
+            <div className="relative">
+              <Icon name="search" size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+              <input
+                type="text"
+                value={peopleSearch}
+                onChange={e => setPeopleSearch(e.target.value)}
+                onFocus={() => {
+                  if (blurTimer.current) clearTimeout(blurTimer.current);
+                  setIsPeopleSearchFocused(true);
+                }}
+                onBlur={() => {
+                  blurTimer.current = setTimeout(() => setIsPeopleSearchFocused(false), 150);
+                }}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' && peopleSearch.trim()) addSearch(peopleSearch);
+                }}
+                placeholder="Search broadcasters by name or @handle…"
+                className="w-full bg-white/5 border border-white/10 rounded-xl py-2.5 pl-10 pr-4 text-sm text-slate-100 focus:outline-none focus:border-orange-400/40 transition-all placeholder:text-slate-600"
+              />
+              {peopleSearch && (
+                <button onClick={() => setPeopleSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-white/10 rounded-full transition-colors">
+                  <svg className="w-3.5 h-3.5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
+
+              {/* People history dropdown */}
+              {isPeopleSearchFocused && !peopleSearch && (
+                <HistoryDropdown
+                  history={history.filter(h => h.type === 'user')}
+                  onSelect={item => {
+                    if (item.userId) navigate(`/profile/${item.userId}`);
+                    else setPeopleSearch(item.query);
+                    setIsPeopleSearchFocused(false);
+                  }}
+                  onRemove={removeItem}
+                  onClear={clearAll}
+                />
+              )}
             </div>
 
-            {/* More Suggestions */}
-            <div className="mt-8">
-              <SectionHeader title="Popular Creators" className="mb-4" />
-              <div className="grid grid-cols-2 gap-3">
-                {suggestedUsers.slice(0, 4).map((user) => (
-                  <div
-                    key={`popular-${user.id}`}
-                    className="relative p-4 rounded-2xl bg-[#141414] border border-slate-700 group hover:border-cyan-400/30 transition-all"
-                  >
-                    <div className="flex flex-col items-center text-center">
-                      <div className="p-0.5 bg-linear-to-br from-cyan-500 to-amber-300 rounded-full mb-3">
-                        <div className="p-0.5 bg-[#0a0a0a] rounded-full">
-                          <Avatar
-                            src={user.avatarUrl}
-                            alt={user.name}
-                            size="xl"
-                          />
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-1 mb-0.5 text-slate-50">
-                        <span className="font-bold text-sm truncate max-w-30">{user.name}</span>
-                        {user.isVerified && <Icon name="verified" size={14} className="text-amber-300" />}
-                      </div>
-                      <p className="text-xs text-slate-500 mb-3">@{user.username}</p>
-                      <button className="w-full py-2 bg-slate-100 text-slate-950 text-sm font-semibold rounded-full hover:bg-cyan-400 transition-colors">
-                        Follow
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
+            {/* Legend */}
+            <div className="flex items-center gap-4 text-[11px] text-slate-600 px-1">
+              <span className="flex items-center gap-1.5">
+                <span className="w-3 h-3 rounded-full bg-linear-to-br from-orange-400 to-amber-400 inline-block" />
+                Tunes in to you
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="w-3 h-3 rounded-full bg-white/10 border border-white/20 inline-block" />
+                Not yet connected
+              </span>
             </div>
+
+            {/* Rising Broadcasters — trending users */}
+            {!peopleSearch && trendingUsersList.length > 0 && (
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-xs font-black uppercase tracking-widest text-orange-400/60 font-mono">Rising Signals</span>
+                  <div className="flex-1 h-px bg-linear-to-r from-orange-500/20 to-transparent" />
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                </div>
+                <div className="space-y-2">
+                  {trendingUsersList.map(({ user, newFollowers }) => user && renderBroadcasterCard(user, newFollowers))}
+                </div>
+              </div>
+            )}
+
+            {/* Users I haven't followed yet */}
+            {suggestedPeople.length > 0 && (
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-xs font-black uppercase tracking-widest text-orange-400/60 font-mono">
+                    {peopleSearch ? 'Results' : 'Suggested Frequencies'}
+                  </span>
+                  <div className="flex-1 h-px bg-linear-to-r from-orange-500/20 to-transparent" />
+                  <span className="text-[10px] text-slate-600">{suggestedPeople.length}</span>
+                </div>
+                {usersLoading ? (
+                  <div className="flex items-center justify-center py-8">
+                    <div className="w-6 h-6 border-2 border-orange-400/30 border-t-orange-400 rounded-full animate-spin" />
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {suggestedPeople.map(u => renderBroadcasterCard(u))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Users already following */}
+            {followingPeople.length > 0 && (
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-xs font-black uppercase tracking-widest text-slate-600 font-mono">Tuned In</span>
+                  <div className="flex-1 h-px bg-linear-to-r from-white/5 to-transparent" />
+                  <span className="text-[10px] text-slate-600">{followingPeople.length}</span>
+                </div>
+                <div className="space-y-2">
+                  {followingPeople.map(u => renderBroadcasterCard(u))}
+                </div>
+              </div>
+            )}
+
+            {peopleList.length === 0 && !usersLoading && (
+              <div className="text-center py-16">
+                <p className="text-3xl mb-3">📡</p>
+                <p className="font-bold text-white">No broadcasters found</p>
+                <p className="text-sm text-slate-500 mt-1">Try a different frequency</p>
+              </div>
+            )}
           </div>
         )}
       </div>

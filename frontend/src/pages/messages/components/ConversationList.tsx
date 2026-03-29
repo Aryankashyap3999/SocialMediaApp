@@ -39,43 +39,43 @@ export const ConversationList: React.FC<ConversationListProps> = ({
   const regularConversations = filteredConversations.filter((c) => !c.isPinned);
 
   return (
-    <div className="h-full flex flex-col bg-linear-to-b from-[#0a0a0a] to-[#08080c] border-r border-cyan-500/10">
-      {/* Header - Unique glassmorphic design */}
-      <div className="px-4 py-4 border-b border-cyan-500/10 bg-linear-to-r from-cyan-500/5 to-transparent">
+    <div className="h-full flex flex-col bg-linear-to-b from-[#0e0805] to-[#130a04] border-r border-orange-500/10">
+      {/* Header */}
+      <div className="px-4 py-4 border-b border-orange-500/10 bg-linear-to-r from-orange-500/5 to-transparent">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-2 h-8 rounded-full bg-linear-to-b from-cyan-400 to-amber-400" />
-            <h1 className="text-xl font-black text-transparent bg-clip-text bg-linear-to-r from-cyan-300 to-slate-100">Messages</h1>
+            <div className="w-2 h-8 rounded-full bg-linear-to-b from-orange-400 to-amber-400" />
+            <h1 className="text-xl font-black text-transparent bg-clip-text bg-linear-to-r from-orange-300 to-amber-100" style={{ fontFamily: "'Baloo 2', sans-serif" }}>Messages</h1>
           </div>
           <button
             onClick={onNewMessage}
-            className="p-2.5 rounded-xl transition-all bg-white/5 border border-white/10 hover:bg-white/10 hover:border-cyan-400/40 hover:shadow-lg hover:shadow-cyan-500/20 group"
+            className="p-2.5 rounded-xl transition-all bg-orange-500/5 border border-orange-500/10 hover:bg-orange-500/10 hover:border-orange-400/40 hover:shadow-lg hover:shadow-orange-500/20 group"
           >
-            <Icon name="compose" size={20} className="text-slate-300 group-hover:text-cyan-300 transition-colors" />
+            <Icon name="compose" size={20} className="text-slate-300 group-hover:text-orange-300 transition-colors" />
           </button>
         </div>
 
-        {/* Search - Enhanced */}
+        {/* Search */}
         <div className="relative group">
-          <Icon name="search" size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-cyan-400 transition-colors" />
+          <Icon name="search" size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-orange-400 transition-colors" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search messages..."
-            className="w-full bg-white/5 backdrop-blur-sm rounded-2xl py-3 pl-11 pr-4 text-sm text-slate-100 border border-white/10 focus:outline-none focus:ring-2 focus:ring-cyan-400/40 focus:border-cyan-400/40 placeholder:text-slate-500 transition-all"
+            className="w-full bg-orange-500/5 backdrop-blur-sm rounded-2xl py-3 pl-11 pr-4 text-sm text-slate-100 border border-orange-500/10 focus:outline-none focus:ring-2 focus:ring-orange-400/40 focus:border-orange-400/40 placeholder:text-slate-500 transition-all"
           />
         </div>
       </div>
 
-      {/* Tabs - Unique pill design */}
-      <div className="px-4 py-3 border-b border-cyan-500/10">
-        <div className="flex gap-2 p-1 rounded-2xl bg-white/5 border border-white/10">
+      {/* Tabs */}
+      <div className="px-4 py-3 border-b border-orange-500/10">
+        <div className="flex gap-2 p-1 rounded-2xl bg-orange-500/5 border border-orange-500/10">
           <button
             onClick={() => setActiveTab('messages')}
             className={`flex-1 py-2.5 text-sm font-semibold rounded-xl transition-all ${
-              activeTab === 'messages' 
-                ? 'bg-linear-to-r from-cyan-500/20 to-emerald-500/20 text-cyan-300 border border-cyan-400/30 shadow-lg shadow-cyan-500/10' 
+              activeTab === 'messages'
+                ? 'bg-linear-to-r from-orange-500/20 to-amber-500/20 text-orange-300 border border-orange-400/30 shadow-lg shadow-orange-500/10'
                 : 'text-slate-500 hover:text-slate-200 hover:bg-white/5'
             }`}
           >
@@ -84,8 +84,8 @@ export const ConversationList: React.FC<ConversationListProps> = ({
           <button
             onClick={() => setActiveTab('requests')}
             className={`flex-1 py-2.5 text-sm font-semibold rounded-xl transition-all ${
-              activeTab === 'requests' 
-                ? 'bg-linear-to-r from-cyan-500/20 to-emerald-500/20 text-cyan-300 border border-cyan-400/30 shadow-lg shadow-cyan-500/10' 
+              activeTab === 'requests'
+                ? 'bg-linear-to-r from-orange-500/20 to-amber-500/20 text-orange-300 border border-orange-400/30 shadow-lg shadow-orange-500/10'
                 : 'text-slate-500 hover:text-slate-200 hover:bg-white/5'
             }`}
           >
@@ -134,8 +134,8 @@ export const ConversationList: React.FC<ConversationListProps> = ({
                   <div>
                     {pinnedConversations.length > 0 && (
                       <div className="flex items-center gap-2 px-5 py-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-                        <p className="text-xs font-bold text-cyan-400/80 uppercase tracking-widest">
+                        <div className="w-1.5 h-1.5 rounded-full bg-orange-400" />
+                        <p className="text-xs font-bold text-orange-400/80 uppercase tracking-widest">
                           All Messages
                         </p>
                       </div>

@@ -21,6 +21,9 @@ export type { NavItemProps } from './NavItem';
 
 export { SocialButton } from './SocialButton';
 
+export { EmptyState } from './EmptyState';
+export type { EmptyStateProps } from './EmptyState';
+
 // Modal Components
 export { BaseModal, ConfirmModal } from './Modal';
 export type { BaseModalProps, ConfirmModalProps } from './Modal';

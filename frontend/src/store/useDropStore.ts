@@ -9,6 +9,42 @@ export type DropType = 'post' | 'story' | 'reel' | 'poll' | 'live';
 export type DropStatus = 'draft' | 'published' | 'archived' | 'scheduled';
 
 /**
+ * Signal Tiers - Unique to Aptoodate!
+ * Different durations and visual styles for signals/stories
+ */
+export type SignalTier = 'flash' | 'pulse' | 'broadcast';
+
+export const SIGNAL_TIERS: Record<SignalTier, { 
+  label: string; 
+  duration: number; // hours
+  color: string;
+  icon: string;
+  description: string;
+}> = {
+  flash: { 
+    label: 'Flash', 
+    duration: 4, 
+    color: 'from-red-500 to-orange-500',
+    icon: '⚡',
+    description: 'Urgent • 4 hours'
+  },
+  pulse: { 
+    label: 'Pulse', 
+    duration: 24, 
+    color: 'from-amber-400 to-yellow-500',
+    icon: '📡',
+    description: 'Daily • 24 hours'
+  },
+  broadcast: { 
+    label: 'Broadcast', 
+    duration: 168, 
+    color: 'from-emerald-400 to-cyan-500',
+    icon: '🎙️',
+    description: 'Extended • 7 days'
+  },
+};
+
+/**
  * Media Item Interface
  */
 export interface MediaItem {
@@ -38,6 +74,9 @@ export interface Drop {
   id: string;
   type: DropType;
   status: DropStatus;
+  
+  // Signal tier (for stories) - Unique to Aptoodate!
+  signalTier?: SignalTier;
   
   // Content
   caption: string;
@@ -83,6 +122,7 @@ export interface CreateDropInput {
   type: DropType;
   caption: string;
   media?: MediaItem[];
+  signalTier?: SignalTier; // For stories - Flash/Pulse/Broadcast
   pollOptions?: Omit<PollOption, 'id' | 'votes'>[];
   pollDuration?: number; // in hours
   tags?: string[];
@@ -161,110 +201,34 @@ interface DropActions {
 const generateId = () => `drop_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
 /**
- * Current user (mock - replace with auth store later)
+ * Current user (TODO: replace with auth store)
  */
 const currentUser = {
   id: 'user_1',
-  name: 'Aryan Kashyap',
-  avatar: 'https://i.pravatar.cc/150?u=aryan',
+  name: 'Current User',
+  avatar: '',
 };
 
 /**
- * Initial mock drops for testing
+ * Helper to clear storage if quota exceeded
  */
-const mockDrops: Drop[] = [
-  {
-    id: 'drop_1',
-    type: 'post',
-    status: 'published',
-    caption: 'Just launched a new feature! 🚀 Check out the glassmorphic design.',
-    media: [
-      {
-        id: 'media_1',
-        type: 'image',
-        url: 'https://picsum.photos/800/600?random=1',
-        width: 800,
-        height: 600,
-      },
-    ],
-    authorId: currentUser.id,
-    authorName: currentUser.name,
-    authorAvatar: currentUser.avatar,
-    likes: 142,
-    comments: 23,
-    shares: 8,
-    views: 1250,
-    tags: ['design', 'ui', 'launch'],
-    mentions: [],
-    createdAt: new Date(Date.now() - 3600000).toISOString(),
-    updatedAt: new Date(Date.now() - 3600000).toISOString(),
-    publishedAt: new Date(Date.now() - 3600000).toISOString(),
-    commentsEnabled: true,
-    likesVisible: true,
-    shareEnabled: true,
-  },
-  {
-    id: 'drop_2',
-    type: 'reel',
-    status: 'published',
-    caption: 'Behind the scenes of building Aptoodate 🎬',
-    media: [
-      {
-        id: 'media_2',
-        type: 'video',
-        url: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4',
-        thumbnailUrl: 'https://picsum.photos/400/700?random=2',
-        duration: 30,
-        width: 400,
-        height: 700,
-      },
-    ],
-    authorId: currentUser.id,
-    authorName: currentUser.name,
-    authorAvatar: currentUser.avatar,
-    likes: 89,
-    comments: 12,
-    shares: 5,
-    views: 890,
-    tags: ['behindthescenes', 'coding', 'dev'],
-    mentions: [],
-    createdAt: new Date(Date.now() - 86400000).toISOString(),
-    updatedAt: new Date(Date.now() - 86400000).toISOString(),
-    publishedAt: new Date(Date.now() - 86400000).toISOString(),
-    commentsEnabled: true,
-    likesVisible: true,
-    shareEnabled: true,
-  },
-  {
-    id: 'drop_3',
-    type: 'poll',
-    status: 'published',
-    caption: 'Which feature should we build next? 🤔',
-    media: [],
-    pollOptions: [
-      { id: 'opt_1', text: 'Dark mode themes', votes: 45 },
-      { id: 'opt_2', text: 'Video calls', votes: 32 },
-      { id: 'opt_3', text: 'Custom reactions', votes: 28 },
-      { id: 'opt_4', text: 'Voice messages', votes: 19 },
-    ],
-    pollEndsAt: new Date(Date.now() + 86400000 * 2).toISOString(),
-    authorId: currentUser.id,
-    authorName: currentUser.name,
-    authorAvatar: currentUser.avatar,
-    likes: 67,
-    comments: 34,
-    shares: 3,
-    views: 445,
-    tags: ['poll', 'community', 'feedback'],
-    mentions: [],
-    createdAt: new Date(Date.now() - 7200000).toISOString(),
-    updatedAt: new Date(Date.now() - 7200000).toISOString(),
-    publishedAt: new Date(Date.now() - 7200000).toISOString(),
-    commentsEnabled: true,
-    likesVisible: true,
-    shareEnabled: true,
-  },
-];
+const clearStorageIfNeeded = () => {
+  try {
+    const storageKey = 'aptoodate-drops-storage';
+    const stored = localStorage.getItem(storageKey);
+    if (stored && stored.length > 2 * 1024 * 1024) { // If over 2MB
+      console.warn('Storage too large, clearing old drops...');
+      localStorage.removeItem(storageKey);
+      return true;
+    }
+  } catch (e) {
+    console.warn('Error checking storage:', e);
+  }
+  return false;
+};
+
+// Clear storage on module load if needed
+clearStorageIfNeeded();
 
 /**
  * Drop Store
@@ -274,7 +238,7 @@ export const useDropStore = create<DropState & DropActions>()(
   persist(
     (set, get) => ({
       // Initial State
-      drops: mockDrops,
+      drops: [],
       currentDraft: null,
       isCreating: false,
       isLoading: false,
@@ -283,11 +247,15 @@ export const useDropStore = create<DropState & DropActions>()(
 
       // CRUD Operations
       createDrop: (input) => {
-        const now = new Date().toISOString();
-        const newDrop: Drop = {
-          id: generateId(),
-          type: input.type,
-          status: input.scheduledAt ? 'scheduled' : 'published',
+        try {
+          // Clear storage if it's getting too large
+          clearStorageIfNeeded();
+          
+          const now = new Date().toISOString();
+          const newDrop: Drop = {
+            id: generateId(),
+            type: input.type,
+            status: input.scheduledAt ? 'scheduled' : 'published',
           caption: input.caption,
           media: input.media || [],
           pollOptions: input.pollOptions?.map((opt) => ({
@@ -312,8 +280,10 @@ export const useDropStore = create<DropState & DropActions>()(
           updatedAt: now,
           publishedAt: input.scheduledAt ? undefined : now,
           scheduledAt: input.scheduledAt,
+          // Signal tier for stories - determines expiration
+          signalTier: input.type === 'story' ? (input.signalTier || 'pulse') : undefined,
           expiresAt: input.type === 'story'
-            ? new Date(Date.now() + 24 * 3600000).toISOString()
+            ? new Date(Date.now() + (SIGNAL_TIERS[input.signalTier || 'pulse'].duration) * 3600000).toISOString()
             : undefined,
           commentsEnabled: input.commentsEnabled ?? true,
           likesVisible: input.likesVisible ?? true,
@@ -327,6 +297,22 @@ export const useDropStore = create<DropState & DropActions>()(
         }));
 
         return newDrop;
+        } catch (error) {
+          // Handle quota exceeded error
+          if (error instanceof Error && error.name === 'QuotaExceededError') {
+            console.warn('Storage quota exceeded, clearing storage...');
+            try {
+              localStorage.removeItem('aptoodate-drops-storage');
+              // Retry after clearing
+              set((state) => ({
+                drops: state.drops.slice(0, 5), // Keep only 5 most recent
+              }));
+            } catch (e) {
+              console.error('Failed to clear storage:', e);
+            }
+          }
+          throw error;
+        }
       },
 
       updateDrop: (id, updates) => {
@@ -486,9 +472,34 @@ export const useDropStore = create<DropState & DropActions>()(
     }),
     {
       name: 'aptoodate-drops-storage',
-      partialize: (state) => ({
-        drops: state.drops,
-      }),
+      partialize: (state) => {
+        // Limit stored drops to prevent quota issues
+        const MAX_STORED_DROPS = 20;
+        const recentDrops = state.drops.slice(0, MAX_STORED_DROPS);
+        
+        // Filter out drops with large base64 media (can't persist these without exceeding quota)
+        // Only persist drops with external URLs or no media
+        const persistableDrops = recentDrops.filter(drop => {
+          // If no media, it's safe to persist
+          if (drop.media.length === 0) return true;
+          
+          // Check if any media has large base64 data
+          const hasLargeBase64 = drop.media.some(m => 
+            m.url.startsWith('data:') && m.url.length > 5000
+          );
+          
+          // Don't persist drops with large base64 images
+          return !hasLargeBase64;
+        });
+        
+        return { drops: persistableDrops };
+      },
+      // Handle storage errors gracefully
+      onRehydrateStorage: () => (_state, error) => {
+        if (error) {
+          console.warn('Failed to rehydrate drops storage:', error);
+        }
+      },
     }
   )
 );

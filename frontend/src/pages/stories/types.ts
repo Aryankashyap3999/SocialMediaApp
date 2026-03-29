@@ -4,6 +4,9 @@
  * Centralized type definitions for the stories feature
  */
 
+// Signal Frequency Band - unique classification system
+export type FrequencyBand = 'all' | 'breaking' | 'trending' | 'chill' | 'broadcast';
+
 export interface StoryUser {
   id: string;
   name: string;
@@ -40,6 +43,8 @@ export interface Story {
   hasUnseenItems: boolean;
   isLive?: boolean;
   isMuted?: boolean;
+  frequencyBand?: FrequencyBand; // Signal frequency classification
+  signalStrength?: number; // 1-5 based on engagement
 }
 
 export interface StoryGroup {

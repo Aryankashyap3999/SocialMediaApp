@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Sidebar } from '@components/organisms/Sidebar';
-import { MobileBottomNav } from '../organisms'; 
+import { MobileBottomNav } from '../organisms';
 import { useModalStore } from '@/store/useModalStore';
-import { getCurrentUser } from '../../pages/messages/mockData';
+import { useAuth } from '@/hooks/context/useAuth';
+import { useUnreadCount } from '@/hooks';
 
 export interface MainLayoutProps {
   children: React.ReactNode;
@@ -18,27 +19,29 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const [isCollapsed] = useState(false);
   const { openModal } = useModalStore();
   const location = useLocation();
+  const { auth } = useAuth();
+  const { data: unreadCountData } = useUnreadCount();
 
-  // Get current user from session (dynamic)
-  const user = getCurrentUser();
-  const currentUser = user
-    ? { name: user.name, username: user.username, avatarUrl: user.avatarUrl }
+  const currentUser = auth.user
+    ? { name: auth.user.name ?? auth.user.username, username: auth.user.username, avatarUrl: auth.user.avatarUrl }
     : { name: 'Guest', username: 'guest', avatarUrl: undefined };
+
+  const unreadNotifications = unreadCountData?.data?.count ?? 0;
 
   // Handle "Launch a Drop" button click
   const handleCreateClick = () => {
-    openModal('createPost'); // Opens the CreateDropModal
+    openModal('createPost', { source: 'sidebar' }); // Opens the CreateDropModal with context
   };
 
   return (
-    <div className="min-h-dvh bg-black text-gray-100 flex">
+    <div className="min-h-dvh bg-[#0e0805] text-gray-100 flex">
       {/* Sidebar - Hidden on mobile/tablet, visible on lg and above */}
       <div className="hidden lg:block shrink-0">
         <Sidebar
           isCollapsed={isCollapsed}
           currentUser={currentUser}
-          unreadMessages={8}
-          unreadNotifications={3}
+          unreadMessages={0}
+          unreadNotifications={unreadNotifications}
           onCreateClick={handleCreateClick}
         />
       </div>
@@ -51,8 +54,8 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       {/* Mobile Bottom Navigation - Visible on mobile/tablet, hidden on lg and above */}
       <MobileBottomNav
         currentPath={location.pathname}
-        unreadMessages={8}
-        unreadNotifications={3}
+        unreadMessages={0}
+        unreadNotifications={unreadNotifications}
         onCreateClick={handleCreateClick}
       />
     </div>

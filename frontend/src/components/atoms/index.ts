@@ -37,3 +37,6 @@ export type { GradientBadgeProps } from './GradientBadge';
 
 export { IconButton } from './IconButton';
 export type { IconButtonProps } from './IconButton';
+
+export { Spinner } from './Spinner';
+export type { SpinnerProps } from './Spinner';

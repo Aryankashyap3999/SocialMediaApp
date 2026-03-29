@@ -26,8 +26,8 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
           className={`
             px-4 py-2.5 rounded-2xl
             ${isOwn
-              ? 'bg-linear-to-r from-amber-300 to-cyan-400 text-slate-950 rounded-br-md shadow-[0_10px_30px_-18px_rgba(0,0,0,0.8)]'
-              : 'bg-slate-900 text-slate-100 rounded-bl-md border border-slate-800'
+              ? 'bg-linear-to-r from-orange-500 to-amber-400 text-white rounded-br-md shadow-[0_10px_30px_-18px_rgba(0,0,0,0.8)]'
+              : 'bg-[#1a0d05]/80 text-amber-50 rounded-bl-md border border-orange-500/15'
             }
           `}
         >

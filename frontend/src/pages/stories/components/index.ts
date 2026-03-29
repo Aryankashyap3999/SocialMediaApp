@@ -10,3 +10,5 @@ export { StoryFooter } from './StoryFooter';
 export { StoryViewer } from './StoryViewer';
 export { AddStoryCard } from './AddStoryCard';
 export { StoryGrid } from './StoryGrid';
+export { FrequencyTuner, FREQUENCY_BANDS } from './FrequencyTuner';
+export type { FrequencyBand } from './FrequencyTuner';
